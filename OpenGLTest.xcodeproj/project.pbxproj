@@ -14,6 +14,7 @@
 		22A1151A1D43BE1200B20CD1 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A115191D43BE1200B20CD1 /* CoreVideo.framework */; };
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
 		22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22A115241D43D6E000B20CD1 /* Shaders */; };
+		22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -50,6 +51,8 @@
 		22A1151B1D43C5A900B20CD1 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		22A1151C1D43C5A900B20CD1 /* Shader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Shader.hpp; sourceTree = "<group>"; };
 		22A115241D43D6E000B20CD1 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
+		22A115271D44E39300B20CD1 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		22A115281D44E39300B20CD1 /* Mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				22A1150E1D43BC8600B20CD1 /* main.cpp */,
+				22A115271D44E39300B20CD1 /* Mesh.cpp */,
+				22A115281D44E39300B20CD1 /* Mesh.hpp */,
 				22A1151B1D43C5A900B20CD1 /* Shader.cpp */,
 				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
 				22A115241D43D6E000B20CD1 /* Shaders */,
@@ -154,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
 				22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */,
 			);

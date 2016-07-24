@@ -68,7 +68,7 @@ GLuint compileShader(std::string vertexShaderPath, GLuint shaderType)
     
     std::string shaderSourceString = readShaderFile(vertexShaderPath);
     const char *shaderSource = shaderSourceString.c_str();
-        
+    
     glShaderSource(shader, 1, &shaderSource, NULL);
     glCompileShader(shader);
     
