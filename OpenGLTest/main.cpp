@@ -69,6 +69,7 @@ int main()
     glViewport(0, 0, width, height);
     
     Camera camera(60.0f, (float)width, (float)height, 0.1f, 100.0f);
+    camera.setPosition(glm::vec3(0.0f,0.0f,1.0f));
     
     Shader triangleShader;
     
@@ -107,7 +108,7 @@ int main()
         
         // Draw our first triangle
         triangleShader.bindShader();
-        triangleMesh.draw();
+        triangleMesh.draw(camera);
         
         // Swap the screen buffers
         glfwSwapBuffers(window);

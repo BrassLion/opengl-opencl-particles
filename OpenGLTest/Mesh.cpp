@@ -35,10 +35,10 @@ void Mesh::setShader(Shader shader)
     meshShader = shader;
 }
 
-void Mesh::draw()
+void Mesh::draw(Camera camera)
 {
     meshShader.bindShader();
-    meshShader.setUniform("modelMatrix", modelMatrix);
+    meshShader.setUniform("mvpMatrix", camera.getProjectionMatrix() * camera.getViewMatrix()  * modelMatrix);
     
     glBindVertexArray(VAO);
 

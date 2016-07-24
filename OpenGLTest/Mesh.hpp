@@ -16,6 +16,7 @@
 
 #include "Object.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
 
 class Mesh : public Object
 {
@@ -27,7 +28,7 @@ public:
     
     void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
     void setShader(Shader shader);
-    void draw();
+    void draw(Camera camera);
 };
 
 #endif /* Mesh_hpp */
