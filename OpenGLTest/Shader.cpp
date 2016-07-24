@@ -29,6 +29,54 @@ std::string readShaderFile(std::string shaderPath)
     return content;
 }
 
+bool checkShaderError(GLuint shader)
+{
+    GLint success;
+    GLchar infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    
+    if (!success) {
+        
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("Shader compilation error:\n") + infoLog);
+        
+        return false;
+    }
+    
+    return true;
+}
+
+bool checkProgramError(GLuint program)
+{
+    GLint success;
+    GLchar infoLog[512];
+    
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        throw std::runtime_error(std::string("Program link error:\n") + infoLog);
+        
+        return false;
+    }
+    
+    return true;
+}
+
+GLuint compileShader(std::string vertexShaderPath, GLuint shaderType)
+{
+    GLuint shader = glCreateShader(shaderType);
+    
+    std::string shaderSourceString = readShaderFile(vertexShaderPath);
+    const char *shaderSource = shaderSourceString.c_str();
+        
+    glShaderSource(shader, 1, &shaderSource, NULL);
+    glCompileShader(shader);
+    
+    checkShaderError(shader);
+    
+    return shader;
+}
+
 /// Public functions.
 void Shader::setShader(std::string shaderPath, GLuint shaderType)
 {
@@ -52,17 +100,34 @@ bool Shader::initialize()
 {
     if (vertexShaderPath.empty()) {
         
-        throw std::invalid_argument( "Vertex shader undefined." );
+        throw std::runtime_error( "Vertex shader undefined." );
         return false;
     }
     
     if(fragmentShaderPath.empty()) {
         
-        throw std::invalid_argument( "Fragment shader undefined. ");
+        throw std::runtime_error( "Fragment shader undefined. ");
         return false;
     }
     
-    printf("%s", readShaderFile(vertexShaderPath).c_str());
+    // Build and compile vertex shader.
+    GLuint vertexShader = compileShader(vertexShaderPath, GL_VERTEX_SHADER);
+    GLuint fragmentShader = compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    
+    programID = glCreateProgram();
+    glAttachShader(programID, vertexShader);
+    glAttachShader(programID, fragmentShader);
+    glLinkProgram(programID);
+    // Check for linking errors
+    checkProgramError(programID);
+    
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
     
     return true;
+}
+
+void Shader::bindShader()
+{
+    glUseProgram(programID);
 }

@@ -16,6 +16,8 @@
 class Shader
 {
 private:
+    
+    GLuint programID;
 
     std::string vertexShaderPath;
     std::string fragmentShaderPath;
@@ -24,6 +26,7 @@ public:
     
     bool initialize();
     void setShader(std::string shaderPath,  GLuint shaderType);
+    void bindShader();
 };
 
 #endif /* Shader_hpp */
