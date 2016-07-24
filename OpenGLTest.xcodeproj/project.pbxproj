@@ -15,6 +15,8 @@
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
 		22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22A115241D43D6E000B20CD1 /* Shaders */; };
 		22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
+		22A1152C1D44F57C00B20CD1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152A1D44F57C00B20CD1 /* Camera.cpp */; };
+		22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152D1D4527E000B20CD1 /* Object.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -53,6 +55,10 @@
 		22A115241D43D6E000B20CD1 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 		22A115271D44E39300B20CD1 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		22A115281D44E39300B20CD1 /* Mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
+		22A1152A1D44F57C00B20CD1 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		22A1152B1D44F57C00B20CD1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		22A1152D1D4527E000B20CD1 /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
+		22A1152E1D4527E000B20CD1 /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,11 +100,15 @@
 			isa = PBXGroup;
 			children = (
 				22A1150E1D43BC8600B20CD1 /* main.cpp */,
+				22A1152A1D44F57C00B20CD1 /* Camera.cpp */,
+				22A1152B1D44F57C00B20CD1 /* Camera.hpp */,
 				22A115271D44E39300B20CD1 /* Mesh.cpp */,
 				22A115281D44E39300B20CD1 /* Mesh.hpp */,
 				22A1151B1D43C5A900B20CD1 /* Shader.cpp */,
 				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
 				22A115241D43D6E000B20CD1 /* Shaders */,
+				22A1152D1D4527E000B20CD1 /* Object.cpp */,
+				22A1152E1D4527E000B20CD1 /* Object.hpp */,
 			);
 			path = OpenGLTest;
 			sourceTree = "<group>";
@@ -159,8 +169,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22A1152C1D44F57C00B20CD1 /* Camera.cpp in Sources */,
 				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
+				22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */,
 				22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

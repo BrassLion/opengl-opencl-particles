@@ -14,14 +14,19 @@
 
 #include <GL/glew.h>
 
-class Mesh
+#include "Object.hpp"
+#include "Shader.hpp"
+
+class Mesh : public Object
 {
 private:
     GLuint VBO, VAO, EBO;
+    Shader meshShader;
 
 public:
     
     void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
+    void setShader(Shader shader);
     void draw();
 };
 

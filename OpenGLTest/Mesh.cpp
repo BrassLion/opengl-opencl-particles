@@ -30,8 +30,16 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices
     glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 }
 
+void Mesh::setShader(Shader shader)
+{
+    meshShader = shader;
+}
+
 void Mesh::draw()
 {
+    meshShader.bindShader();
+    meshShader.setUniform("modelMatrix", modelMatrix);
+    
     glBindVertexArray(VAO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

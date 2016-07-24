@@ -13,6 +13,8 @@
 #include <assert.h>
 #include <fstream>
 
+#include <glm/gtc/type_ptr.hpp>
+
 /// Utility functions.
 std::string readShaderFile(std::string shaderPath)
 {
@@ -131,3 +133,21 @@ void Shader::bindShader()
 {
     glUseProgram(programID);
 }
+
+GLint Shader::getUniformLocation(std::string uniform)
+{
+    GLint uniformLocation = glGetUniformLocation(programID, uniform.c_str());
+    
+    if(uniformLocation == -1)
+        throw std::invalid_argument( "Uniform \"" + uniform + "\" does not exist." );
+    
+    return uniformLocation;
+}
+
+void Shader::setUniform(std::string uniform, glm::mat4 value)
+{
+    GLint uniformLocation = getUniformLocation(uniform);
+    
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
+}
+

@@ -15,10 +15,13 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+
 #include <vector>
 
 #include "Shader.hpp";
 #include "Mesh.hpp";
+#include "Camera.hpp";
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -65,11 +68,15 @@ int main()
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
     
+    Camera camera(60.0f, (float)width, (float)height, 0.1f, 100.0f);
+    
     Shader triangleShader;
     
     triangleShader.setShader("./Shaders/triangle.vert", GL_VERTEX_SHADER);
     triangleShader.setShader("./Shaders/triangle.frag", GL_FRAGMENT_SHADER);
     triangleShader.initialize();
+    
+    Mesh triangleMesh;
     
     std::vector<GLfloat> vertices = {
         0.5f,  0.5f, 0.0f,  // Top Right
@@ -82,8 +89,10 @@ int main()
         1, 2, 3   // Second Triangle
     };
     
-    Mesh triangleMesh;
     triangleMesh.initialize(vertices, indices);
+    triangleMesh.setShader(triangleShader);
+    triangleMesh.setPosition( glm::vec3(0.0f,0.0f,0.0f) );
+    triangleMesh.setScale( glm::vec3(1.0f,1.0f,1.0f) );
     
     // Game loop
     while (!glfwWindowShouldClose(window))
