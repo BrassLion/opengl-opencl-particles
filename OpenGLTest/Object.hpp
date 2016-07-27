@@ -9,6 +9,8 @@
 #ifndef Object_hpp
 #define Object_hpp
 
+#include <vector>
+
 #include <stdio.h>
 
 #include <glm/glm.hpp>
@@ -24,6 +26,9 @@ protected:
     
     glm::mat4 modelMatrix;
     
+    Object *parent = NULL;
+    std::vector<Object *> children;
+    
     virtual void updateModelMatrix();
     
 public:
@@ -35,6 +40,12 @@ public:
     glm::quat getOrientation();
     
     void setScale(glm::vec3 newScale);
+    
+    glm::mat4 getModelMatrix();
+    
+    void addChild(Object* child);
+    
+    void setParent(Object *parent);
 };
 
 #endif /* Object_hpp */

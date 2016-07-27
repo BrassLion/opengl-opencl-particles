@@ -37,8 +37,7 @@ void Mesh::setShader(Shader* shader)
 
 void Mesh::draw(Camera* camera)
 {
-    meshShader->
-    bindShader();
+    meshShader->bindShader();
     meshShader->setUniform("mvpMatrix", camera->getProjectionMatrix() * camera->getViewMatrix()  * modelMatrix);
     
     glBindVertexArray(VAO);

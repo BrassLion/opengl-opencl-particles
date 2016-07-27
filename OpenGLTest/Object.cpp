@@ -26,12 +26,8 @@ glm::vec3 Object::getPosition()
 
 void Object::setOrientation(glm::quat newOrientation)
 {
-    std::cout << glm::to_string(orientation) << std::endl;
-    
     orientation = newOrientation;
-    
-    std::cout << glm::to_string(orientation) << std::endl;
-    
+        
     updateModelMatrix();
 }
 
@@ -47,6 +43,11 @@ void Object::setScale(glm::vec3 newScale)
     updateModelMatrix();
 }
 
+glm::mat4 Object::getModelMatrix()
+{
+    return modelMatrix;
+}
+
 void Object::updateModelMatrix()
 {
     modelMatrix = glm::mat4(1.0f);
@@ -54,4 +55,26 @@ void Object::updateModelMatrix()
     modelMatrix = glm::translate(modelMatrix, position);
     modelMatrix = modelMatrix * glm::mat4_cast(orientation);
     modelMatrix = glm::scale(modelMatrix, scale);
+    
+    if(parent)
+    {
+        modelMatrix = parent->getModelMatrix() * modelMatrix;
+    }
+    
+    for(Object *child : children)
+        child->updateModelMatrix();
+}
+
+void Object::setParent(Object *newParent)
+{
+    parent = newParent;
+}
+
+void Object::addChild(Object *child)
+{
+    children.push_back(child);
+    
+    child->setParent(this);
+    
+    child->updateModelMatrix();
 }

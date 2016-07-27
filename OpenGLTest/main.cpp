@@ -38,8 +38,9 @@ bool firstMouse = true;
 
 // Camera variables.
 Camera *camera = new Camera(glm::radians(60.0f), (float)WIDTH, (float)HEIGHT, 0.1f, 100.0f);
-int x = 0;
-int y = 0;
+Object* cameraContainer;
+
+int frame = 0;
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -82,6 +83,10 @@ int main()
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
     
+    cameraContainer = new Object();
+    
+    cameraContainer->addChild(camera);
+    
     camera->setPosition(glm::vec3(0.0f,0.0f,10.0f));
     
     Shader* triangleShader = new Shader();
@@ -91,6 +96,7 @@ int main()
     triangleShader->initialize();
     
     Mesh* triangleMesh = new Mesh();
+    Mesh* triangleMesh2 = new Mesh();
     
     std::vector<GLfloat> vertices = {
         0.5f,  0.5f, 0.0f,  // Top Right
@@ -108,9 +114,17 @@ int main()
     triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
     triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );
     
+    triangleMesh2->initialize(vertices, indices);
+    triangleMesh2->setShader(triangleShader);
+    triangleMesh2->setPosition( glm::vec3(0.0f,2.0f,0.0f) );
+    
+    triangleMesh->addChild(triangleMesh2);
+    
     // Game loop
     while (!glfwWindowShouldClose(window))
     {
+        frame++;
+        
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
         
@@ -120,8 +134,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         // Draw our first triangle
-        triangleShader->bindShader();
         triangleMesh->draw(camera);
+        triangleMesh2->draw(camera);
+        
+//        triangleMesh->setOrientation(glm::angleAxis(glm::radians((float)frame), glm::vec3(1.0f,0.0f,0.0f)));
         
         // Swap the screen buffers
         glfwSwapBuffers(window);
@@ -159,17 +175,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
     
-    else if(key == GLFW_KEY_UP)
-        camera->setOrientation( camera->getOrientation() * glm::angleAxis(0.5f, glm::vec3(1.0f, 0.0f, 0.0f)) );
+    else if(key == GLFW_KEY_UP && action != GLFW_RELEASE)
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.5f, glm::vec3(1.0f, 0.0f, 0.0f)) );
     
-    else if(key == GLFW_KEY_DOWN)
-        camera->setOrientation( camera->getOrientation() * glm::angleAxis(0.5f, glm::vec3(-1.0f, 0.0f, 0.0f)) );
+    else if(key == GLFW_KEY_DOWN && action != GLFW_RELEASE)
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.5f, glm::vec3(-1.0f, 0.0f, 0.0f)) );
     
-    else if(key == GLFW_KEY_RIGHT)
-        camera->setOrientation( camera->getOrientation() * glm::angleAxis(0.5f, glm::vec3(0.0f, 1.0f, 0.0f)) );
+    else if(key == GLFW_KEY_RIGHT && action != GLFW_RELEASE)
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.5f, glm::vec3(0.0f, 1.0f, 0.0f)) );
 
-    else if(key == GLFW_KEY_LEFT)
-        camera->setOrientation( camera->getOrientation() * glm::angleAxis(0.5f, glm::vec3(0.0f, -1.0f, 0.0f)) );
+    else if(key == GLFW_KEY_LEFT && action != GLFW_RELEASE)
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.5f, glm::vec3(0.0f, -1.0f, 0.0f)) );
+    
+    else if(key == GLFW_KEY_R && action == GLFW_PRESS)
+        cameraContainer->setOrientation(glm::quat());
     
     rotate_camera(glm::vec2(0.0f));
 }
@@ -188,5 +207,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     
     lastX = xpos;
     lastY = ypos;
+    
+    cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * xoffset, glm::vec3(0.0f, 1.0f, 0.0f)) );
+    cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * yoffset, glm::vec3(1.0f, 0.0f, 0.0f)) );
     
 }
