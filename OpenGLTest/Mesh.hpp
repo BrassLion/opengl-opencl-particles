@@ -22,13 +22,13 @@ class Mesh : public Object
 {
 private:
     GLuint VBO, VAO, EBO;
-    Shader meshShader;
+    Shader* meshShader;
 
 public:
     
     void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
-    void setShader(Shader shader);
-    void draw(Camera camera);
+    void setShader(Shader* shader);
+    void draw(Camera* camera);
 };
 
 #endif /* Mesh_hpp */

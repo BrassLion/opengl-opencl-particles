@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		227393051D49433B00A3932B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
 		22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1150E1D43BC8600B20CD1 /* main.cpp */; };
-		22A115141D43BDE100B20CD1 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A115131D43BDE100B20CD1 /* OpenGL.framework */; };
-		22A115161D43BDE800B20CD1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A115151D43BDE800B20CD1 /* Cocoa.framework */; };
-		22A115181D43BDF300B20CD1 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A115171D43BDF300B20CD1 /* IOKit.framework */; };
-		22A1151A1D43BE1200B20CD1 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A115191D43BE1200B20CD1 /* CoreVideo.framework */; };
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
 		22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22A115241D43D6E000B20CD1 /* Shaders */; };
 		22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
@@ -44,12 +41,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		22A1150B1D43BC8600B20CD1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A1150E1D43BC8600B20CD1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		22A115131D43BDE100B20CD1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		22A115151D43BDE800B20CD1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		22A115171D43BDF300B20CD1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		22A115191D43BE1200B20CD1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		22A1151B1D43C5A900B20CD1 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		22A1151C1D43C5A900B20CD1 /* Shader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Shader.hpp; sourceTree = "<group>"; };
 		22A115241D43D6E000B20CD1 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
@@ -66,10 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22A1151A1D43BE1200B20CD1 /* CoreVideo.framework in Frameworks */,
-				22A115181D43BDF300B20CD1 /* IOKit.framework in Frameworks */,
-				22A115161D43BDE800B20CD1 /* Cocoa.framework in Frameworks */,
-				22A115141D43BDE100B20CD1 /* OpenGL.framework in Frameworks */,
+				227393051D49433B00A3932B /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,10 +70,7 @@
 		22A114FE1D43BBAE00B20CD1 = {
 			isa = PBXGroup;
 			children = (
-				22A115191D43BE1200B20CD1 /* CoreVideo.framework */,
-				22A115171D43BDF300B20CD1 /* IOKit.framework */,
-				22A115151D43BDE800B20CD1 /* Cocoa.framework */,
-				22A115131D43BDE100B20CD1 /* OpenGL.framework */,
+				227393041D49433B00A3932B /* OpenGL.framework */,
 				22A1150D1D43BC8600B20CD1 /* OpenGLTest */,
 				22A1150C1D43BC8600B20CD1 /* Products */,
 			);
@@ -308,6 +296,7 @@
 				22A115121D43BC8600B20CD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

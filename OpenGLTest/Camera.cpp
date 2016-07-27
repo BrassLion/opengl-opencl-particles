@@ -6,7 +6,11 @@
 //
 //
 
+#include <iostream>
+
 #include "Camera.hpp"
+
+#include <glm/gtx/string_cast.hpp>
 
 glm::mat4 Camera::getProjectionMatrix()
 {
@@ -18,14 +22,9 @@ glm::mat4 Camera::getViewMatrix()
     return view;
 }
 
-void Camera::updateViewMatrix()
+void Camera::updateModelMatrix()
 {
-    view = glm::lookAt(position, target, up);
-}
-
-void Camera::setPosition(glm::vec3 newPosition)
-{
-    Object::setPosition(newPosition);
+    Object::updateModelMatrix();
     
-    updateViewMatrix();
+    view = glm::inverse(modelMatrix);
 }

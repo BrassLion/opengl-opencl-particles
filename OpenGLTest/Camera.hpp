@@ -23,9 +23,11 @@ private:
     glm::mat4 view;
     
     glm::vec3 target = glm::vec3(0.0f);
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 up = glm::normalize( glm::vec3(0.0f, 0.5f, 0.5f) );
     
-    void updateViewMatrix();
+protected:
+    
+    void updateModelMatrix();
     
 public:
     
@@ -35,9 +37,7 @@ public:
     }
     
     glm::mat4 getProjectionMatrix();
-    glm::mat4 getViewMatrix();
-    
-    void setPosition(glm::vec3 newPosition);
+    glm::mat4 getViewMatrix();    
 };
 
 #endif /* Camera_hpp */

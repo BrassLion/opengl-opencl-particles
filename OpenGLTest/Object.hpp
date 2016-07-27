@@ -24,12 +24,16 @@ protected:
     
     glm::mat4 modelMatrix;
     
-    void updateModelMatrix();
+    virtual void updateModelMatrix();
     
 public:
     
     void setPosition(glm::vec3 newPosition);
+    glm::vec3 getPosition();
+    
     void setOrientation(glm::quat newOrientation);
+    glm::quat getOrientation();
+    
     void setScale(glm::vec3 newScale);
 };
 
