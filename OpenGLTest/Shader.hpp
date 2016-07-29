@@ -29,6 +29,7 @@ private:
 public:
     
     bool initialize();
+    void deleteShader();
     void setShader(std::string shaderPath,  GLuint shaderType);
     void bindShader();
     

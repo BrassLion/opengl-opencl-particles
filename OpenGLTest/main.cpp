@@ -21,9 +21,12 @@
 
 #include <vector>
 
-#include "Shader.hpp";
-#include "Mesh.hpp";
-#include "Camera.hpp";
+#include "ShaderReloader.hpp"
+#include "Shader.hpp"
+#include "Mesh.hpp"
+#include "Camera.hpp"
+#include "Viewport.hpp"
+#include "Renderer.hpp"
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -81,7 +84,15 @@ int main()
     // Define the viewport dimensions
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
+    
+    Renderer *renderer = new Renderer();
+    
+    Viewport *viewport = new Viewport(0, 0, width, height);
+    viewport->addCamera(camera);
+    
+    renderer->addViewport(viewport);
+    
+    Object *rootNode = new Object();
     
     cameraContainer = new Object();
     
@@ -119,6 +130,16 @@ int main()
     triangleMesh2->setPosition( glm::vec3(0.0f,2.0f,0.0f) );
     
     triangleMesh->addChild(triangleMesh2);
+    rootNode->addChild(triangleMesh);
+    
+    ShaderReloader::getInstance().addFileToWatch("./Shaders/triangle.frag", [&] {
+        
+        renderer->queueFunctionBeforeRender([&] {
+            
+            triangleShader->deleteShader();
+            triangleShader->initialize();
+        });
+    });
     
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -134,38 +155,15 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         // Draw our first triangle
-        triangleMesh->draw(camera);
-        triangleMesh2->draw(camera);
-        
-//        triangleMesh->setOrientation(glm::angleAxis(glm::radians((float)frame), glm::vec3(1.0f,0.0f,0.0f)));
+        renderer->draw(rootNode);
         
         // Swap the screen buffers
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(window);        
     }
     
     // Terminate GLFW, clearing any resources allocated by GLFW.
     glfwTerminate();
     return 0;
-}
-
-void rotate_camera(glm::vec2 direction)
-{
-    glm::vec3 camPos = camera->getPosition();
-    
-    
-    glm::vec3 cameraPos = glm::vec3(0.0f);
-    
-//    std::cout << glm::to_string(cameraSphericalCoords) << std::endl;
-//
-//    cameraPos.x = cameraSphericalCoords.x * glm::cos(cameraSphericalCoords.y) * glm::sin(cameraSphericalCoords.z);
-//    cameraPos.y = cameraSphericalCoords.x * glm::sin(cameraSphericalCoords.y) * glm::sin(cameraSphericalCoords.z);
-//    cameraPos.z = cameraSphericalCoords.x * glm::cos(cameraSphericalCoords.z);
-//    
-//    std::cout << glm::to_string(cameraPos) << std::endl;
-//
-//    printf("TEST:%f\n", glm::cos(cameraSphericalCoords.y));
-    
-//    camera.setPosition(cameraPos);
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -189,8 +187,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     
     else if(key == GLFW_KEY_R && action == GLFW_PRESS)
         cameraContainer->setOrientation(glm::quat());
-    
-    rotate_camera(glm::vec2(0.0f));
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)

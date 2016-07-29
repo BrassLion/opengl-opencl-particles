@@ -16,6 +16,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+class Camera;
+
 class Object
 {
 protected:
@@ -27,7 +29,7 @@ protected:
     glm::mat4 modelMatrix;
     
     Object *parent = NULL;
-    std::vector<Object *> children;
+    std::vector<Object *> m_children;
     
     virtual void updateModelMatrix();
     
@@ -46,6 +48,8 @@ public:
     void addChild(Object* child);
     
     void setParent(Object *parent);
+    
+    virtual void draw(Camera *camera);
 };
 
 #endif /* Object_hpp */

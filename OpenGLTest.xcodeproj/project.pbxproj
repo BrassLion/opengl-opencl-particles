@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CAE1D4BED49004004B6 /* Renderer.cpp */; };
+		22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CB11D4BEDB2004004B6 /* Viewport.cpp */; };
 		227393051D49433B00A3932B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
+		227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 227393061D496DDA00A3932B /* ShaderReloader.cpp */; };
 		22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1150E1D43BC8600B20CD1 /* main.cpp */; };
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
 		22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22A115241D43D6E000B20CD1 /* Shaders */; };
@@ -41,7 +44,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22066CAE1D4BED49004004B6 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
+		22066CAF1D4BED49004004B6 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
+		22066CB11D4BEDB2004004B6 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Viewport.cpp; path = ../Viewport.cpp; sourceTree = "<group>"; };
+		22066CB21D4BEDB2004004B6 /* Viewport.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Viewport.hpp; path = ../Viewport.hpp; sourceTree = "<group>"; };
 		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		227393061D496DDA00A3932B /* ShaderReloader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderReloader.cpp; sourceTree = "<group>"; };
+		227393071D496DDA00A3932B /* ShaderReloader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderReloader.hpp; sourceTree = "<group>"; };
 		22A1150B1D43BC8600B20CD1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A1150E1D43BC8600B20CD1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		22A1151B1D43C5A900B20CD1 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
@@ -92,11 +101,17 @@
 				22A1152B1D44F57C00B20CD1 /* Camera.hpp */,
 				22A115271D44E39300B20CD1 /* Mesh.cpp */,
 				22A115281D44E39300B20CD1 /* Mesh.hpp */,
-				22A1151B1D43C5A900B20CD1 /* Shader.cpp */,
-				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
 				22A115241D43D6E000B20CD1 /* Shaders */,
 				22A1152D1D4527E000B20CD1 /* Object.cpp */,
 				22A1152E1D4527E000B20CD1 /* Object.hpp */,
+				22066CAE1D4BED49004004B6 /* Renderer.cpp */,
+				22066CAF1D4BED49004004B6 /* Renderer.hpp */,
+				22A1151B1D43C5A900B20CD1 /* Shader.cpp */,
+				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
+				227393061D496DDA00A3932B /* ShaderReloader.cpp */,
+				227393071D496DDA00A3932B /* ShaderReloader.hpp */,
+				22066CB11D4BEDB2004004B6 /* Viewport.cpp */,
+				22066CB21D4BEDB2004004B6 /* Viewport.hpp */,
 			);
 			path = OpenGLTest;
 			sourceTree = "<group>";
@@ -161,6 +176,9 @@
 				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
 				22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */,
+				22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */,
+				22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */,
+				227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */,
 				22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -226,6 +244,8 @@
 				OTHER_LDFLAGS = (
 					"-lglfw3",
 					"-lglew",
+					"-lboost_filesystem",
+					"-lboost_system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -271,6 +291,8 @@
 				OTHER_LDFLAGS = (
 					"-lglfw3",
 					"-lglew",
+					"-lboost_filesystem",
+					"-lboost_system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

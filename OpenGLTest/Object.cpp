@@ -9,7 +9,7 @@
 #include "Object.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
+
 #include <iostream>
 
 void Object::setPosition(glm::vec3 newPosition)
@@ -61,7 +61,7 @@ void Object::updateModelMatrix()
         modelMatrix = parent->getModelMatrix() * modelMatrix;
     }
     
-    for(Object *child : children)
+    for(Object *child : m_children)
         child->updateModelMatrix();
 }
 
@@ -72,9 +72,15 @@ void Object::setParent(Object *newParent)
 
 void Object::addChild(Object *child)
 {
-    children.push_back(child);
+    m_children.push_back(child);
     
     child->setParent(this);
     
     child->updateModelMatrix();
+}
+
+void Object::draw(Camera *camera)
+{
+    for(Object *child : m_children)
+        child->draw(camera);
 }

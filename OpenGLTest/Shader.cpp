@@ -129,6 +129,11 @@ bool Shader::initialize()
     return true;
 }
 
+void Shader::deleteShader()
+{
+    glDeleteShader(programID);
+}
+
 void Shader::bindShader()
 {
     glUseProgram(programID);
