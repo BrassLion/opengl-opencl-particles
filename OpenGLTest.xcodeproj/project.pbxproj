@@ -13,7 +13,6 @@
 		227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 227393061D496DDA00A3932B /* ShaderReloader.cpp */; };
 		22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1150E1D43BC8600B20CD1 /* main.cpp */; };
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
-		22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22A115241D43D6E000B20CD1 /* Shaders */; };
 		22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
 		22A1152C1D44F57C00B20CD1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152A1D44F57C00B20CD1 /* Camera.cpp */; };
 		22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152D1D4527E000B20CD1 /* Object.cpp */; };
@@ -27,6 +26,7 @@
 			isEditable = 1;
 			outputFiles = (
 			);
+			script = "";
 		};
 /* End PBXBuildRule section */
 
@@ -37,7 +37,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				22A115261D43D6F000B20CD1 /* Shaders in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

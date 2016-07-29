@@ -28,6 +28,9 @@
 #include "Viewport.hpp"
 #include "Renderer.hpp"
 
+
+const std::string SRC_DIR = "/Users/Sam/Documents/Personal/OpenGLTest/OpenGLTest";
+
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -102,8 +105,8 @@ int main()
     
     Shader* triangleShader = new Shader();
     
-    triangleShader->setShader("./Shaders/triangle.vert", GL_VERTEX_SHADER);
-    triangleShader->setShader("./Shaders/triangle.frag", GL_FRAGMENT_SHADER);
+    triangleShader->setShader(SRC_DIR + "/Shaders/triangle.vert", GL_VERTEX_SHADER);
+    triangleShader->setShader(SRC_DIR + "/Shaders/triangle.frag", GL_FRAGMENT_SHADER);
     triangleShader->initialize();
     
     Mesh* triangleMesh = new Mesh();
@@ -132,7 +135,7 @@ int main()
     triangleMesh->addChild(triangleMesh2);
     rootNode->addChild(triangleMesh);
     
-    ShaderReloader::getInstance().addFileToWatch("./Shaders/triangle.frag", [&] {
+    ShaderReloader::getInstance().addFileToWatch(SRC_DIR + "/Shaders/triangle.frag", [&] {
         
         renderer->queueFunctionBeforeRender([&] {
             
