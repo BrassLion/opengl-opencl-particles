@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <sstream>
 
 // GLEW
 #define GLEW_STATIC
@@ -47,6 +48,7 @@ Camera *camera = new Camera(glm::radians(60.0f), (float)WIDTH, (float)HEIGHT, 0.
 Object* cameraContainer;
 
 int frame = 0;
+double lastTime = 0;
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -60,6 +62,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_REFRESH_RATE, 30);
     
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
@@ -88,13 +91,16 @@ int main()
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     
+    // Setup renderer.
     Renderer *renderer = new Renderer();
     
+    // Setup viewport
     Viewport *viewport = new Viewport(0, 0, width, height);
     viewport->addCamera(camera);
     
     renderer->addViewport(viewport);
     
+    // Setup scene.
     Object *rootNode = new Object();
     
     cameraContainer = new Object();
@@ -135,6 +141,7 @@ int main()
     triangleMesh->addChild(triangleMesh2);
     rootNode->addChild(triangleMesh);
     
+    // Reload shader when it's files are changed.
     ShaderReloader::getInstance()
     .addFilesToWatch([&] {
                          
@@ -153,8 +160,6 @@ int main()
     // Game loop
     while (!glfwWindowShouldClose(window))
     {
-        frame++;
-        
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
         
@@ -167,7 +172,24 @@ int main()
         renderer->draw(rootNode);
         
         // Swap the screen buffers
-        glfwSwapBuffers(window);        
+        glfwSwapBuffers(window);
+        
+        double currentTime = glfwGetTime();
+        double delta = currentTime - lastTime;
+        
+        frame++;
+        if ( delta >= 1.0 ){ // If last cout was more than 1 sec ago
+            
+            double fps = double(frame) / delta;
+            
+            std::stringstream ss;
+            ss << "OpenGLTest" << " " << "v0.1" << " [" << fps << " FPS]";
+            
+            glfwSetWindowTitle(window, ss.str().c_str());
+            
+            frame = 0;
+            lastTime = currentTime;
+        }
     }
     
     // Terminate GLFW, clearing any resources allocated by GLFW.
