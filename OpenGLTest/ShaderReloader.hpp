@@ -44,6 +44,8 @@ private:
     void initialize();
     void deinitialize();
     
+    void addFilesToWatch(std::function<void ()> callback);
+
 public:
     
     static ShaderReloader& getInstance()
@@ -55,8 +57,24 @@ public:
     
     ShaderReloader(ShaderReloader const&)  = delete;
     void operator=(ShaderReloader const&)  = delete;
-    
-    void addFileToWatch(std::string filePath, std::function<void()> callback);
+        
+    template<typename ... Args>
+	    void addFilesToWatch(std::function<void ()> callback, std::string filePath, Args ... args);
 };
+
+template<typename ... Args>
+inline void ShaderReloader::addFilesToWatch(std::function<void ()> callback, std::string filePath, Args ... args)
+{
+    File file;
+    
+    file.path = boost::filesystem::path(filePath);
+    file.last_write_time = boost::filesystem::last_write_time(file.path);
+    file.callback = callback;
+    
+    watched_files.push_back(file);
+    
+    addFilesToWatch(callback, args...);
+}
+
 
 #endif /* ShaderReloader_hpp */

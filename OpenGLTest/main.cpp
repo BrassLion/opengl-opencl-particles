@@ -135,14 +135,20 @@ int main()
     triangleMesh->addChild(triangleMesh2);
     rootNode->addChild(triangleMesh);
     
-    ShaderReloader::getInstance().addFileToWatch(SRC_DIR + "/Shaders/triangle.frag", [&] {
-        
-        renderer->queueFunctionBeforeRender([&] {
-            
-            triangleShader->deleteShader();
-            triangleShader->initialize();
-        });
-    });
+    ShaderReloader::getInstance()
+    .addFilesToWatch([&] {
+                         
+                         renderer->queueFunctionBeforeRender([&] {
+                             
+                             triangleShader->deleteShader();
+                             triangleShader->initialize();
+                         });
+                     },
+                     
+                     SRC_DIR + "/Shaders/triangle.frag",
+                     SRC_DIR + "/Shaders/triangle.vert"
+                     );
+    
     
     // Game loop
     while (!glfwWindowShouldClose(window))

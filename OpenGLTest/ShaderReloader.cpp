@@ -42,13 +42,6 @@ void ShaderReloader::deinitialize()
     monitoring_thread.detach();
 }
 
-void ShaderReloader::addFileToWatch(std::string filePath, std::function<void()> callback)
+void ShaderReloader::addFilesToWatch(std::function<void ()> callback)
 {
-    File file;
-    
-    file.path = boost::filesystem::path(filePath);
-    file.last_write_time = boost::filesystem::last_write_time(file.path);
-    file.callback = callback;
-    
-    watched_files.push_back(file);
 }
