@@ -35,6 +35,7 @@ const std::string SRC_DIR = "/Users/Sam/Documents/Personal/OpenGLTest/OpenGLTest
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -75,6 +76,8 @@ int main()
     glfwMakeContextCurrent(window);
     // Set the required callback functions
     glfwSetKeyCallback(window, key_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
@@ -84,8 +87,6 @@ int main()
         std::cout << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
-    
-    glfwSetCursorPosCallback(window, mouse_callback);
     
     // Define the viewport dimensions
     int width, height;
@@ -238,4 +239,17 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * xoffset, glm::vec3(0.0f, 1.0f, 0.0f)) );
     cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * yoffset, glm::vec3(1.0f, 0.0f, 0.0f)) );
     
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    glm::vec3 new_camera_position = camera->getPosition() + glm::vec3(0.0f, 0.0f, yoffset);
+
+    if(new_camera_position.z < 5.0f)
+        new_camera_position.z = 5.0f;
+    
+    if(new_camera_position.z > 50.0f)
+        new_camera_position.z = 50.0f;
+    
+    camera->setPosition( new_camera_position );
 }
