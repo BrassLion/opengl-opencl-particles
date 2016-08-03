@@ -10,6 +10,8 @@
 
 void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
 {
+    m_number_of_vertices = (int) indices.size();
+    
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -42,7 +44,7 @@ void Mesh::draw(Camera* camera)
     
     glBindVertexArray(VAO);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, m_number_of_vertices, GL_UNSIGNED_INT, 0);
     
     glBindVertexArray(0);
     

@@ -117,17 +117,38 @@ int main()
     triangleShader->initialize();
     
     Mesh* triangleMesh = new Mesh();
-    Mesh* triangleMesh2 = new Mesh();
     
     std::vector<GLfloat> vertices = {
-        0.5f,  0.5f, 0.0f,  // Top Right
-        0.5f, -0.5f, 0.0f,  // Bottom Right
-        -0.5f, -0.5f, 0.0f,  // Bottom Left
-        -0.5f,  0.5f, 0.0f   // Top Left
+        // front
+        -1.0, -1.0,  1.0,
+        1.0, -1.0,  1.0,
+        1.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0,
+        // back
+        -1.0, -1.0, -1.0,
+        1.0, -1.0, -1.0,
+        1.0,  1.0, -1.0,
+        -1.0,  1.0, -1.0
     };
     std::vector<GLuint> indices = {  // Note that we start from 0!
-        0, 1, 3,  // First Triangle
-        1, 2, 3   // Second Triangle
+        // front
+        0, 1, 2,
+        2, 3, 0,
+        // top
+        1, 5, 6,
+        6, 2, 1,
+        // back
+        7, 6, 5,
+        5, 4, 7,
+        // bottom
+        4, 0, 3,
+        3, 7, 4,
+        // left
+        4, 5, 1,
+        1, 0, 4,
+        // right
+        3, 2, 6,
+        6, 7, 3,
     };
     
     triangleMesh->initialize(vertices, indices);
@@ -135,11 +156,6 @@ int main()
     triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
     triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );
     
-    triangleMesh2->initialize(vertices, indices);
-    triangleMesh2->setShader(triangleShader);
-    triangleMesh2->setPosition( glm::vec3(0.0f,2.0f,0.0f) );
-    
-    triangleMesh->addChild(triangleMesh2);
     rootNode->addChild(triangleMesh);
     
     // Reload shader when it's files are changed.

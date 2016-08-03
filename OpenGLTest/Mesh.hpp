@@ -22,6 +22,9 @@ class Mesh : public Object
 {
 private:
     GLuint VBO, VAO, EBO;
+    
+    int m_number_of_vertices;
+    
     Shader* meshShader;
 
 public:
