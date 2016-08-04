@@ -156,3 +156,17 @@ void Shader::setUniform(std::string uniform, glm::mat4 value)
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setUniform(std::string uniform, glm::vec3 value)
+{
+    GLint uniformLocation = getUniformLocation(uniform);
+    
+    glUniform3fv(uniformLocation, 1, glm::value_ptr(value));
+}
+
+void Shader::setUniform(std::string uniform, glm::vec4 value)
+{
+    GLint uniformLocation = getUniformLocation(uniform);
+    
+    glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
+}
+

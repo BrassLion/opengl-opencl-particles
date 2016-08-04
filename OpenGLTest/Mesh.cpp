@@ -8,6 +8,8 @@
 
 #include "Mesh.hpp"
 
+#include <glm/gtx/string_cast.hpp>
+
 void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
 {
     m_number_of_vertices = (int) indices.size();
@@ -41,6 +43,8 @@ void Mesh::draw(Camera* camera)
 {
     meshShader->bindShader();
     meshShader->setUniform("mvpMatrix", camera->getProjectionMatrix() * camera->getViewMatrix()  * modelMatrix);
+    meshShader->setUniform("model_matrix", modelMatrix);
+    meshShader->setUniform("camera_world_position", camera->getModelMatrix() * glm::vec4(camera->getPosition(), 0.0) );
     
     glBindVertexArray(VAO);
 

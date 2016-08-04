@@ -34,6 +34,8 @@ public:
     void bindShader();
     
     void setUniform(std::string uniform, glm::mat4 value);
+    void setUniform(std::string uniform, glm::vec3 value);
+    void setUniform(std::string uniform, glm::vec4 value);
 };
 
 #endif /* Shader_hpp */

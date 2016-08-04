@@ -10,8 +10,6 @@
 
 #include "Camera.hpp"
 
-#include <glm/gtx/string_cast.hpp>
-
 glm::mat4 Camera::getProjectionMatrix()
 {
     return projection;

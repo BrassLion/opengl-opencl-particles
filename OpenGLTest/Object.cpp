@@ -9,6 +9,7 @@
 #include "Object.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include <iostream>
 
@@ -58,7 +59,7 @@ void Object::updateModelMatrix()
     
     if(parent)
     {
-        modelMatrix = parent->getModelMatrix() * modelMatrix;
+        modelMatrix = parent->getModelMatrix() * modelMatrix;        
     }
     
     for(Object *child : m_children)
