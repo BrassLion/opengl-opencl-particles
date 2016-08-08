@@ -8,8 +8,18 @@
 
 #include "Renderer.hpp"
 
+// GLFW
+#include <GLFW/glfw3.h>
+
 void Renderer::draw(Object *rootNode)
 {
+    // Render
+    // Clear the colorbuffer
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glEnable(GL_DEPTH_TEST);
+    
     for(std::function<void ()> prerender_func : m_prerender_functions) {
         
         prerender_func();
