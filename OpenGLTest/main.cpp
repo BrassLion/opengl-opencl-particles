@@ -40,13 +40,14 @@ Scene* currentScene;
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
-    std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
+    std::cout << "Starting GLFW context" << std::endl;
     // Init GLFW
     glfwInit();
     // Set all the required options for GLFW
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_REFRESH_RATE, 30);
@@ -73,6 +74,8 @@ int main()
         std::cout << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
+    
+    printf("Using OpenGL v%s\n", (char*)glGetString(GL_VERSION));
     
     currentScene = new Scene();
     
