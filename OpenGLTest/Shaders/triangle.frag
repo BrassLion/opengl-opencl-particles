@@ -1,12 +1,13 @@
 #version 330 core
 
 in vec3 fragment_world_position;
-
+in vec2 fragment_uv;
 
 uniform mat4 model_matrix;
 
 uniform vec4 camera_world_position;
 
+uniform sampler2D tex;
 
 out vec4 color;
 
@@ -41,5 +42,5 @@ void main()
     else
         color = vec4(1,1,1,1); // White otherwise
     
-//    color = vec4(normalize(camera_world_position.xyz), 1.0);
+    color = texture(tex, fragment_uv);
 }

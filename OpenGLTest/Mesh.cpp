@@ -26,8 +26,11 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), indices.data(), GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
+    
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
     
@@ -47,7 +50,7 @@ void Mesh::draw(Camera* camera)
     meshShader->setUniform("camera_world_position", camera->getModelMatrix() * glm::vec4(camera->getPosition(), 0.0) );
     
     glBindVertexArray(VAO);
-
+    
     glDrawElements(GL_TRIANGLES, m_number_of_vertices, GL_UNSIGNED_INT, 0);
     
     glBindVertexArray(0);

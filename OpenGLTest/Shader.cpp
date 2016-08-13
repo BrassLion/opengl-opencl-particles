@@ -11,25 +11,10 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include <assert.h>
-#include <fstream>
 
 #include <glm/gtc/type_ptr.hpp>
 
-/// Utility functions.
-std::string readShaderFile(std::string shaderPath)
-{
-    std::ifstream ifs(shaderPath);
-    
-    if (!ifs.is_open()) {
-        
-        throw std::invalid_argument( "File cannot be opened." );
-    }
-    
-    std::string content( (std::istreambuf_iterator<char>(ifs) ),
-                        (std::istreambuf_iterator<char>()    ) );
-        
-    return content;
-}
+#include "Utility.hpp"
 
 bool checkShaderError(GLuint shader)
 {
@@ -64,11 +49,11 @@ bool checkProgramError(GLuint program)
     return true;
 }
 
-GLuint compileShader(std::string vertexShaderPath, GLuint shaderType)
+GLuint compileShader(std::string shaderPath, GLuint shaderType)
 {
     GLuint shader = glCreateShader(shaderType);
     
-    std::string shaderSourceString = readShaderFile(vertexShaderPath);
+    std::string shaderSourceString = utility::loadFile(shaderPath);
     const char *shaderSource = shaderSourceString.c_str();
     
     glShaderSource(shader, 1, &shaderSource, NULL);

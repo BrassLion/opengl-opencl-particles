@@ -11,6 +11,8 @@
 		22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CB11D4BEDB2004004B6 /* Viewport.cpp */; };
 		227393051D49433B00A3932B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
 		227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 227393061D496DDA00A3932B /* ShaderReloader.cpp */; };
+		22787A6B1D5B7C66004BE000 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22787A6A1D5B7C66004BE000 /* OpenCL.framework */; };
+		22787A6E1D5BC34F004BE000 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22787A6C1D5BC34F004BE000 /* Utility.cpp */; };
 		22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1150E1D43BC8600B20CD1 /* main.cpp */; };
 		22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
 		22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
@@ -51,6 +53,9 @@
 		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		227393061D496DDA00A3932B /* ShaderReloader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderReloader.cpp; sourceTree = "<group>"; };
 		227393071D496DDA00A3932B /* ShaderReloader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderReloader.hpp; sourceTree = "<group>"; };
+		22787A6A1D5B7C66004BE000 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		22787A6C1D5BC34F004BE000 /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
+		22787A6D1D5BC34F004BE000 /* Utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utility.hpp; sourceTree = "<group>"; };
 		22A1150B1D43BC8600B20CD1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A1150E1D43BC8600B20CD1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		22A1151B1D43C5A900B20CD1 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
@@ -71,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22787A6B1D5B7C66004BE000 /* OpenCL.framework in Frameworks */,
 				227393051D49433B00A3932B /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +87,7 @@
 		22A114FE1D43BBAE00B20CD1 = {
 			isa = PBXGroup;
 			children = (
+				22787A6A1D5B7C66004BE000 /* OpenCL.framework */,
 				227393041D49433B00A3932B /* OpenGL.framework */,
 				22A1150D1D43BC8600B20CD1 /* OpenGLTest */,
 				22A1150C1D43BC8600B20CD1 /* Products */,
@@ -114,6 +121,8 @@
 				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
 				227393061D496DDA00A3932B /* ShaderReloader.cpp */,
 				227393071D496DDA00A3932B /* ShaderReloader.hpp */,
+				22787A6C1D5BC34F004BE000 /* Utility.cpp */,
+				22787A6D1D5BC34F004BE000 /* Utility.hpp */,
 				22066CB11D4BEDB2004004B6 /* Viewport.cpp */,
 				22066CB21D4BEDB2004004B6 /* Viewport.hpp */,
 			);
@@ -178,6 +187,7 @@
 			files = (
 				22A1152C1D44F57C00B20CD1 /* Camera.cpp in Sources */,
 				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
+				22787A6E1D5BC34F004BE000 /* Utility.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
 				22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */,
 				22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */,
