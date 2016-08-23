@@ -17,16 +17,21 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
+#include <nanogui/nanogui.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 #include <vector>
+#include <map>
 
 #include "Scene.hpp"
+#include "Scenes/ParticleScene.hpp"
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void button_callback(GLFWwindow* window, int button, int action, int modifiers);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // Window dimensions
@@ -35,7 +40,11 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 int frame = 0;
 double lastTime = 0;
 
-Scene* currentScene;
+// GUI.
+nanogui::Screen* gui_screen;
+
+std::map<std::string, Scene *> availableScenes;
+Scene *currentScene;
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -64,6 +73,7 @@ int main()
     // Set the required callback functions
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, button_callback);
     glfwSetScrollCallback(window, scroll_callback);
     
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -77,13 +87,42 @@ int main()
     
     printf("Using OpenGL v%s\n", (char*)glGetString(GL_VERSION));
     
-    currentScene = new Scene();
-    
     int width, height;
     
     glfwGetFramebufferSize(window, &width, &height);
     
-    currentScene->initialize(width, height);
+    // Init NanoGUI.
+    nanogui::init();
+    gui_screen = new nanogui::Screen();
+    gui_screen->initialize(window, true);
+    
+    nanogui::Window *gui_window = new nanogui::Window(gui_screen, "Basic widgets");
+    gui_window->setPosition(Eigen::Vector2i(20, 15));
+    gui_window->setLayout(new nanogui::GroupLayout());
+    
+    nanogui::PopupButton *scenesButton = new nanogui::PopupButton(gui_window, "Scenes");
+    nanogui::Popup *popup = scenesButton->popup();
+    popup->setLayout(new nanogui::GroupLayout());
+
+    nanogui::Button *b = new nanogui::Button(popup, "Basic scene");
+    b->setCallback([&]{
+        currentScene = new Scene(width, height);
+        currentScene->initialize();
+    });
+    
+    b = new nanogui::Button(popup, "OpenCL scene");
+    b->setCallback([&]{
+        currentScene = new ParticleScene(width, height);
+        currentScene->initialize();
+    });
+
+    
+    
+    gui_screen->performLayout();
+    
+    currentScene = new ParticleScene(width, height);
+    
+    currentScene->initialize();
     
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -93,6 +132,10 @@ int main()
         
         // Draw our first triangle
         currentScene->draw();
+        
+        // Draw GUI.
+        gui_screen->drawContents();
+        gui_screen->drawWidgets();
         
         // Swap the screen buffers
         glfwSwapBuffers(window);
@@ -134,10 +177,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    gui_screen->cursorPosCallbackEvent(xpos, ypos);
+    
     currentScene->mouse_callback(xpos, ypos);
+}
+
+void button_callback(GLFWwindow* window, int button, int action, int modifiers)
+{
+    gui_screen->mouseButtonCallbackEvent(button, action, modifiers);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    gui_screen->scrollCallbackEvent(xoffset, yoffset);
+    
     currentScene->scroll_callback(xoffset, yoffset);
 }
