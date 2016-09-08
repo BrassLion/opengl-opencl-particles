@@ -20,18 +20,11 @@ class ShaderReloader
 {
 private:
     
-    ShaderReloader() {
-        
-        initialize();
-    };
-    
-    ~ShaderReloader() {
-    
-        deinitialize();
-    };
-    
     std::thread monitoring_thread;
     bool is_running;
+    std::condition_variable thread_conditional;
+    std::mutex thread_mutex;
+    std::timed_mutex deinit_mutex;
     
     struct File {
         boost::filesystem::path path;
@@ -39,24 +32,26 @@ private:
         std::function<void()> callback;
     };
     
-    std::vector<File> watched_files;
+    std::vector<std::shared_ptr<File>> watched_files;
     
     void initialize();
     void deinitialize();
+    
+    void pollFiles();
     
     void addFilesToWatch(std::function<void ()> callback);
 
 public:
     
-    static ShaderReloader& getInstance()
-    {
-        static ShaderReloader instance;
+    ShaderReloader() {
         
-        return instance;
-    }
+        initialize();
+    };
     
-    ShaderReloader(ShaderReloader const&)  = delete;
-    void operator=(ShaderReloader const&)  = delete;
+    ~ShaderReloader() {
+        
+        deinitialize();
+    };
         
     template<typename ... Args>
 	    void addFilesToWatch(std::function<void ()> callback, std::string filePath, Args ... args);
@@ -65,11 +60,11 @@ public:
 template<typename ... Args>
 inline void ShaderReloader::addFilesToWatch(std::function<void ()> callback, std::string filePath, Args ... args)
 {
-    File file;
+    std::shared_ptr<File> file(new File());
     
-    file.path = boost::filesystem::path(filePath);
-    file.last_write_time = boost::filesystem::last_write_time(file.path);
-    file.callback = callback;
+    file->path = boost::filesystem::path(filePath);
+    file->last_write_time = boost::filesystem::last_write_time(file->path);
+    file->callback = callback;
     
     watched_files.push_back(file);
     

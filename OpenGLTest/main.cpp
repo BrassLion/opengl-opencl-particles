@@ -43,8 +43,7 @@ double lastTime = 0;
 // GUI.
 nanogui::Screen* gui_screen;
 
-std::map<std::string, Scene *> availableScenes;
-Scene *currentScene;
+std::unique_ptr<Scene> currentScene;
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -106,22 +105,19 @@ int main()
 
     nanogui::Button *b = new nanogui::Button(popup, "Basic scene");
     b->setCallback([&]{
-        currentScene = new Scene(width, height);
+        currentScene = std::unique_ptr<Scene>(new Scene(width, height));
         currentScene->initialize();
     });
     
     b = new nanogui::Button(popup, "OpenCL scene");
     b->setCallback([&]{
-        currentScene = new ParticleScene(width, height);
+        currentScene = std::unique_ptr<Scene>(new ParticleScene(width, height));
         currentScene->initialize();
     });
-
-    
     
     gui_screen->performLayout();
     
-    currentScene = new ParticleScene(width, height);
-    
+    currentScene = std::unique_ptr<Scene>(new Scene(width, height));
     currentScene->initialize();
     
     // Game loop
@@ -151,6 +147,7 @@ int main()
             std::stringstream ss;
             ss << "OpenGLTest" << " " << "v0.1" << " [" << fps << " FPS]";
             
+            // This causes a memory leak, retention of CFStrings. Seems to be Apple side. Small enough to ignore.
             glfwSetWindowTitle(window, ss.str().c_str());
             
             frame = 0;

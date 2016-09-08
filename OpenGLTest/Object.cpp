@@ -57,31 +57,31 @@ void Object::updateModelMatrix()
     modelMatrix = modelMatrix * glm::mat4_cast(orientation);
     modelMatrix = glm::scale(modelMatrix, scale);
     
-    if(parent)
+    if(!parent.expired())
     {
-        modelMatrix = parent->getModelMatrix() * modelMatrix;        
+        modelMatrix = parent.lock()->getModelMatrix() * modelMatrix;
     }
     
-    for(Object *child : m_children)
+    for(std::shared_ptr<Object> child : m_children)
         child->updateModelMatrix();
 }
 
-void Object::setParent(Object *newParent)
+void Object::setParent(std::shared_ptr<Object> newParent)
 {
     parent = newParent;
 }
 
-void Object::addChild(Object *child)
+void Object::addChild(std::shared_ptr<Object> child)
 {
     m_children.push_back(child);
     
-    child->setParent(this);
+    child->setParent(shared_from_this());
     
     child->updateModelMatrix();
 }
 
-void Object::draw(Camera *camera)
+void Object::draw(std::shared_ptr<Camera> camera)
 {
-    for(Object *child : m_children)
+    for(std::shared_ptr<Object> child : m_children)
         child->draw(camera);
 }

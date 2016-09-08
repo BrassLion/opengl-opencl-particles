@@ -37,12 +37,12 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices
     glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 }
 
-void Mesh::setShader(Shader* shader)
+void Mesh::setShader(std::shared_ptr<Shader> shader)
 {
     meshShader = shader;
 }
 
-void Mesh::draw(Camera* camera)
+void Mesh::draw(std::shared_ptr<Camera> camera)
 {
     meshShader->bindShader();
     meshShader->setUniform("mvpMatrix", camera->getProjectionMatrix() * camera->getViewMatrix()  * modelMatrix);
@@ -56,4 +56,11 @@ void Mesh::draw(Camera* camera)
     glBindVertexArray(0);
     
     Object::draw(camera);
+}
+
+void Mesh::deleteMesh()
+{
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 }

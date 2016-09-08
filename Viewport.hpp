@@ -25,7 +25,7 @@ private:
     int m_width;
     int m_height;
     
-    std::vector<Camera *> m_cameras;
+    std::vector<std::shared_ptr<Camera>> m_cameras;
     
 public:
     
@@ -37,8 +37,8 @@ public:
         m_height = height;
     }
     
-    void draw(Object *rootNode);
-    void addCamera(Camera *camera);
+    void draw(std::shared_ptr<Object> rootNode);
+    void addCamera(std::shared_ptr<Camera> camera);
 };
 
 #endif /* Viewport_hpp */

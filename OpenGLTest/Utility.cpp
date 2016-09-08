@@ -13,7 +13,7 @@ namespace utility
     std::string loadFile(std::string filePath)
     {
         std::ifstream ifs(filePath);
-        
+                
         if (!ifs.is_open()) {
             
             throw std::invalid_argument( "File cannot be opened." );

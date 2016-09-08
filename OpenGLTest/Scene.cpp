@@ -7,7 +7,6 @@
 //
 
 #include "Scene.hpp"
-#include "ShaderReloader.hpp"
 #include "Shader.hpp"
 #include "Mesh.hpp"
 #include "Camera.hpp"
@@ -20,13 +19,13 @@
 void Scene::initialize()
 {
     // Setup scene.    
-    Shader* triangleShader = new Shader();
+    std::shared_ptr<Shader> triangleShader(new Shader());
     
     triangleShader->setShader(SRC_DIR + "/Shaders/triangle.vert", GL_VERTEX_SHADER);
     triangleShader->setShader(SRC_DIR + "/Shaders/triangle.frag", GL_FRAGMENT_SHADER);
     triangleShader->initialize();
     
-    Mesh* triangleMesh = new Mesh();
+    std::shared_ptr<Mesh> triangleMesh(new Mesh());
     
     std::vector<GLfloat> vertices = {
         // front
@@ -84,19 +83,18 @@ void Scene::initialize()
     rootNode->addChild(triangleMesh);
     
     // Reload shader when it's files are changed.
-    ShaderReloader::getInstance()
-    .addFilesToWatch([&] {
+    shaderReloader = std::unique_ptr<ShaderReloader>( new ShaderReloader() );
+    
+    shaderReloader->addFilesToWatch([=]{
         
-        renderer->queueFunctionBeforeRender([&] {
-            
+        renderer->queueFunctionBeforeRender([triangleShader] {
             triangleShader->deleteShader();
             triangleShader->initialize();
         });
     },
-                     
-                     SRC_DIR + "/Shaders/triangle.frag",
-                     SRC_DIR + "/Shaders/triangle.vert"
-                     );
+                                    SRC_DIR + "/Shaders/triangle.frag",
+                                    SRC_DIR + "/Shaders/triangle.vert"
+                                    );
 }
 
 void Scene::draw()

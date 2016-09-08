@@ -25,13 +25,19 @@ private:
     
     int m_number_of_vertices;
     
-    Shader* meshShader;
+    std::shared_ptr<Shader> meshShader;
 
 public:
     
+    ~Mesh() {
+        deleteMesh();
+    }
+    
     void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
-    void setShader(Shader* shader);
-    void draw(Camera* camera);
+    void setShader(std::shared_ptr<Shader> shader);
+    void draw(std::shared_ptr<Camera> camera);
+    
+    void deleteMesh();
 };
 
 #endif /* Mesh_hpp */

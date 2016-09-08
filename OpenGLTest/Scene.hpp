@@ -13,16 +13,18 @@
 #include <string>
 
 #include "Renderer.hpp"
+#include "ShaderReloader.hpp"
 
 class Scene {
     
 private:
     
-    Camera* camera;
-    Object* cameraContainer;
+    std::shared_ptr<Camera> camera;
+    std::shared_ptr<Object> cameraContainer;
     
-    Renderer *renderer;
-    Object* rootNode;
+    std::unique_ptr<ShaderReloader> shaderReloader;
+    std::unique_ptr<Renderer> renderer;
+    std::shared_ptr<Object> rootNode;
     
     // Mouse variables.
     float lastX = 400, lastY = 300;
@@ -38,24 +40,26 @@ public:
         
         SRC_DIR = "/Users/Sam/Documents/Personal/OpenGLTest/OpenGLTest";
         
-        renderer = new Renderer();
-        rootNode = new Object();
+        renderer = std::unique_ptr<Renderer>(new Renderer());
+        rootNode = std::shared_ptr<Object>(new Object());
         
         // Camera variables.
-        camera = new Camera(glm::radians(60.0f), (float)width, (float)height, 0.1f, 100.0f);
+        camera = std::shared_ptr<Camera>(new Camera(glm::radians(60.0f), (float)width, (float)height, 0.1f, 100.0f));
         
         // Setup viewport
-        Viewport *viewport = new Viewport(0, 0, width, height);
+        std::shared_ptr<Viewport> viewport(new Viewport(0, 0, width, height));
         viewport->addCamera(camera);
         
         renderer->addViewport(viewport);
         
-        cameraContainer = new Object();
+        cameraContainer = std::shared_ptr<Object>(new Object());
         
         cameraContainer->addChild(camera);
         
         camera->setPosition(glm::vec3(0.0f,0.0f,10.0f));
     }
+    
+    ~Scene() {};
     
     virtual void initialize();
     void draw();

@@ -28,6 +28,10 @@ private:
     
 public:
     
+    ~Shader() {
+        deleteShader();
+    }
+    
     bool initialize();
     void deleteShader();
     void setShader(std::string shaderPath,  GLuint shaderType);

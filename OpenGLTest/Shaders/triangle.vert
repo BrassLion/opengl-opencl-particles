@@ -14,7 +14,7 @@ out vec2 fragment_uv;
 void main()
 {
     fragment_world_position = vec3(model_matrix * vec4(position, 0.0));
-    fragment_uv = uv;
-    
-    gl_Position = mvpMatrix * vec4(position, 1.0);
+    fragment_uv = uv; 
+ 
+    gl_Position = mvpMatrix * vec4(position, 1.0); 
 }

@@ -18,7 +18,7 @@
 
 class Camera;
 
-class Object
+class Object : public std::enable_shared_from_this<Object>
 {
 protected:
     
@@ -28,8 +28,8 @@ protected:
     
     glm::mat4 modelMatrix;
     
-    Object *parent = NULL;
-    std::vector<Object *> m_children;
+    std::weak_ptr<Object> parent;
+    std::vector<std::shared_ptr<Object>> m_children;
     
     virtual void updateModelMatrix();
     
@@ -45,11 +45,11 @@ public:
     
     glm::mat4 getModelMatrix();
     
-    void addChild(Object* child);
+    void addChild(std::shared_ptr<Object> child);
     
-    void setParent(Object *parent);
+    void setParent(std::shared_ptr<Object> parent);
     
-    virtual void draw(Camera *camera);
+    virtual void draw(std::shared_ptr<Camera> camera);
 };
 
 #endif /* Object_hpp */

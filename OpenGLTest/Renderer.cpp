@@ -11,7 +11,7 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
-void Renderer::draw(Object *rootNode)
+void Renderer::draw(std::shared_ptr<Object> rootNode)
 {
     // Render
     // Clear the colorbuffer
@@ -27,13 +27,13 @@ void Renderer::draw(Object *rootNode)
     
     m_prerender_functions.clear();
     
-    for(Viewport *viewport : m_viewports) {
+    for(std::shared_ptr<Viewport> viewport : m_viewports) {
         
         viewport->draw(rootNode);
     }
 }
 
-void Renderer::addViewport(Viewport *viewport)
+void Renderer::addViewport(std::shared_ptr<Viewport> viewport)
 {
     m_viewports.push_back(viewport);
 }

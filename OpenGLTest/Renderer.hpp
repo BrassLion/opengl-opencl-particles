@@ -21,12 +21,12 @@ class Renderer
 {
 private:
     
-    std::vector<Viewport *> m_viewports;
+    std::vector<std::shared_ptr<Viewport>> m_viewports;
     std::vector<std::function<void ()>> m_prerender_functions;
 public:
     
-    void draw(Object *rootNode);
-    void addViewport(Viewport *viewport);
+    void draw(std::shared_ptr<Object> rootNode);
+    void addViewport(std::shared_ptr<Viewport> viewport);
     void queueFunctionBeforeRender(std::function<void()> func);
 };
 
