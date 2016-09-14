@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2201E2A71D860BC100D1B364 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2201E2A51D860BC100D1B364 /* Material.cpp */; };
+		2201E2AC1D874D2100D1B364 /* ParticleMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2201E2AA1D874D2100D1B364 /* ParticleMaterial.cpp */; };
 		22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CAE1D4BED49004004B6 /* Renderer.cpp */; };
 		22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CB11D4BEDB2004004B6 /* Viewport.cpp */; };
 		223AE47B1D6A5F520071002A /* ParticleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 223AE4791D6A5F4A0071002A /* ParticleScene.cpp */; };
@@ -47,6 +49,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2201E2A51D860BC100D1B364 /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		2201E2A61D860BC100D1B364 /* Material.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Material.hpp; sourceTree = "<group>"; };
+		2201E2AA1D874D2100D1B364 /* ParticleMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleMaterial.cpp; sourceTree = "<group>"; };
+		2201E2AB1D874D2100D1B364 /* ParticleMaterial.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParticleMaterial.hpp; sourceTree = "<group>"; };
 		22066CAE1D4BED49004004B6 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		22066CAF1D4BED49004004B6 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		22066CB11D4BEDB2004004B6 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Viewport.cpp; path = ../Viewport.cpp; sourceTree = "<group>"; };
@@ -120,12 +126,16 @@
 				22A1150E1D43BC8600B20CD1 /* main.cpp */,
 				22A1152A1D44F57C00B20CD1 /* Camera.cpp */,
 				22A1152B1D44F57C00B20CD1 /* Camera.hpp */,
+				2201E2A51D860BC100D1B364 /* Material.cpp */,
+				2201E2A61D860BC100D1B364 /* Material.hpp */,
 				22A115271D44E39300B20CD1 /* Mesh.cpp */,
 				22A115281D44E39300B20CD1 /* Mesh.hpp */,
 				223AE4781D6A5F4A0071002A /* Scenes */,
 				22A115241D43D6E000B20CD1 /* Shaders */,
 				22A1152D1D4527E000B20CD1 /* Object.cpp */,
 				22A1152E1D4527E000B20CD1 /* Object.hpp */,
+				2201E2AA1D874D2100D1B364 /* ParticleMaterial.cpp */,
+				2201E2AB1D874D2100D1B364 /* ParticleMaterial.hpp */,
 				22066CAE1D4BED49004004B6 /* Renderer.cpp */,
 				22066CAF1D4BED49004004B6 /* Renderer.hpp */,
 				22FE6D121D58EACE0094F3D9 /* Scene.cpp */,
@@ -202,10 +212,12 @@
 				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
 				22787A6E1D5BC34F004BE000 /* Utility.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
+				2201E2AC1D874D2100D1B364 /* ParticleMaterial.cpp in Sources */,
 				22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */,
 				22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */,
 				22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */,
 				223AE47B1D6A5F520071002A /* ParticleScene.cpp in Sources */,
+				2201E2A71D860BC100D1B364 /* Material.cpp in Sources */,
 				22FE6D141D58EACE0094F3D9 /* Scene.cpp in Sources */,
 				227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */,
 				22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */,

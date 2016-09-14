@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "Shader.hpp"
 #include "Mesh.hpp"
+#include "Material.hpp"
 #include "Camera.hpp"
 #include "Viewport.hpp"
 
@@ -25,33 +26,35 @@ void Scene::initialize()
     triangleShader->setShader(SRC_DIR + "/Shaders/triangle.frag", GL_FRAGMENT_SHADER);
     triangleShader->initialize();
     
+    std::shared_ptr<Material> triangleMaterial( new Material(triangleShader) );
+    
     std::shared_ptr<Mesh> triangleMesh(new Mesh());
     
     std::vector<GLfloat> vertices = {
         // front
-        -1.0, -1.0,  1.0,
+        -1.0, -1.0,  1.0, 1.0,
         0.0, 0.0,
         
-        1.0, -1.0,  1.0,
+        1.0, -1.0,  1.0, 1.0,
         1.0, 0.0,
         
-        1.0,  1.0,  1.0,
+        1.0,  1.0,  1.0, 1.0,
         1.0, 1.0,
         
-        -1.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0, 1.0,
         0.0, 1.0,
         
         // back
-        -1.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0, 1.0,
         0.0, 0.0,
         
-        1.0, -1.0, -1.0,
+        1.0, -1.0, -1.0, 1.0,
         1.0, 0.0,
         
-        1.0,  1.0, -1.0,
+        1.0,  1.0, -1.0, 1.0,
         1.0, 1.0,
         
-        -1.0,  1.0, -1.0,
+        -1.0,  1.0, -1.0, 1.0,
         0.0, 1.0
     };
     std::vector<GLuint> indices = {  // Note that we start from 0!
@@ -76,7 +79,7 @@ void Scene::initialize()
     };
     
     triangleMesh->initialize(vertices, indices);
-    triangleMesh->setShader(triangleShader);
+    triangleMesh->setMaterial(triangleMaterial);
     triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
     triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );
     

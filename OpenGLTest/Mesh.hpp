@@ -15,7 +15,7 @@
 #include <GL/glew.h>
 
 #include "Object.hpp"
-#include "Shader.hpp"
+#include "Material.hpp"
 #include "Camera.hpp"
 
 class Mesh : public Object
@@ -23,18 +23,29 @@ class Mesh : public Object
 private:
     GLuint VBO, VAO, EBO;
     
-    int m_number_of_vertices;
+    GLenum m_rendering_mode;
     
-    std::shared_ptr<Shader> meshShader;
+    unsigned int m_number_of_vertices;
+    
+    std::shared_ptr<Material> m_material;
 
 public:
+    
+    Mesh() {
+        m_rendering_mode = GL_TRIANGLES;
+        
+        EBO = 0;
+    }
     
     ~Mesh() {
         deleteMesh();
     }
     
     void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
-    void setShader(std::shared_ptr<Shader> shader);
+    void initialize(std::vector<GLfloat> vertices);
+    void setMaterial(std::shared_ptr<Material> material);
+    void setRenderingMode(GLenum rendering_mode);
+    GLuint getVertexBufferObject();
     void draw(std::shared_ptr<Camera> camera);
     
     void deleteMesh();

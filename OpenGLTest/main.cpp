@@ -117,7 +117,7 @@ int main()
     
     gui_screen->performLayout();
     
-    currentScene = std::unique_ptr<Scene>(new Scene(width, height));
+    currentScene = std::unique_ptr<ParticleScene>(new ParticleScene(width, height));
     currentScene->initialize();
     
     // Game loop

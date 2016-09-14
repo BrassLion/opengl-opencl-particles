@@ -6,15 +6,16 @@
 //
 //
 
-#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 
-#include <OpenCL/OpenCL.h>
 #include <OpenGL/OpenGL.h>
 
 #include "ParticleScene.hpp"
 #include "Utility.hpp"
+#include "Mesh.hpp"
+#include "ParticleMaterial.hpp"
 
-void ParticleScene::initialize_opencl()
+void ParticleScene::initialize_opencl(GLuint particleVBO)
 {
     cl_int cl_error;
     
@@ -63,10 +64,8 @@ void ParticleScene::initialize_opencl()
     printf("OpenCL context creation error: %u\n", cl_error);
     
     // Set up OpenCL command queue.
-    
-    cl_command_queue cl_cmd_queue;
-    
-    cl_cmd_queue = clCreateCommandQueue(cl_gl_context, cl_device, 0, &cl_error);
+        
+    m_cl_cmd_queue = clCreateCommandQueue(cl_gl_context, cl_device, 0, &cl_error);
     
     printf("OpenCL command queue creation error: %u\n", cl_error);
     
@@ -93,49 +92,95 @@ void ParticleScene::initialize_opencl()
     printf("OpenCL program build log: %s\n", info_string);
     
     // Create OpenCL kernel.
-    
-    cl_kernel cl_krnl;
-    
-    cl_krnl = clCreateKernel(cl_prgm, "texture_red", &cl_error);
+        
+    m_cl_krnl = clCreateKernel(cl_prgm, "offset_test", &cl_error);
     
     printf("OpenCL kernel creation error: %u\n", cl_error);
     
     // Create OpenGL texture and add to OpenCL.
     
-    GLuint texture;
+//    GLuint texture;
+//    
+//    glGenTextures(1, &texture);
+//    glBindTexture(GL_TEXTURE_2D, texture);
+//    
+//    // Black/white checkerboard
+//    float pixels[] = {
+//        0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+//        1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
+//    };
+//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
+//    
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    m_cl_particle_buffer = clCreateFromGLBuffer(cl_gl_context, CL_MEM_READ_WRITE, particleVBO, &cl_error);
+}
+
+void ParticleScene::run_opencl()
+{
+    cl_int cl_error;
     
-    // Black/white checkerboard
-    float pixels[] = {
-        0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
-    };
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
-    cl_mem texture_cl;
-    
-    texture_cl = clCreateFromGLTexture(cl_gl_context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture, &cl_error);
-    
-    glFinish();
-    
-    size_t global_work_size[] = {2, 2};
-    
-    cl_error = clEnqueueAcquireGLObjects(cl_cmd_queue, 1, &texture_cl, NULL, NULL, NULL);
-    cl_error = clSetKernelArg(cl_krnl, 0, sizeof(texture_cl), &texture_cl);
-    cl_error = clEnqueueNDRangeKernel(cl_cmd_queue, cl_krnl, 2, NULL, global_work_size, NULL, 0, 0, 0);
-    cl_error = clEnqueueReleaseGLObjects(cl_cmd_queue, 1, &texture_cl, NULL, NULL, NULL);
-    
-    clFinish(cl_cmd_queue);
+    size_t global_work_size[] = {2, 1};
+
+    cl_error = clEnqueueAcquireGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
+
+    cl_error = clSetKernelArg(m_cl_krnl, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer);
+
+    cl_error = clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl, 2, NULL, global_work_size, NULL, 0, 0, 0);
+
+    cl_error = clEnqueueReleaseGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
+
+    clFinish(m_cl_cmd_queue);
 }
 
 void ParticleScene::initialize()
 {
-    printf("Test");
+    std::shared_ptr<Shader> particleShader( new Shader() );
+    
+    particleShader->setShader(SRC_DIR + "/Shaders/particle.vert", GL_VERTEX_SHADER);
+    particleShader->setShader(SRC_DIR + "/Shaders/particle.frag", GL_FRAGMENT_SHADER);
+    
+    particleShader->initialize();
+    
+    std::shared_ptr<ParticleMaterial> particleMaterial( new ParticleMaterial(particleShader) );
+    
+    std::vector<GLfloat> vertices;
+    
+    vertices.push_back(1.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+    
+    vertices.push_back(0.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(1.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+    
+    std::shared_ptr<Mesh> particleMesh( new Mesh() );
+    
+    particleMesh->initialize(vertices);
+    particleMesh->setRenderingMode(GL_POINTS);
+    particleMesh->setMaterial(particleMaterial);
+    
+    rootNode->addChild(particleMesh);
+    
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+    
+    initialize_opencl(particleMesh->getVertexBufferObject());
+}
+
+void ParticleScene::draw()
+{
+    Scene::draw();
+    
+    ParticleScene::run_opencl();
+    
+    glFinish();
 }

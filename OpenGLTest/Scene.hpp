@@ -24,7 +24,6 @@ private:
     
     std::unique_ptr<ShaderReloader> shaderReloader;
     std::unique_ptr<Renderer> renderer;
-    std::shared_ptr<Object> rootNode;
     
     // Mouse variables.
     float lastX = 400, lastY = 300;
@@ -33,6 +32,8 @@ private:
 protected:
     
     std::string SRC_DIR;
+    
+    std::shared_ptr<Object> rootNode;
 
 public:
     
@@ -62,7 +63,7 @@ public:
     ~Scene() {};
     
     virtual void initialize();
-    void draw();
+    virtual void draw();
     void deinitialize();
     
     void key_callback(int key, int action);
