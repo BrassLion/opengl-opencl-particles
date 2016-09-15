@@ -23,9 +23,6 @@ private:
     std::shared_ptr<Camera> camera;
     std::shared_ptr<Object> cameraContainer;
     
-    std::unique_ptr<ShaderReloader> shaderReloader;
-    std::unique_ptr<Renderer> renderer;
-    
     // Mouse variables.
     float lastX = 400, lastY = 300;
     bool firstMouse = true;
@@ -34,6 +31,8 @@ protected:
     
     std::string SRC_DIR;
     
+    std::unique_ptr<ShaderReloader> shaderReloader;
+    std::unique_ptr<Renderer> renderer;
     std::shared_ptr<Object> rootNode;
 
 public:
@@ -46,7 +45,7 @@ public:
         rootNode = std::shared_ptr<Object>(new Object());
         
         // Camera variables.
-        camera = std::shared_ptr<Camera>(new Camera(glm::radians(60.0f), (float)width, (float)height, 0.1f, 100.0f));
+        camera = std::shared_ptr<Camera>(new Camera(glm::radians(60.0f), (float)width, (float)height, 0.1f, 1000.0f));
         
         // Setup viewport
         std::shared_ptr<Viewport> viewport(new Viewport(0, 0, width, height));

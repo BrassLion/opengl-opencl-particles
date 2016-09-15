@@ -133,8 +133,8 @@ void Scene::scroll_callback(double xoffset, double yoffset)
     if(new_camera_position.z < 5.0f)
         new_camera_position.z = 5.0f;
     
-    if(new_camera_position.z > 50.0f)
-        new_camera_position.z = 50.0f;
+    if(new_camera_position.z > 200.0f)
+        new_camera_position.z = 200.0f;
     
     camera->setPosition( new_camera_position );
 }
