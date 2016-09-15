@@ -34,18 +34,19 @@
 
 struct __attribute__ ((packed)) Particle {
     float4 pos;
-    float2 col;
+    float4 vel;
 };
 
 __kernel void offset_test(__global struct Particle* particles)
 {
-    int x = get_global_id(0);
-    int y = get_global_id(1);
-    int w = get_global_size(0)-1;
-    int h = get_global_size(1)-1;
+    unsigned int x = get_global_id(0);
+    unsigned int y = get_global_id(1);
+    unsigned int w = get_global_size(0)-1;
+    unsigned int h = get_global_size(1)-1;
     
-//    particles[x + y * w].x += 0.01f;
-    particles[x + y * w].pos += (float4)(0.01f, 0.0f, 0.0f, 0.0f);
-    particles[x + y * w].col = (float2)(0.0f, 1.0f);
+    unsigned int i = x + y * w;
+    
+//    particles[i].pos += 0.01f;
+    particles[i].pos.xyz += particles[i].vel.xyz * 0.01f;
 //    uv[0] = (float2)(1.2f, 3.4f);
 }

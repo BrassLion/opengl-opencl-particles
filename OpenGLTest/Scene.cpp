@@ -17,7 +17,7 @@
 
 #include <OpenGL/OpenGL.h>
 
-void Scene::initialize()
+void Scene::initialize(nanogui::Screen *gui_screen)
 {
     // Setup scene.    
     std::shared_ptr<Shader> triangleShader(new Shader());
@@ -78,7 +78,9 @@ void Scene::initialize()
         6, 7, 3,
     };
     
-    triangleMesh->initialize(vertices, indices);
+    std::vector<unsigned int> attributes = {4, 2};
+    
+    triangleMesh->initialize(vertices, attributes, indices);
     triangleMesh->setMaterial(triangleMaterial);
     triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
     triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );

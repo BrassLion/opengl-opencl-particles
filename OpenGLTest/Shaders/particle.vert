@@ -1,7 +1,7 @@
 #version 330 core
 
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec2 uv;
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec4 velocity;
 
 uniform mat4 mvpMatrix;
 uniform mat4 model_matrix;
@@ -9,13 +9,13 @@ uniform mat4 model_matrix;
 uniform vec4 camera_world_position;
 
 out vec3 fragment_world_position;
-out vec2 fragment_uv;
+out vec3 fragment_velocity;
 
 void main()
 {
-    fragment_world_position = vec3(model_matrix * vec4(position, 0.0));
-    fragment_uv = uv;
+    fragment_world_position = vec3(model_matrix * position);
+    fragment_velocity = velocity.xyz;
     
-    gl_Position = mvpMatrix * vec4(position, 1.0);
-    gl_PointSize = 20.0;
+    gl_Position = mvpMatrix * position;
+    gl_PointSize = 5.0;
 }

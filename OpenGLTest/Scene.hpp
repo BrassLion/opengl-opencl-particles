@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <nanogui/nanogui.h>
 
 #include "Renderer.hpp"
 #include "ShaderReloader.hpp"
@@ -62,7 +63,7 @@ public:
     
     ~Scene() {};
     
-    virtual void initialize();
+    virtual void initialize(nanogui::Screen *gui_screen);
     virtual void draw();
     void deinitialize();
     

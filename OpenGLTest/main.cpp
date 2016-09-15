@@ -106,19 +106,19 @@ int main()
     nanogui::Button *b = new nanogui::Button(popup, "Basic scene");
     b->setCallback([&]{
         currentScene = std::unique_ptr<Scene>(new Scene(width, height));
-        currentScene->initialize();
+        currentScene->initialize(gui_screen);
     });
     
     b = new nanogui::Button(popup, "OpenCL scene");
     b->setCallback([&]{
         currentScene = std::unique_ptr<Scene>(new ParticleScene(width, height));
-        currentScene->initialize();
+        currentScene->initialize(gui_screen);
     });
     
-    gui_screen->performLayout();
-    
     currentScene = std::unique_ptr<ParticleScene>(new ParticleScene(width, height));
-    currentScene->initialize();
+    currentScene->initialize(gui_screen);
+    
+    gui_screen->performLayout();
     
     // Game loop
     while (!glfwWindowShouldClose(window))
