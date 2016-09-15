@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>OpenGLTestCases.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>22A1150A1D43BC8600B20CD1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>22B422341D8B5A4300FDC2F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
