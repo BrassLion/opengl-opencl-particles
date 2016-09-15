@@ -41,8 +41,8 @@ public:
         deleteMesh();
     }
     
-    void initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
-    void initialize(std::vector<GLfloat> vertices);
+    void initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes, std::vector<GLuint> indices);
+    void initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes);
     void setMaterial(std::shared_ptr<Material> material);
     void setRenderingMode(GLenum rendering_mode);
     GLuint getVertexBufferObject();

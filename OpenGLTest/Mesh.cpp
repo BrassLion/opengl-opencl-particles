@@ -10,9 +10,9 @@
 
 #include <glm/gtx/string_cast.hpp>
 
-void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices)
+void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes, std::vector<GLuint> indices)
 {
-    this->initialize(vertices);
+    this->initialize(vertices, attributes);
     
     glGenBuffers(1, &EBO);
     
@@ -26,7 +26,7 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<GLuint> indices
     m_number_of_vertices = (unsigned int)indices.size();
 }
 
-void Mesh::initialize(std::vector<GLfloat> vertices)
+void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes)
 {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -37,19 +37,26 @@ void Mesh::initialize(std::vector<GLfloat> vertices)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
     
-    // Position.
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-    glEnableVertexAttribArray(0);
+    // Assign vertex attributes.
+    unsigned int total_number_of_attributes = 0;
+    unsigned int current_attribute_offset = 0;
     
-    // UV coordinates.
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
+    std::for_each(attributes.begin(), attributes.end(), [&] (unsigned int n) { total_number_of_attributes += n; } );
+    
+    for (unsigned int i = 0; i < attributes.size(); i++) {
+        
+        glVertexAttribPointer(i, attributes[i], GL_FLOAT, GL_FALSE, total_number_of_attributes * sizeof(GLfloat), (GLvoid*)(current_attribute_offset * sizeof(GLfloat)));
+        glEnableVertexAttribArray(i);
+        
+        current_attribute_offset += attributes[i];
+    }
+    // Position.
     
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
     
     glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
     
-    m_number_of_vertices = (unsigned int)vertices.size() / 6;
+    m_number_of_vertices = (unsigned int)vertices.size() / total_number_of_attributes;
 }
 
 void Mesh::setMaterial(std::shared_ptr<Material> material)
