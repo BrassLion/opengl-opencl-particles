@@ -16,7 +16,7 @@ namespace utility
         
         if (!ifs.is_open()) {
             
-            throw std::invalid_argument( "File \"%s\" cannot be opened." );
+            throw std::invalid_argument( "File cannot be opened." );
         }
         
         std::string content( (std::istreambuf_iterator<char>(ifs) ),
