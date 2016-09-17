@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
-               BuildableName = "OpenGLTest"
-               BlueprintName = "OpenGLTest"
-               ReferencedContainer = "container:OpenGLTest.xcodeproj">
+               BuildableName = "opencl-opengl-examples"
+               BlueprintName = "opencl-opengl-examples"
+               ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-examples"
+            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -46,7 +46,8 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
-      useCustomWorkingDirectory = "NO"
+      useCustomWorkingDirectory = "YES"
+      customWorkingDirectory = "$(PROJECT_DIR)/opencl-opengl-examples"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -56,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-examples"
+            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-examples"
+            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

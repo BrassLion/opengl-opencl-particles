@@ -28,9 +28,7 @@ private:
     bool firstMouse = true;
     
 protected:
-    
-    std::string SRC_DIR;
-    
+        
     std::unique_ptr<ShaderReloader> shaderReloader;
     std::unique_ptr<Renderer> renderer;
     std::shared_ptr<Object> rootNode;
@@ -38,9 +36,7 @@ protected:
 public:
     
     Scene(int width, int height) {
-        
-        SRC_DIR = "/Users/Sam/Documents/Personal/OpenGLTest/OpenGLTest";
-        
+                
         renderer = std::unique_ptr<Renderer>(new Renderer());
         rootNode = std::shared_ptr<Object>(new Object());
         

@@ -72,7 +72,7 @@ void ParticleScene::initialize_opencl()
     
     cl_program cl_prgm;
     
-    std::string program_source = utility::loadFile(SRC_DIR + "/Shaders/kerneltest.cl");
+    std::string program_source = utility::loadFile("./Shaders/kerneltest.cl");
     const char* program_source_char = program_source.c_str();
     size_t program_length = strlen(program_source_char);
     
@@ -140,8 +140,8 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
 {
     std::shared_ptr<Shader> particleShader( new Shader() );
     
-    particleShader->setShader(SRC_DIR + "/Shaders/particle.vert", GL_VERTEX_SHADER);
-    particleShader->setShader(SRC_DIR + "/Shaders/particle.frag", GL_FRAGMENT_SHADER);
+    particleShader->setShader("./Shaders/particle.vert", GL_VERTEX_SHADER);
+    particleShader->setShader("./Shaders/particle.frag", GL_FRAGMENT_SHADER);
     
     particleShader->initialize();
     

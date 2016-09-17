@@ -7,7 +7,7 @@
 //
 
 #include "Utility.hpp"
-
+#include <unistd.h>
 namespace utility
 {    
     std::string loadFile(std::string filePath)
@@ -16,7 +16,10 @@ namespace utility
                 
         if (!ifs.is_open()) {
             
-            throw std::invalid_argument( "File cannot be opened." );
+            char * dir = getcwd(NULL, 0); // Platform-dependent, see reference link below
+            printf("Current dir: %s\n", dir);
+            
+            throw std::invalid_argument( "File \"%s\" cannot be opened." );
         }
         
         std::string content( (std::istreambuf_iterator<char>(ifs) ),

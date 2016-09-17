@@ -22,8 +22,8 @@ void Scene::initialize(nanogui::Screen *gui_screen)
     // Setup scene.    
     std::shared_ptr<Shader> triangleShader(new Shader());
     
-    triangleShader->setShader(SRC_DIR + "/Shaders/triangle.vert", GL_VERTEX_SHADER);
-    triangleShader->setShader(SRC_DIR + "/Shaders/triangle.frag", GL_FRAGMENT_SHADER);
+    triangleShader->setShader("./Shaders/triangle.vert", GL_VERTEX_SHADER);
+    triangleShader->setShader("./Shaders/triangle.frag", GL_FRAGMENT_SHADER);
     triangleShader->initialize();
     
     std::shared_ptr<Material> triangleMaterial( new Material(triangleShader) );
@@ -97,8 +97,8 @@ void Scene::initialize(nanogui::Screen *gui_screen)
             triangleShader->initialize();
         });
     },
-                                    SRC_DIR + "/Shaders/triangle.frag",
-                                    SRC_DIR + "/Shaders/triangle.vert"
+                                    "./Shaders/triangle.frag",
+                                    "./Shaders/triangle.vert"
                                     );
 }
 
