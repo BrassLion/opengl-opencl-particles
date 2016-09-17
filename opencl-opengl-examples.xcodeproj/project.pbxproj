@@ -97,7 +97,7 @@
 		22A1152B1D44F57C00B20CD1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		22A1152D1D4527E000B20CD1 /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		22A1152E1D4527E000B20CD1 /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
-		22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "opencl-opengl-examples"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "opencl-opengl-examples-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22B422491D8B681E00FDC2F9 /* catch.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch.hh; sourceTree = "<group>"; };
 		22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsMain.cpp; sourceTree = "<group>"; };
 		22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsUtility.cpp; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				22A1150B1D43BC8600B20CD1 /* opencl-opengl-examples */,
-				22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples */,
+				22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -217,9 +217,9 @@
 			productReference = 22A1150B1D43BC8600B20CD1 /* opencl-opengl-examples */;
 			productType = "com.apple.product-type.tool";
 		};
-		22B422341D8B5A4300FDC2F9 /* opencl-opengl-examplesCases */ = {
+		22B422341D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22B422391D8B5A4300FDC2F9 /* Build configuration list for PBXNativeTarget "opencl-opengl-examplesCases" */;
+			buildConfigurationList = 22B422391D8B5A4300FDC2F9 /* Build configuration list for PBXNativeTarget "opencl-opengl-examples-tests" */;
 			buildPhases = (
 				22B422311D8B5A4300FDC2F9 /* Sources */,
 				22B422321D8B5A4300FDC2F9 /* Frameworks */,
@@ -229,9 +229,9 @@
 			);
 			dependencies = (
 			);
-			name = "opencl-opengl-examplesCases";
+			name = "opencl-opengl-examples-tests";
 			productName = OpenGLTestCases;
-			productReference = 22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples */;
+			productReference = 22B422351D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -263,7 +263,7 @@
 			projectRoot = "";
 			targets = (
 				22A1150A1D43BC8600B20CD1 /* opencl-opengl-examples */,
-				22B422341D8B5A4300FDC2F9 /* opencl-opengl-examplesCases */,
+				22B422341D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -304,7 +304,7 @@
 /* Begin PBXTargetDependency section */
 		22B4223D1D8B5A5000FDC2F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 22B422341D8B5A4300FDC2F9 /* opencl-opengl-examplesCases */;
+			target = 22B422341D8B5A4300FDC2F9 /* opencl-opengl-examples-tests */;
 			targetProxy = 22B4223C1D8B5A5000FDC2F9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -469,7 +469,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "opencl-opengl-examples";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -507,7 +507,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "opencl-opengl-examples";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -533,7 +533,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22B422391D8B5A4300FDC2F9 /* Build configuration list for PBXNativeTarget "opencl-opengl-examplesCases" */ = {
+		22B422391D8B5A4300FDC2F9 /* Build configuration list for PBXNativeTarget "opencl-opengl-examples-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22B4223A1D8B5A4300FDC2F9 /* Debug */,

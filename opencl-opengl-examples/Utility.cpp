@@ -7,7 +7,7 @@
 //
 
 #include "Utility.hpp"
-#include <unistd.h>
+
 namespace utility
 {    
     std::string loadFile(std::string filePath)
