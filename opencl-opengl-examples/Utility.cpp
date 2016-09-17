@@ -13,11 +13,8 @@ namespace utility
     std::string loadFile(std::string filePath)
     {
         std::ifstream ifs(filePath);
-                
+        
         if (!ifs.is_open()) {
-            
-            char * dir = getcwd(NULL, 0); // Platform-dependent, see reference link below
-            printf("Current dir: %s\n", dir);
             
             throw std::invalid_argument( "File \"%s\" cannot be opened." );
         }
