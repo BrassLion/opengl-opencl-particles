@@ -15,11 +15,12 @@
 
 #include "Scene.hpp"
 #include "Mesh.hpp"
+#include "Utility.hpp"
 
 class ParticleScene : public Scene
 {
 private:
-    
+        
     unsigned int m_minimum_particle_count;
     unsigned int m_maximum_particle_count;
     unsigned int m_current_particle_count;
@@ -28,11 +29,12 @@ private:
     
     cl_context m_cl_gl_context;
     cl_command_queue m_cl_cmd_queue;
-    cl_kernel m_cl_krnl;
+    cl_kernel m_cl_krnl_particle_simulation;
+    cl_kernel m_cl_krnl_new_particles;
     cl_mem m_cl_particle_buffer;
     
     void initialize_opencl();
-    void run_opencl();
+    void run_particle_simulation(float delta_time);
     
     void set_particle_count(unsigned int particle_count);
     
@@ -42,7 +44,7 @@ public:
     {
         m_minimum_particle_count = 1;
         m_maximum_particle_count = 1000000;
-        m_current_particle_count = 2;
+        m_current_particle_count = 1;
     }
     
     void initialize(nanogui::Screen *gui_screen);

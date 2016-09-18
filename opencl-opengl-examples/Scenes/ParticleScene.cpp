@@ -92,9 +92,7 @@ void ParticleScene::initialize_opencl()
     
     // Create OpenCL kernel.
         
-    m_cl_krnl = clCreateKernel(cl_prgm, "offset_test", &cl_error);
-    
-    printf("OpenCL kernel creation error: %u\n", cl_error);
+    m_cl_krnl_particle_simulation = clCreateKernel(cl_prgm, "particle_simulation", &cl_error);
     
     // Create OpenGL texture and add to OpenCL.
     
@@ -116,7 +114,7 @@ void ParticleScene::initialize_opencl()
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void ParticleScene::run_opencl()
+void ParticleScene::run_particle_simulation(float delta_time)
 {
     cl_int cl_error;
     
@@ -124,12 +122,11 @@ void ParticleScene::run_opencl()
 
     cl_error = clEnqueueAcquireGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
 
-    cl_error = clSetKernelArg(m_cl_krnl, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer);
-
-//    float delta_time = 0.1f;
-//    cl_error = clSetKernelArg(m_cl_krnl, 1, sizeof(float), &delta_time);
-
-    cl_error = clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl, 2, NULL, global_work_size, NULL, 0, 0, 0);
+    cl_error = clSetKernelArg(m_cl_krnl_particle_simulation, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer);
+    
+    cl_error = clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(float), &delta_time);
+    
+    cl_error = clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0);
 
     cl_error = clEnqueueReleaseGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
 
@@ -160,6 +157,7 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     
     this->set_particle_count(m_current_particle_count);
     
+    // Add GUI window.
     nanogui::Window *gui_window = new nanogui::Window(gui_screen, "Particles");
     gui_window->setPosition(Eigen::Vector2i(150, 15));
     gui_window->setLayout(new nanogui::GroupLayout());
@@ -168,8 +166,10 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
                                    nanogui::Alignment::Middle, 0, 20));
     
+    new nanogui::Label(panel, "Particle count", "sans-bold");
+    
     nanogui::Slider *slider = new nanogui::Slider(panel);
-    slider->setValue(0.5f);
+    slider->setValue((float)m_current_particle_count / (float)m_maximum_particle_count);
     slider->setFixedWidth(80);
     
     nanogui::TextBox *textBox = new nanogui::TextBox(panel);
@@ -190,6 +190,20 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     textBox->setFixedSize(Eigen::Vector2i(70,25));
     textBox->setFontSize(20);
     textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    
+    //Shader reloading.
+    shaderReloader = std::unique_ptr<ShaderReloader>( new ShaderReloader() );
+    
+    shaderReloader->addFilesToWatch([=]{
+        
+        renderer->queueFunctionBeforeRender([particleShader] {
+            particleShader->deleteShader();
+            particleShader->initialize();
+        });
+    },
+                                    "./Shaders/particle.frag",
+                                    "./Shaders/particle.vert"
+                                    );
 }
 
 void ParticleScene::set_particle_count(unsigned int particle_count)
@@ -199,24 +213,30 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
     
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dis(0, 1);
+    std::uniform_real_distribution<float> position_distribution(0, 0);
+    std::uniform_real_distribution<float> velocity_distribution(-3, 3);
+    std::uniform_real_distribution<float> life_distribution(0, 10);
     
     for(unsigned int i = 0;i < particle_count;i++) {
         
         // Position.
-        vertices.push_back(dis(gen));
-        vertices.push_back(dis(gen));
-        vertices.push_back(dis(gen));
+        vertices.push_back(position_distribution(gen));
+        vertices.push_back(position_distribution(gen));
+        vertices.push_back(position_distribution(gen));
         vertices.push_back(1.0f);
         
         // Velocity.
-        vertices.push_back(dis(gen));
-        vertices.push_back(dis(gen));
-        vertices.push_back(dis(gen));
+        vertices.push_back(velocity_distribution(gen));
+        vertices.push_back(velocity_distribution(gen));
+        vertices.push_back(velocity_distribution(gen));
         vertices.push_back(1.0f);
+        
+        // Life
+        vertices.push_back(0.0f);
+        vertices.push_back(life_distribution(gen));
     }
     
-    std::vector<unsigned int > attributes = {4, 4};
+    std::vector<unsigned int > attributes = {4, 4, 2};
     
     particleMesh->initialize(vertices, attributes);
     
@@ -227,9 +247,12 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
 
 void ParticleScene::draw()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     Scene::draw();
     
-    ParticleScene::run_opencl();
-    
+    ParticleScene::run_particle_simulation(0.0166666f);
+        
     glFinish();
 }

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-               BuildableName = "opencl-opengl-examples"
+               BuildableName = "opencl-opengl-examples-tests"
                BlueprintName = "opencl-opengl-examples-tests"
                ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples"
+            BuildableName = "opencl-opengl-examples-tests"
             BlueprintName = "opencl-opengl-examples-tests"
             ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples"
+            BuildableName = "opencl-opengl-examples-tests"
             BlueprintName = "opencl-opengl-examples-tests"
             ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>
@@ -90,7 +90,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples"
+            BuildableName = "opencl-opengl-examples-tests"
             BlueprintName = "opencl-opengl-examples-tests"
             ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
          </BuildableReference>

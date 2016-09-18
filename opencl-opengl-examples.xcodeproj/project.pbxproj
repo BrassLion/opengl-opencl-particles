@@ -101,6 +101,7 @@
 		22B422491D8B681E00FDC2F9 /* catch.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch.hh; sourceTree = "<group>"; };
 		22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsMain.cpp; sourceTree = "<group>"; };
 		22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsUtility.cpp; sourceTree = "<group>"; };
+		22FAFF711D8DAC00003A7465 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 		22FE6D121D58EACE0094F3D9 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		22FE6D131D58EACE0094F3D9 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,6 +176,7 @@
 				22FE6D131D58EACE0094F3D9 /* Scene.hpp */,
 				22A1151B1D43C5A900B20CD1 /* Shader.cpp */,
 				22A1151C1D43C5A900B20CD1 /* Shader.hpp */,
+				22FAFF711D8DAC00003A7465 /* Shaders */,
 				227393061D496DDA00A3932B /* ShaderReloader.cpp */,
 				227393071D496DDA00A3932B /* ShaderReloader.hpp */,
 				22787A6C1D5BC34F004BE000 /* Utility.cpp */,

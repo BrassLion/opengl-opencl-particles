@@ -35,9 +35,10 @@
 struct __attribute__ ((packed)) Particle {
     float4 pos;
     float4 vel;
+    float2 life;
 };
 
-__kernel void offset_test(__global struct Particle* particles)
+__kernel void particle_simulation(__global struct Particle* particles, float time)
 {
     unsigned int x = get_global_id(0);
     unsigned int y = get_global_id(1);
@@ -46,7 +47,26 @@ __kernel void offset_test(__global struct Particle* particles)
     
     unsigned int i = x + y * w;
     
+    __global struct Particle *particle = &particles[i];
+    
+//    float3 acceleration = - (6.674f * 1.0f) / pow(length(particles[i].pos.xyz), 1) * normalize(particles[i].pos.xyz);
+    
 //    particles[i].pos += 0.01f;
-    particles[i].pos.xyz += particles[i].vel.xyz * 0.01f;
+//    particles[i].vel.xyz += acceleration * time;
 //    uv[0] = (float2)(1.2f, 3.4f);
+//
+    if(particle->life.x == particle->life.y) {
+        
+        particle->pos.xyz = (float3)(0.0f, 0.0f, 0.0f);
+        particle->life.x = 0.0f;
+        return;
+    }
+    
+    particle->pos.xyz += particle->vel.xyz * time;
+    particle->life.x += time;
+    
+    if(particle->life.x > particle->life.y) {
+        
+        particle->life.x = particle->life.y;
+    }
 }
