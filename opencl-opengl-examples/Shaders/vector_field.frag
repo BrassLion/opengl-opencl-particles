@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec3 fragment_world_position;
-in vec2 fragment_uv;
+in vec3 fragment_uv;
 
 uniform mat4 model_matrix;
 
@@ -13,6 +13,6 @@ out vec4 color;
 
 void main()
 {
-    color = texture(tex, vec3(fragment_uv, 0.0));
+    color = texture(tex, fragment_uv);
 //    color = vec4(fragment_uv, 0.0, 1.0);
 }

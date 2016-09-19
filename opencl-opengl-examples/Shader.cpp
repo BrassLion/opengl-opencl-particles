@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include <assert.h>
+#include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -72,7 +73,11 @@ void Shader::setShader(std::string shaderPath, GLuint shaderType)
         case GL_VERTEX_SHADER:
             vertexShaderPath = shaderPath;
             break;
-            
+        
+        case GL_GEOMETRY_SHADER:
+            geometryShaderPath = shaderPath;
+            break;
+        
         case GL_FRAGMENT_SHADER:
             fragmentShaderPath = shaderPath;
             break;
@@ -97,19 +102,29 @@ bool Shader::initialize()
         return false;
     }
     
-    // Build and compile vertex shader.
-    GLuint vertexShader = compileShader(vertexShaderPath, GL_VERTEX_SHADER);
-    GLuint fragmentShader = compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    // Build and compile shaders.
+    std::vector<GLuint> shaders;
     
+    shaders.push_back(compileShader(vertexShaderPath, GL_VERTEX_SHADER));
+    shaders.push_back(compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER));
+    
+    if(!geometryShaderPath.empty())
+        shaders.push_back(compileShader(geometryShaderPath, GL_GEOMETRY_SHADER));
+    
+    // Build program.
     programID = glCreateProgram();
-    glAttachShader(programID, vertexShader);
-    glAttachShader(programID, fragmentShader);
+    
+    for(GLuint shader : shaders)
+        glAttachShader(programID, shader);
+    
     glLinkProgram(programID);
-    // Check for linking errors
+    
+    // Check for linking errors.
     checkProgramError(programID);
     
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    // Delete shaders.
+    for(GLuint shader: shaders)
+        glDeleteShader(shader);
     
     return true;
 }

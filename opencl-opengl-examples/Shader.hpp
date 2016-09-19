@@ -22,6 +22,7 @@ private:
     GLuint programID;
 
     std::string vertexShaderPath;
+    std::string geometryShaderPath;
     std::string fragmentShaderPath;
     
     GLint getUniformLocation(std::string uniform);

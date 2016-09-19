@@ -140,6 +140,7 @@ void ParticleScene::initialize_vector_field()
     std::shared_ptr<Shader> triangleShader(new Shader());
     
     triangleShader->setShader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
+    triangleShader->setShader("./Shaders/vector_field.geom", GL_GEOMETRY_SHADER);
     triangleShader->setShader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
     triangleShader->initialize();
     
@@ -148,14 +149,14 @@ void ParticleScene::initialize_vector_field()
     std::vector<GLfloat> pixels = {
         
         1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-        
         0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
+        0.0, 0.0, 1.0,
         1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0
+        
+        1.0, 1.0, 0.0,
+        0.0, 1.0, 1.0,
+        1.0, 0.0, 1.0,
+        0.0, 0.0, 0.0
     };
     
     vector_field_texture->initialize(pixels);
@@ -167,57 +168,58 @@ void ParticleScene::initialize_vector_field()
     std::vector<GLfloat> vertices = {
         // front
         -1.0, -1.0,  1.0, 1.0,
-        0.0, 0.0,
+        0.0, 0.0, 0.0,
         
         1.0, -1.0,  1.0, 1.0,
-        1.0, 0.0,
+        1.0, 0.0, 0.0,
         
         1.0,  1.0,  1.0, 1.0,
-        1.0, 1.0,
+        1.0, 1.0, 0.0,
         
         -1.0,  1.0,  1.0, 1.0,
-        0.0, 1.0,
+        0.0, 1.0, 0.0,
         
         // back
         -1.0, -1.0, -1.0, 1.0,
-        0.0, 0.0,
+        0.0, 0.0, 1.0,
         
         1.0, -1.0, -1.0, 1.0,
-        1.0, 0.0,
+        1.0, 0.0, 1.0,
         
         1.0,  1.0, -1.0, 1.0,
-        1.0, 1.0,
+        1.0, 1.0, 1.0,
         
         -1.0,  1.0, -1.0, 1.0,
-        0.0, 1.0
+        0.0, 1.0, 1.0
     };
-    std::vector<GLuint> indices = {  // Note that we start from 0!
-        // front
-        0, 1, 2,
-        2, 3, 0,
-        // top
-        1, 5, 6,
-        6, 2, 1,
-        // back
-        7, 6, 5,
-        5, 4, 7,
-        // bottom
-        4, 0, 3,
-        3, 7, 4,
-        // left
-        4, 5, 1,
-        1, 0, 4,
-        // right
-        3, 2, 6,
-        6, 7, 3,
-    };
+//    std::vector<GLuint> indices = {  // Note that we start from 0!
+//        // front
+//        0, 1, 2,
+//        2, 3, 0,
+//        // top
+//        1, 5, 6,
+//        6, 2, 1,
+//        // back
+//        7, 6, 5,
+//        5, 4, 7,
+//        // bottom
+//        4, 0, 3,
+//        3, 7, 4,
+//        // left
+//        4, 5, 1,
+//        1, 0, 4,
+//        // right
+//        3, 2, 6,
+//        6, 7, 3,
+//    };
     
-    std::vector<unsigned int> attributes = {4, 2};
+    std::vector<unsigned int> attributes = {4, 3};
     
-    triangleMesh->initialize(vertices, attributes, indices);
+    triangleMesh->initialize(vertices, attributes);
     triangleMesh->setMaterial(triangleMaterial);
     triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
-    triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );
+    triangleMesh->setScale( glm::vec3(1.0f,2.0f,1.0f) );
+    triangleMesh->setRenderingMode(GL_POINTS);
     
     rootNode->addChild(triangleMesh);
     
@@ -229,7 +231,8 @@ void ParticleScene::initialize_vector_field()
         });
     },
                                     "./Shaders/vector_field.frag",
-                                    "./Shaders/vector_field.vert"
+                                    "./Shaders/vector_field.vert",
+                                    "./Shaders/vector_field.geom"
                                     );
 }
 
