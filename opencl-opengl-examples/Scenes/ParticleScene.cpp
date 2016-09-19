@@ -15,6 +15,8 @@
 #include "ParticleScene.hpp"
 #include "Utility.hpp"
 #include "ParticleMaterial.hpp"
+#include "VectorFieldMaterial.hpp"
+#include "Texture.hpp"
 
 void ParticleScene::initialize_opencl()
 {
@@ -133,8 +135,108 @@ void ParticleScene::run_particle_simulation(float delta_time)
     clFinish(m_cl_cmd_queue);
 }
 
+void ParticleScene::initialize_vector_field()
+{
+    std::shared_ptr<Shader> triangleShader(new Shader());
+    
+    triangleShader->setShader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
+    triangleShader->setShader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
+    triangleShader->initialize();
+    
+    std::shared_ptr<Texture> vector_field_texture( new Texture(2,2,2) );
+    
+    std::vector<GLfloat> pixels = {
+        
+        1.0, 0.0, 0.0,
+        1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0,
+        
+        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0,
+        1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0
+    };
+    
+    vector_field_texture->initialize(pixels);
+    
+    std::shared_ptr<VectorFieldMaterial> triangleMaterial( new VectorFieldMaterial(triangleShader, vector_field_texture) );
+    
+    std::shared_ptr<Mesh> triangleMesh(new Mesh());
+    
+    std::vector<GLfloat> vertices = {
+        // front
+        -1.0, -1.0,  1.0, 1.0,
+        0.0, 0.0,
+        
+        1.0, -1.0,  1.0, 1.0,
+        1.0, 0.0,
+        
+        1.0,  1.0,  1.0, 1.0,
+        1.0, 1.0,
+        
+        -1.0,  1.0,  1.0, 1.0,
+        0.0, 1.0,
+        
+        // back
+        -1.0, -1.0, -1.0, 1.0,
+        0.0, 0.0,
+        
+        1.0, -1.0, -1.0, 1.0,
+        1.0, 0.0,
+        
+        1.0,  1.0, -1.0, 1.0,
+        1.0, 1.0,
+        
+        -1.0,  1.0, -1.0, 1.0,
+        0.0, 1.0
+    };
+    std::vector<GLuint> indices = {  // Note that we start from 0!
+        // front
+        0, 1, 2,
+        2, 3, 0,
+        // top
+        1, 5, 6,
+        6, 2, 1,
+        // back
+        7, 6, 5,
+        5, 4, 7,
+        // bottom
+        4, 0, 3,
+        3, 7, 4,
+        // left
+        4, 5, 1,
+        1, 0, 4,
+        // right
+        3, 2, 6,
+        6, 7, 3,
+    };
+    
+    std::vector<unsigned int> attributes = {4, 2};
+    
+    triangleMesh->initialize(vertices, attributes, indices);
+    triangleMesh->setMaterial(triangleMaterial);
+    triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
+    triangleMesh->setScale( glm::vec3(1.0f,1.0f,1.0f) );
+    
+    rootNode->addChild(triangleMesh);
+    
+    shaderReloader->addFilesToWatch([=]{
+        
+        renderer->queueFunctionBeforeRender([triangleShader] {
+            triangleShader->deleteShader();
+            triangleShader->initialize();
+        });
+    },
+                                    "./Shaders/vector_field.frag",
+                                    "./Shaders/vector_field.vert"
+                                    );
+}
+
 void ParticleScene::initialize(nanogui::Screen *gui_screen)
 {
+    this->initialize_vector_field();
+    
     std::shared_ptr<Shader> particleShader( new Shader() );
     
     particleShader->setShader("./Shaders/particle.vert", GL_VERTEX_SHADER);
@@ -191,9 +293,7 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     textBox->setFontSize(20);
     textBox->setAlignment(nanogui::TextBox::Alignment::Right);
     
-    //Shader reloading.
-    shaderReloader = std::unique_ptr<ShaderReloader>( new ShaderReloader() );
-    
+    //Shader reloading.    
     shaderReloader->addFilesToWatch([=]{
         
         renderer->queueFunctionBeforeRender([particleShader] {

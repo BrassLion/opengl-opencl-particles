@@ -33,6 +33,8 @@ private:
     cl_kernel m_cl_krnl_new_particles;
     cl_mem m_cl_particle_buffer;
     
+    void initialize_vector_field();
+    
     void initialize_opencl();
     void run_particle_simulation(float delta_time);
     

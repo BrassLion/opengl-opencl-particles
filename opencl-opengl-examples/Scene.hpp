@@ -36,7 +36,8 @@ protected:
 public:
     
     Scene(int width, int height) {
-                
+        
+        shaderReloader = std::unique_ptr<ShaderReloader>( new ShaderReloader() );
         renderer = std::unique_ptr<Renderer>(new Renderer());
         rootNode = std::shared_ptr<Object>(new Object());
         

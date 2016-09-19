@@ -11,6 +11,8 @@
 		2201E2AC1D874D2100D1B364 /* ParticleMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2201E2AA1D874D2100D1B364 /* ParticleMaterial.cpp */; };
 		22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CAE1D4BED49004004B6 /* Renderer.cpp */; };
 		22066CB31D4BEDB2004004B6 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22066CB11D4BEDB2004004B6 /* Viewport.cpp */; };
+		22174BF91D90924C001A7ED7 /* VectorFieldMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22174BF71D90924C001A7ED7 /* VectorFieldMaterial.cpp */; };
+		22174BFC1D9092BE001A7ED7 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22174BFA1D9092BE001A7ED7 /* Texture.cpp */; };
 		223AE47B1D6A5F520071002A /* ParticleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 223AE4791D6A5F4A0071002A /* ParticleScene.cpp */; };
 		227393051D49433B00A3932B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
 		227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 227393061D496DDA00A3932B /* ShaderReloader.cpp */; };
@@ -79,6 +81,10 @@
 		22066CAF1D4BED49004004B6 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		22066CB11D4BEDB2004004B6 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		22066CB21D4BEDB2004004B6 /* Viewport.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Viewport.hpp; sourceTree = "<group>"; };
+		22174BF71D90924C001A7ED7 /* VectorFieldMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VectorFieldMaterial.cpp; sourceTree = "<group>"; };
+		22174BF81D90924C001A7ED7 /* VectorFieldMaterial.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VectorFieldMaterial.hpp; sourceTree = "<group>"; };
+		22174BFA1D9092BE001A7ED7 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		22174BFB1D9092BE001A7ED7 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
 		223AE4791D6A5F4A0071002A /* ParticleScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleScene.cpp; sourceTree = "<group>"; };
 		223AE47A1D6A5F4A0071002A /* ParticleScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParticleScene.hpp; sourceTree = "<group>"; };
 		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -183,6 +189,10 @@
 				22787A6D1D5BC34F004BE000 /* Utility.hpp */,
 				22066CB11D4BEDB2004004B6 /* Viewport.cpp */,
 				22066CB21D4BEDB2004004B6 /* Viewport.hpp */,
+				22174BF71D90924C001A7ED7 /* VectorFieldMaterial.cpp */,
+				22174BF81D90924C001A7ED7 /* VectorFieldMaterial.hpp */,
+				22174BFA1D9092BE001A7ED7 /* Texture.cpp */,
+				22174BFB1D9092BE001A7ED7 /* Texture.hpp */,
 			);
 			path = "opencl-opengl-examples";
 			sourceTree = "<group>";
@@ -279,6 +289,7 @@
 				22A115291D44E39300B20CD1 /* Mesh.cpp in Sources */,
 				22787A6E1D5BC34F004BE000 /* Utility.cpp in Sources */,
 				22A1151D1D43C5A900B20CD1 /* Shader.cpp in Sources */,
+				22174BFC1D9092BE001A7ED7 /* Texture.cpp in Sources */,
 				2201E2AC1D874D2100D1B364 /* ParticleMaterial.cpp in Sources */,
 				22A1152F1D4527E000B20CD1 /* Object.cpp in Sources */,
 				22066CB01D4BED49004004B6 /* Renderer.cpp in Sources */,
@@ -287,6 +298,7 @@
 				2201E2A71D860BC100D1B364 /* Material.cpp in Sources */,
 				22FE6D141D58EACE0094F3D9 /* Scene.cpp in Sources */,
 				227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */,
+				22174BF91D90924C001A7ED7 /* VectorFieldMaterial.cpp in Sources */,
 				22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
