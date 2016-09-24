@@ -28,6 +28,8 @@ void ParticleScene::initialize_opencl()
     // Get OpenCL platform.
     cl_error = clGetPlatformIDs(1, &cl_platform, &number_of_platforms);
     
+    CL_CHECK(cl_error);
+    
     printf("Number of platforms: %u\n", number_of_platforms);
     
     // Get OpenCL version.
@@ -118,19 +120,20 @@ void ParticleScene::initialize_opencl()
 
 void ParticleScene::run_particle_simulation(float delta_time)
 {
-    cl_int cl_error;
-    
     size_t global_work_size[] = {m_current_particle_count, 1};
+    cl_mem *gl_objects[] {&m_cl_particle_buffer, &m_cl_vector_field_texture};
 
-    cl_error = clEnqueueAcquireGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
+    CL_CHECK( clEnqueueAcquireGLObjects(m_cl_cmd_queue, 2, gl_objects[0], NULL, NULL, NULL) );
 
-    cl_error = clSetKernelArg(m_cl_krnl_particle_simulation, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer);
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer) );
     
-    cl_error = clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(float), &delta_time);
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(m_cl_vector_field_texture), &m_cl_vector_field_texture) );
     
-    cl_error = clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0);
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 2, sizeof(float), &delta_time) );
+    
+    CL_CHECK( clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0) );
 
-    cl_error = clEnqueueReleaseGLObjects(m_cl_cmd_queue, 1, &m_cl_particle_buffer, NULL, NULL, NULL);
+    CL_CHECK( clEnqueueReleaseGLObjects(m_cl_cmd_queue, 2, gl_objects[0], NULL, NULL, NULL) );
 
     clFinish(m_cl_cmd_queue);
 }
@@ -162,6 +165,11 @@ void ParticleScene::initialize_vector_field()
     };
     
     vector_field_texture->initialize(pixels);
+    
+    // Create OpenCL texture object.
+    cl_int cl_error;
+    m_cl_vector_field_texture = clCreateFromGLTexture(m_cl_gl_context, CL_MEM_READ_WRITE, GL_TEXTURE_3D, 0, vector_field_texture->get_texture_id(), &cl_error);
+    CL_CHECK(cl_error);
     
     std::shared_ptr<VectorFieldMaterial> vector_field_material( new VectorFieldMaterial(vector_field_shader, vector_field_texture) );
     
@@ -244,6 +252,7 @@ void ParticleScene::initialize_vector_field()
 
 void ParticleScene::initialize(nanogui::Screen *gui_screen)
 {
+    this->initialize_opencl();
     this->initialize_vector_field();
     
     std::shared_ptr<Shader> particleShader( new Shader() );
@@ -263,8 +272,6 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     rootNode->addChild(particleMesh);
     
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-    
-    initialize_opencl();
     
     this->set_particle_count(m_current_particle_count);
     

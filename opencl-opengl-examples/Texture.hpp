@@ -58,6 +58,8 @@ public:
     
     void initialize(std::vector<GLfloat> pixels);
     void bind_texture();
+    
+    GLuint get_texture_id();
 };
 
 #endif /* Texture3D_hpp */

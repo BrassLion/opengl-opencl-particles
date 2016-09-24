@@ -38,7 +38,7 @@ struct __attribute__ ((packed)) Particle {
     float2 life;
 };
 
-__kernel void particle_simulation(__global struct Particle* particles, float time)
+__kernel void particle_simulation(__global struct Particle* particles, __write_only image3d_t vector_field, float time)
 {
     unsigned int x = get_global_id(0);
     unsigned int y = get_global_id(1);
@@ -69,4 +69,6 @@ __kernel void particle_simulation(__global struct Particle* particles, float tim
         
         particle->life.x = particle->life.y;
     }
+    
+    write_imagef(vector_field, (int4)(1,1,0,0), (float4)(0.0f,0.0f,1.0f,0.0f));
 }

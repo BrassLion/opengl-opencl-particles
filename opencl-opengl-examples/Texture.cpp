@@ -60,3 +60,9 @@ void Texture::bind_texture()
 {
     glBindTexture(m_texture_type, m_texture_id);
 }
+
+GLuint Texture::get_texture_id()
+{
+    return m_texture_id;
+}
+

@@ -33,6 +33,7 @@ private:
     cl_kernel m_cl_krnl_particle_simulation;
     cl_kernel m_cl_krnl_new_particles;
     cl_mem m_cl_particle_buffer;
+    cl_mem m_cl_vector_field_texture;
     
     void initialize_vector_field();
     void initialize_opencl();
