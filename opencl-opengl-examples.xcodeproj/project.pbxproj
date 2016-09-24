@@ -14,6 +14,13 @@
 		22174BF91D90924C001A7ED7 /* VectorFieldMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22174BF71D90924C001A7ED7 /* VectorFieldMaterial.cpp */; };
 		22174BFC1D9092BE001A7ED7 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22174BFA1D9092BE001A7ED7 /* Texture.cpp */; };
 		223AE47B1D6A5F520071002A /* ParticleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 223AE4791D6A5F4A0071002A /* ParticleScene.cpp */; };
+		224444811D96B10000B0C9BD /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2201E2A51D860BC100D1B364 /* Material.cpp */; };
+		224444821D96B10B00B0C9BD /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152A1D44F57C00B20CD1 /* Camera.cpp */; };
+		224444831D96B11200B0C9BD /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1151B1D43C5A900B20CD1 /* Shader.cpp */; };
+		22658F291D9165F000CC7C1C /* testsMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22658F281D9165F000CC7C1C /* testsMesh.cpp */; };
+		22658F2A1D9165F900CC7C1C /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A115271D44E39300B20CD1 /* Mesh.cpp */; };
+		22658F2B1D9166B200CC7C1C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
+		22658F2C1D9168BF00CC7C1C /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1152D1D4527E000B20CD1 /* Object.cpp */; };
 		227393051D49433B00A3932B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 227393041D49433B00A3932B /* OpenGL.framework */; };
 		227393081D496DDA00A3932B /* ShaderReloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 227393061D496DDA00A3932B /* ShaderReloader.cpp */; };
 		22787A6B1D5B7C66004BE000 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22787A6A1D5B7C66004BE000 /* OpenCL.framework */; };
@@ -87,6 +94,7 @@
 		22174BFB1D9092BE001A7ED7 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
 		223AE4791D6A5F4A0071002A /* ParticleScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleScene.cpp; sourceTree = "<group>"; };
 		223AE47A1D6A5F4A0071002A /* ParticleScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParticleScene.hpp; sourceTree = "<group>"; };
+		22658F281D9165F000CC7C1C /* testsMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsMesh.cpp; sourceTree = "<group>"; };
 		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		227393061D496DDA00A3932B /* ShaderReloader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderReloader.cpp; sourceTree = "<group>"; };
 		227393071D496DDA00A3932B /* ShaderReloader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderReloader.hpp; sourceTree = "<group>"; };
@@ -126,6 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22658F2B1D9166B200CC7C1C /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +212,7 @@
 				22B422491D8B681E00FDC2F9 /* catch.hh */,
 				22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */,
 				22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */,
+				22658F281D9165F000CC7C1C /* testsMesh.cpp */,
 			);
 			path = "opencl-opengl-examples-tests";
 			sourceTree = SOURCE_ROOT;
@@ -308,8 +318,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				22B4224C1D8B681E00FDC2F9 /* testsMain.cpp in Sources */,
+				224444831D96B11200B0C9BD /* Shader.cpp in Sources */,
+				224444811D96B10000B0C9BD /* Material.cpp in Sources */,
 				22B4224D1D8B681E00FDC2F9 /* testsUtility.cpp in Sources */,
+				22658F2C1D9168BF00CC7C1C /* Object.cpp in Sources */,
+				224444821D96B10B00B0C9BD /* Camera.cpp in Sources */,
+				22658F291D9165F000CC7C1C /* testsMesh.cpp in Sources */,
 				22B422471D8B644300FDC2F9 /* Utility.cpp in Sources */,
+				22658F2A1D9165F900CC7C1C /* Mesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,12 +343,34 @@
 		22A115031D43BBAE00B20CD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/eigen3,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lboost_filesystem",
+					"-lglew",
+					"-lnanogui",
+					"-lboost_system",
+				);
 			};
 			name = Debug;
 		};
 		22A115041D43BBAE00B20CD1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/eigen3,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lboost_filesystem",
+					"-lglew",
+					"-lnanogui",
+					"-lboost_system",
+				);
 			};
 			name = Release;
 		};
@@ -374,20 +412,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
-					/usr/local/include/eigen3,
-				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-lglew",
-					"-lboost_filesystem",
-					"-lboost_system",
-					"-lnanogui",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "opencl-opengl-examples";
 				SDKROOT = macosx;
 			};
@@ -425,19 +455,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
-					/usr/local/include/eigen3,
-				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-lglew",
-					"-lboost_filesystem",
-					"-lboost_system",
-					"-lnanogui",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "opencl-opengl-examples";
 				SDKROOT = macosx;
 			};
@@ -480,9 +502,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -519,8 +544,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};

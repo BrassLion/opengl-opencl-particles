@@ -12,7 +12,7 @@
 
 void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes, std::vector<GLuint> indices)
 {
-    this->initialize(vertices, attributes);
+    initialize(vertices, attributes);
     
     glGenBuffers(1, &EBO);
     
@@ -23,7 +23,8 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> a
     
     glBindVertexArray(0);
     
-    m_number_of_vertices = (unsigned int)indices.size();
+    m_number_of_indices = (unsigned int)indices.size();
+    set_drawing_function();
 }
 
 void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> attributes)
@@ -57,21 +58,58 @@ void Mesh::initialize(std::vector<GLfloat> vertices, std::vector<unsigned int> a
     glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
     
     m_number_of_vertices = (unsigned int)vertices.size() / total_number_of_attributes;
+    set_drawing_function();
 }
 
 void Mesh::setMaterial(std::shared_ptr<Material> material)
 {
     m_material = material;
+    
+    material->set_mesh(std::static_pointer_cast<Mesh>(shared_from_this()));			
 }
 
 void Mesh::setRenderingMode(GLenum rendering_mode)
 {
     m_rendering_mode = rendering_mode;
+    
+    set_drawing_function();
+}
+
+void Mesh::setNumberOfInstances(unsigned int number_of_instances)
+{
+    m_number_of_instances = number_of_instances;
+    
+    set_drawing_function();
+}
+
+void Mesh::set_drawing_function()
+{
+    if (m_rendering_mode == GL_POINTS || m_number_of_indices == 0) {
+        
+        if (m_number_of_instances > 0)
+            m_draw = [=] { glDrawArraysInstanced(m_rendering_mode, 0, m_number_of_vertices, m_number_of_instances); };
+        
+        else
+            m_draw = [=] { glDrawArrays(m_rendering_mode, 0, m_number_of_vertices); };
+    }
+
+    else if (m_number_of_indices > 0)
+        m_draw = [=] { glDrawElements( m_rendering_mode, m_number_of_indices, GL_UNSIGNED_INT, 0); };
 }
 
 GLuint Mesh::getVertexBufferObject()
 {
     return VBO;
+}
+
+std::shared_ptr<Material> Mesh::get_material()
+{
+    return m_material;
+}
+
+unsigned int Mesh::get_number_of_instances()
+{
+    return m_number_of_instances;
 }
 
 void Mesh::draw(std::shared_ptr<Camera> camera)
@@ -80,11 +118,7 @@ void Mesh::draw(std::shared_ptr<Camera> camera)
     
     glBindVertexArray(VAO);
     
-    if(m_rendering_mode == GL_POINTS || !EBO)
-        glDrawArrays(m_rendering_mode, 0, m_number_of_vertices);
-    
-    else
-        glDrawElements(m_rendering_mode, m_number_of_vertices, GL_UNSIGNED_INT, 0);
+    m_draw();
     
     glBindVertexArray(0);
     

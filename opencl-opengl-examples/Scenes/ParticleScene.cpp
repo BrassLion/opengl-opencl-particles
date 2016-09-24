@@ -137,33 +137,35 @@ void ParticleScene::run_particle_simulation(float delta_time)
 
 void ParticleScene::initialize_vector_field()
 {
-    std::shared_ptr<Shader> triangleShader(new Shader());
+    std::shared_ptr<Shader> vector_field_shader(new Shader());
     
-    triangleShader->setShader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
-    triangleShader->setShader("./Shaders/vector_field.geom", GL_GEOMETRY_SHADER);
-    triangleShader->setShader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
-    triangleShader->initialize();
+    vector_field_shader->setShader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
+    vector_field_shader->setShader("./Shaders/vector_field.geom", GL_GEOMETRY_SHADER);
+    vector_field_shader->setShader("./Shaders/vector_field.tesc", GL_TESS_CONTROL_SHADER);
+    vector_field_shader->setShader("./Shaders/vector_field.tese", GL_TESS_EVALUATION_SHADER);
+    vector_field_shader->setShader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
+    vector_field_shader->initialize();
     
     std::shared_ptr<Texture> vector_field_texture( new Texture(2,2,2) );
     
     std::vector<GLfloat> pixels = {
         
         1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0,
-        1.0, 1.0, 1.0,
+        1.0, 0.0, 0.0,
+        1.0, 0.0, 0.0,
+        1.0, 0.0, 0.0,
         
-        1.0, 1.0, 0.0,
-        0.0, 1.0, 1.0,
-        1.0, 0.0, 1.0,
-        0.0, 0.0, 0.0
+        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0,
     };
     
     vector_field_texture->initialize(pixels);
     
-    std::shared_ptr<VectorFieldMaterial> triangleMaterial( new VectorFieldMaterial(triangleShader, vector_field_texture) );
+    std::shared_ptr<VectorFieldMaterial> vector_field_material( new VectorFieldMaterial(vector_field_shader, vector_field_texture) );
     
-    std::shared_ptr<Mesh> triangleMesh(new Mesh());
+    m_vector_field_mesh = std::make_shared<Mesh>();
     
     std::vector<GLfloat> vertices = {
         // front
@@ -215,24 +217,28 @@ void ParticleScene::initialize_vector_field()
     
     std::vector<unsigned int> attributes = {4, 3};
     
-    triangleMesh->initialize(vertices, attributes);
-    triangleMesh->setMaterial(triangleMaterial);
-    triangleMesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
-    triangleMesh->setScale( glm::vec3(1.0f,2.0f,1.0f) );
-    triangleMesh->setRenderingMode(GL_POINTS);
+    m_vector_field_mesh->initialize(vertices, attributes);
+    m_vector_field_mesh->setMaterial(vector_field_material);
+    m_vector_field_mesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
+    m_vector_field_mesh->setScale( glm::vec3(2.0f,2.0f,2.0f) );
+    m_vector_field_mesh->setRenderingMode(GL_PATCHES);
+    m_vector_field_mesh->setNumberOfInstances(10);
+    glPatchParameteri(GL_PATCH_VERTICES, 8);
     
-    rootNode->addChild(triangleMesh);
+    rootNode->addChild(m_vector_field_mesh);
     
     shaderReloader->addFilesToWatch([=]{
         
-        renderer->queueFunctionBeforeRender([triangleShader] {
-            triangleShader->deleteShader();
-            triangleShader->initialize();
+        renderer->queueFunctionBeforeRender([vector_field_shader] {
+            vector_field_shader->deleteShader();
+            vector_field_shader->initialize();
         });
     },
                                     "./Shaders/vector_field.frag",
                                     "./Shaders/vector_field.vert",
-                                    "./Shaders/vector_field.geom"
+                                    "./Shaders/vector_field.geom",
+                                    "./Shaders/vector_field.tesc",
+                                    "./Shaders/vector_field.tese"
                                     );
 }
 
@@ -262,6 +268,23 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     
     this->set_particle_count(m_current_particle_count);
     
+    //Shader reloading.    
+    shaderReloader->addFilesToWatch([=]{
+        
+        renderer->queueFunctionBeforeRender([particleShader] {
+            particleShader->deleteShader();
+            particleShader->initialize();
+        });
+    },
+                                    "./Shaders/particle.frag",
+                                    "./Shaders/particle.vert"
+                                    );
+    
+    this->initialize_gui(gui_screen);
+}
+
+void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
+{
     // Add GUI window.
     nanogui::Window *gui_window = new nanogui::Window(gui_screen, "Particles");
     gui_window->setPosition(Eigen::Vector2i(150, 15));
@@ -269,7 +292,7 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     
     nanogui::Widget *panel = new nanogui::Widget(gui_window);
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                   nanogui::Alignment::Middle, 0, 20));
+                                            nanogui::Alignment::Middle, 0, 20));
     
     new nanogui::Label(panel, "Particle count", "sans-bold");
     
@@ -285,7 +308,7 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     slider->setFinalCallback([&](float value) {
         
         unsigned int new_particle_count = (unsigned int) (m_minimum_particle_count +  value * (m_maximum_particle_count - m_minimum_particle_count));
-               
+        
         printf("Final slider value: %u\n", new_particle_count);
         
         m_current_particle_count = new_particle_count;
@@ -296,17 +319,93 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     textBox->setFontSize(20);
     textBox->setAlignment(nanogui::TextBox::Alignment::Right);
     
-    //Shader reloading.    
-    shaderReloader->addFilesToWatch([=]{
+    
+    // Vector field GUI.
+    
+    float maximum_sample_points = 20.0f;
+    
+    panel = new nanogui::Widget(gui_window);
+    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
+                                            nanogui::Alignment::Middle, 0, 20));
+    
+    new nanogui::Label(panel, "Vector field points x", "sans-bold");
+    
+    slider = new nanogui::Slider(panel);
+    
+    std::shared_ptr<VectorFieldMaterial> material = std::static_pointer_cast<VectorFieldMaterial>(m_vector_field_mesh->get_material());
+    
+    slider->setValue((float)material->get_field_sample_points_x() / maximum_sample_points);
+    slider->setFixedWidth(80);
+    
+    textBox = new nanogui::TextBox(panel);
+    textBox->setValue(std::to_string(m_current_particle_count));
+    
+    slider->setCallback([=](float value) {
         
-        renderer->queueFunctionBeforeRender([particleShader] {
-            particleShader->deleteShader();
-            particleShader->initialize();
-        });
-    },
-                                    "./Shaders/particle.frag",
-                                    "./Shaders/particle.vert"
-                                    );
+        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+        
+        material->set_field_sample_points_x(new_sample_points_count);
+        
+        textBox->setValue(std::to_string(new_sample_points_count));
+    });
+    
+    textBox->setFixedSize(Eigen::Vector2i(70,25));
+    textBox->setFontSize(20);
+    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    
+    panel = new nanogui::Widget(gui_window);
+    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
+                                            nanogui::Alignment::Middle, 0, 20));
+    
+    new nanogui::Label(panel, "Vector field points y", "sans-bold");
+    
+    slider = new nanogui::Slider(panel);
+    
+    slider->setValue((float)material->get_field_sample_points_y() / maximum_sample_points);
+    slider->setFixedWidth(80);
+    
+    textBox = new nanogui::TextBox(panel);
+    textBox->setValue(std::to_string(m_current_particle_count));
+    
+    slider->setCallback([=](float value) {
+        
+        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+        
+        material->set_field_sample_points_y(new_sample_points_count);
+        
+        textBox->setValue(std::to_string(new_sample_points_count));
+    });
+    
+    textBox->setFixedSize(Eigen::Vector2i(70,25));
+    textBox->setFontSize(20);
+    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    
+    panel = new nanogui::Widget(gui_window);
+    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
+                                            nanogui::Alignment::Middle, 0, 20));
+    
+    new nanogui::Label(panel, "Vector field points z", "sans-bold");
+    
+    slider = new nanogui::Slider(panel);
+    
+    slider->setValue((float)m_vector_field_mesh->get_number_of_instances() / maximum_sample_points);
+    slider->setFixedWidth(80);
+    
+    textBox = new nanogui::TextBox(panel);
+    textBox->setValue(std::to_string(m_current_particle_count));
+    
+    slider->setCallback([=](float value) {
+        
+        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+        
+        m_vector_field_mesh->setNumberOfInstances(new_sample_points_count);
+        
+        textBox->setValue(std::to_string(new_sample_points_count));
+    });
+    
+    textBox->setFixedSize(Eigen::Vector2i(70,25));
+    textBox->setFontSize(20);
+    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
 }
 
 void ParticleScene::set_particle_count(unsigned int particle_count)

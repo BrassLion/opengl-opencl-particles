@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include <assert.h>
-#include <vector>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -68,48 +67,21 @@ GLuint compileShader(std::string shaderPath, GLuint shaderType)
 /// Public functions.
 void Shader::setShader(std::string shaderPath, GLuint shaderType)
 {
-    switch (shaderType) {
-            
-        case GL_VERTEX_SHADER:
-            vertexShaderPath = shaderPath;
-            break;
-        
-        case GL_GEOMETRY_SHADER:
-            geometryShaderPath = shaderPath;
-            break;
-        
-        case GL_FRAGMENT_SHADER:
-            fragmentShaderPath = shaderPath;
-            break;
-            
-        default:
-            throw std::invalid_argument( "Shader type not supported." );
-            break;
-    }
+    ShaderFile shader_file;
+    
+    shader_file.path = shaderPath;
+    shader_file.type = shaderType;
+    
+    m_shader_files.push_back(shader_file);
 }
 
 bool Shader::initialize()
 {
-    if (vertexShaderPath.empty()) {
-        
-        throw std::runtime_error( "Vertex shader undefined." );
-        return false;
-    }
-    
-    if(fragmentShaderPath.empty()) {
-        
-        throw std::runtime_error( "Fragment shader undefined. ");
-        return false;
-    }
-    
     // Build and compile shaders.
     std::vector<GLuint> shaders;
     
-    shaders.push_back(compileShader(vertexShaderPath, GL_VERTEX_SHADER));
-    shaders.push_back(compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER));
-    
-    if(!geometryShaderPath.empty())
-        shaders.push_back(compileShader(geometryShaderPath, GL_GEOMETRY_SHADER));
+    for(ShaderFile shader_file : m_shader_files)
+        shaders.push_back(compileShader(shader_file.path, shader_file.type));
     
     // Build program.
     programID = glCreateProgram();
@@ -168,5 +140,12 @@ void Shader::setUniform(std::string uniform, glm::vec4 value)
     GLint uniformLocation = getUniformLocation(uniform);
     
     glUniform4fv(uniformLocation, 1, glm::value_ptr(value));
+}
+
+void Shader::setUniform(std::string uniform, unsigned int value)
+{
+    GLint uniformLocation = getUniformLocation(uniform);
+    
+    glUniform1i(uniformLocation, value);
 }
 

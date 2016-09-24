@@ -9,6 +9,11 @@
 
 #include "Material.hpp"
 
+void Material::set_mesh(std::shared_ptr<Mesh> mesh)
+{
+    m_mesh = mesh;
+}
+
 void Material::apply(std::shared_ptr<Object> object, std::shared_ptr<Camera> camera)
 {
     m_shader->bindShader();

@@ -52,8 +52,8 @@ void Texture::initialize(std::vector<GLfloat> pixels)
     glTexParameteri(m_texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_texture_type, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    glTexParameteri(m_texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(m_texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(m_texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(m_texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void Texture::bind_texture()

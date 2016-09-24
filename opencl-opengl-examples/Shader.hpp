@@ -10,6 +10,7 @@
 #define Shader_hpp
 
 #include <string>
+#include <vector>
 
 #include <GL/glew.h>
 
@@ -20,10 +21,13 @@ class Shader
 private:
     
     GLuint programID;
+    
+    struct ShaderFile {
+        std::string path;
+        GLenum type;
+    };
 
-    std::string vertexShaderPath;
-    std::string geometryShaderPath;
-    std::string fragmentShaderPath;
+    std::vector<ShaderFile> m_shader_files;
     
     GLint getUniformLocation(std::string uniform);
     
@@ -41,6 +45,7 @@ public:
     void setUniform(std::string uniform, glm::mat4 value);
     void setUniform(std::string uniform, glm::vec3 value);
     void setUniform(std::string uniform, glm::vec4 value);
+    void setUniform(std::string uniform, unsigned int value);
 };
 
 #endif /* Shader_hpp */

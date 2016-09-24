@@ -26,6 +26,7 @@ private:
     unsigned int m_current_particle_count;
     
     std::shared_ptr<Mesh> particleMesh;
+    std::shared_ptr<Mesh> m_vector_field_mesh;
     
     cl_context m_cl_gl_context;
     cl_command_queue m_cl_cmd_queue;
@@ -34,8 +35,9 @@ private:
     cl_mem m_cl_particle_buffer;
     
     void initialize_vector_field();
-    
     void initialize_opencl();
+    void initialize_gui(nanogui::Screen *gui_screen);
+    
     void run_particle_simulation(float delta_time);
     
     void set_particle_count(unsigned int particle_count);
