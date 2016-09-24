@@ -174,9 +174,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    bool is_interation_with_gui = gui_screen->cursorPosCallbackEvent(xpos, ypos);
+    bool is_interating_with_gui = gui_screen->cursorPosCallbackEvent(xpos, ypos);
     
-    if (!is_interation_with_gui)
+    if (!is_interating_with_gui)
         currentScene->mouse_callback(xpos, ypos);
 }
 
