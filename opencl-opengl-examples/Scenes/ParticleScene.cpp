@@ -33,7 +33,7 @@ void ParticleScene::initialize_opencl()
     printf("Number of platforms: %u\n", number_of_platforms);
     
     // Get OpenCL version.
-    char* info_string = new char[256];
+    char* info_string = new char[2048];
     
     cl_error = clGetPlatformInfo(cl_platform, CL_PLATFORM_VERSION, sizeof(info_string) * 128, info_string, NULL);
     
@@ -88,11 +88,11 @@ void ParticleScene::initialize_opencl()
     
     cl_error = clBuildProgram(cl_prgm, 0, NULL, "-cl-fast-relaxed-math", NULL, NULL);
     
-    printf("OpenCL program build error: %u\n", cl_error);
-    
-    cl_error = clGetProgramBuildInfo(cl_prgm, cl_device, CL_PROGRAM_BUILD_LOG, sizeof(info_string) * 128, info_string, NULL);
-    
+    cl_error = clGetProgramBuildInfo(cl_prgm, cl_device, CL_PROGRAM_BUILD_LOG, sizeof(info_string) * 2048, info_string, NULL);
+
     printf("OpenCL program build log: %s\n", info_string);
+    
+    CL_CHECK(cl_error);
     
     // Create OpenCL kernel.
         
@@ -129,8 +129,10 @@ void ParticleScene::run_particle_simulation(float delta_time)
     
     CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(m_cl_vector_field_texture), &m_cl_vector_field_texture) );
     
-    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 2, sizeof(float), &delta_time) );
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 2, sizeof(m_cl_vector_field_bounding_box), &m_cl_vector_field_bounding_box) );
     
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 3, sizeof(float), &delta_time) );
+
     CL_CHECK( clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0) );
 
     CL_CHECK( clEnqueueReleaseGLObjects(m_cl_cmd_queue, 2, gl_objects[0], NULL, NULL, NULL) );
@@ -153,15 +155,15 @@ void ParticleScene::initialize_vector_field()
     
     std::vector<GLfloat> pixels = {
         
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
         
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0
     };
     
     vector_field_texture->initialize(pixels);
@@ -227,11 +229,22 @@ void ParticleScene::initialize_vector_field()
     
     m_vector_field_mesh->initialize(vertices, attributes);
     m_vector_field_mesh->setMaterial(vector_field_material);
-    m_vector_field_mesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
+    m_vector_field_mesh->setPosition( glm::vec3(2.0f,2.0f,-2.0f) );
     m_vector_field_mesh->setScale( glm::vec3(2.0f,2.0f,2.0f) );
     m_vector_field_mesh->setRenderingMode(GL_PATCHES);
     m_vector_field_mesh->setNumberOfInstances(10);
     glPatchParameteri(GL_PATCH_VERTICES, 8);
+    
+    // Upload bounding box to OpenCL buffer.
+    glm::vec4 corner1 = m_vector_field_mesh->getModelMatrix() * glm::vec4(-1.0, -1.0, 1.0, 1.0);
+    glm::vec4 corner2 = m_vector_field_mesh->getModelMatrix() * glm::vec4(1.0,  1.0,  -1.0, 1.0);
+    std::vector<GLfloat> bounding_box_vertices = {
+        corner1.x, corner1.y, corner1.z, corner1.w,
+        corner2.x, corner2.y, corner2.z, corner2.w
+    };
+    
+    m_cl_vector_field_bounding_box = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(GLfloat) * bounding_box_vertices.size(), bounding_box_vertices.data(), &cl_error);
+    CL_CHECK(cl_error);
     
     rootNode->addChild(m_vector_field_mesh);
     
@@ -423,7 +436,7 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> position_distribution(0, 0);
-    std::uniform_real_distribution<float> velocity_distribution(-3, 3);
+    std::uniform_real_distribution<float> velocity_distribution(0, 3);
     std::uniform_real_distribution<float> life_distribution(0, 10);
     
     for(unsigned int i = 0;i < particle_count;i++) {
@@ -437,12 +450,12 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
         // Velocity.
         vertices.push_back(velocity_distribution(gen));
         vertices.push_back(velocity_distribution(gen));
-        vertices.push_back(velocity_distribution(gen));
+        vertices.push_back(-velocity_distribution(gen));
         vertices.push_back(1.0f);
         
         // Life
         vertices.push_back(0.0f);
-        vertices.push_back(life_distribution(gen));
+        vertices.push_back(5.0f);
     }
     
     std::vector<unsigned int > attributes = {4, 4, 2};

@@ -1,36 +1,8 @@
-//__kernel void sine_wave(__global float4* pos, unsigned int width, unsigned int height, float time)
-//{
-//    unsigned int x = get_global_id(0);
-//    unsigned int y = get_global_id(1);
-//    
-//    // calculate uv coordinates
-//    float u = x / (float) width;
-//    float v = y / (float) height;
-//    u = u*2.0f - 1.0f;
-//    v = v*2.0f - 1.0f;
-//    
-//    // calculate simple sine wave pattern
-//    float freq = 4.0f;
-//    float w = sin(u*freq + time) * cos(v*freq + time) * 0.5f;
-//    
-//    // write output vertex
-//    pos[y*width+x] = (float4)(u, w, v, 1.0f);
-//}
-//
-//
-//__kernel void texture_red(__write_only image2d_t texture)
-//{
-//    int x = get_global_id(0);
-//    int y = get_global_id(1);
-//    int w = get_global_size(0)-1;
-//    int h = get_global_size(1)-1;
-//    int2 coords = (int2)(x,y);
-//    float red = (float)x/(float)w;
-//    float blue = (float)y/(float)h;
-//    float4 val = (float4)(1.0f, 0.0f, 0.0f, 1.0f);
-//    
-//    write_imagef(texture, coords, val);
-//}
+
+struct __attribute__ ((packed)) BoundingBox {
+    float4 corner1;
+    float4 corner2;
+};
 
 struct __attribute__ ((packed)) Particle {
     float4 pos;
@@ -38,7 +10,14 @@ struct __attribute__ ((packed)) Particle {
     float2 life;
 };
 
-__kernel void particle_simulation(__global struct Particle* particles, __write_only image3d_t vector_field, float time)
+const sampler_t vector_field_sampler = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP | CLK_FILTER_LINEAR;
+
+int is_between(float min, float max, float value)
+{
+    return isgreaterequal(max, value) * islessequal(min, value);
+}
+
+__kernel void particle_simulation(__global struct Particle* particles, __read_only image3d_t vector_field, __constant struct BoundingBox* bounding_box, float time)
 {
     unsigned int x = get_global_id(0);
     unsigned int y = get_global_id(1);
@@ -70,5 +49,23 @@ __kernel void particle_simulation(__global struct Particle* particles, __write_o
         particle->life.x = particle->life.y;
     }
     
-    write_imagef(vector_field, (int4)(1,1,0,0), (float4)(0.0f,0.0f,1.0f,0.0f));
+    float4 particle_pos_in_vector_field = particle->pos - bounding_box->corner1;
+    float4 vector_field_length = bounding_box->corner2 - bounding_box->corner1;
+    
+    particle_pos_in_vector_field.xyz /= vector_field_length.xyz;
+    
+    int is_inside_vector_field = is_between(0.0f, 1.0f, particle_pos_in_vector_field.x) * is_between(0.0f, 1.0f, particle_pos_in_vector_field.y) * is_between(0.0f, 1.0f, particle_pos_in_vector_field.z);
+    
+//    printf("\n%f, %f, %f, %f\n%u, %u, %u\n", particle_pos_in_vector_field, is_between(0.0f, 1.0f, particle_pos_in_vector_field.x), is_between(0.0f, 1.0f, particle_pos_in_vector_field.y), is_between(0.0f, 1.0f, particle_pos_in_vector_field.z));
+    
+    if(!is_inside_vector_field)
+        return;
+    
+    float4 voxel = (float4)(1.0f / float(get_image_width(vector_field)) / 2.0f, 1.0f / float(get_image_height(vector_field)) / 2.0f, 1.0f / float(get_image_depth(vector_field)) / 2.0f, 0.0f);
+    voxel = mix(voxel, (float4)(1.0f) - voxel, particle_pos_in_vector_field);
+    
+    float4 acceleration = read_imagef(vector_field, vector_field_sampler, voxel);
+    
+    particle->vel.xyz += acceleration.xyz * time;
+//    printf("\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n\n", vector_field_length, particle_pos_in_vector_field, voxel, acceleration);
 }
