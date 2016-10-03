@@ -7,6 +7,9 @@
 //
 
 #include "Texture.hpp"
+#include "Utility.hpp"
+
+#include <cmath>
 
 void Texture::initialize(std::vector<GLfloat> pixels)
 {
@@ -54,6 +57,26 @@ void Texture::initialize(std::vector<GLfloat> pixels)
 
     glTexParameteri(m_texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(m_texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void Texture::initialize(std::string file_path)
+{
+    std::string file_extension = file_path.substr(file_path.find_last_of('.'), file_path.size());
+    
+    if (file_extension != ".fga") {
+        
+        throw std::invalid_argument("Unsupported texture file type \"" + file_extension + "\"");
+    }
+    
+    std::vector<GLfloat> pixels = utility::load_file_to_values<GLfloat>(file_path);
+    
+    int size = cbrt(pixels.size() / 3);
+    
+    m_width = size;
+    m_height = size;
+    m_depth = size;
+    
+    this->initialize(pixels);
 }
 
 void Texture::bind_texture()

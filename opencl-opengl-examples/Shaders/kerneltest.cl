@@ -36,7 +36,8 @@ __kernel void particle_simulation(__global struct Particle* particles, __read_on
 //
     if(particle->life.x == particle->life.y) {
         
-        particle->pos.xyz = (float3)(0.0f, 0.0f, 0.0f);
+        particle->pos.xyz = (float3)(0.0f);
+        particle->vel.xyz = (float3)(0.0f);
         particle->life.x = 0.0f;
         return;
     }
@@ -64,7 +65,7 @@ __kernel void particle_simulation(__global struct Particle* particles, __read_on
     float4 voxel = (float4)(1.0f / float(get_image_width(vector_field)) / 2.0f, 1.0f / float(get_image_height(vector_field)) / 2.0f, 1.0f / float(get_image_depth(vector_field)) / 2.0f, 0.0f);
     voxel = mix(voxel, (float4)(1.0f) - voxel, particle_pos_in_vector_field);
     
-    float4 acceleration = read_imagef(vector_field, vector_field_sampler, voxel);
+    float4 acceleration = read_imagef(vector_field, vector_field_sampler, voxel) * 0.01;
     
     particle->vel.xyz += acceleration.xyz * time;
 //    printf("\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n\n", vector_field_length, particle_pos_in_vector_field, voxel, acceleration);

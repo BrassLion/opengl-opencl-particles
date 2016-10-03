@@ -57,6 +57,7 @@ public:
     }
     
     void initialize(std::vector<GLfloat> pixels);
+    void initialize(std::string file_path);
     void bind_texture();
     
     GLuint get_texture_id();

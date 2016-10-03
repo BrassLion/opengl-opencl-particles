@@ -166,7 +166,7 @@ void ParticleScene::initialize_vector_field()
         0.0, 1.0, 0.0, 1.0
     };
     
-    vector_field_texture->initialize(pixels);
+    vector_field_texture->initialize("./VF_Vortex.fga");
     
     // Create OpenCL texture object.
     cl_int cl_error;
@@ -229,7 +229,7 @@ void ParticleScene::initialize_vector_field()
     
     m_vector_field_mesh->initialize(vertices, attributes);
     m_vector_field_mesh->setMaterial(vector_field_material);
-    m_vector_field_mesh->setPosition( glm::vec3(2.0f,2.0f,-2.0f) );
+    m_vector_field_mesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
     m_vector_field_mesh->setScale( glm::vec3(2.0f,2.0f,2.0f) );
     m_vector_field_mesh->setRenderingMode(GL_PATCHES);
     m_vector_field_mesh->setNumberOfInstances(10);
@@ -435,8 +435,8 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
     
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> position_distribution(0, 0);
-    std::uniform_real_distribution<float> velocity_distribution(0, 3);
+    std::uniform_real_distribution<float> position_distribution(-1, 1);
+    std::uniform_real_distribution<float> velocity_distribution(0, 0);
     std::uniform_real_distribution<float> life_distribution(0, 10);
     
     for(unsigned int i = 0;i < particle_count;i++) {

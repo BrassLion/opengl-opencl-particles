@@ -9,15 +9,22 @@
 #include "Utility.hpp"
 
 namespace utility
-{    
-    std::string loadFile(std::string filePath)
+{
+    std::ifstream get_file_stream(std::string file_path)
     {
-        std::ifstream ifs(filePath);
+        std::ifstream ifs(file_path);
         
         if (!ifs.is_open()) {
             
             throw std::invalid_argument( "File cannot be opened." );
         }
+        
+        return ifs;
+    }
+    
+    std::string loadFile(std::string filePath)
+    {
+        std::ifstream ifs = get_file_stream(filePath);
         
         std::string content( (std::istreambuf_iterator<char>(ifs) ),
                             (std::istreambuf_iterator<char>()    ) );
