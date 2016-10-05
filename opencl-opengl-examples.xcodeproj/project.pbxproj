@@ -95,7 +95,6 @@
 		223AE4791D6A5F4A0071002A /* ParticleScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleScene.cpp; sourceTree = "<group>"; };
 		223AE47A1D6A5F4A0071002A /* ParticleScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParticleScene.hpp; sourceTree = "<group>"; };
 		22658F281D9165F000CC7C1C /* testsMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsMesh.cpp; sourceTree = "<group>"; };
-		22668EBF1DA1C90A00B911C8 /* VF_Test.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Test.fga; sourceTree = "<group>"; };
 		22668EC01DA1D74600B911C8 /* VF_Wind.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Wind.fga; sourceTree = "<group>"; };
 		227393041D49433B00A3932B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		227393061D496DDA00A3932B /* ShaderReloader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderReloader.cpp; sourceTree = "<group>"; };
@@ -103,6 +102,10 @@
 		22787A6A1D5B7C66004BE000 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		22787A6C1D5BC34F004BE000 /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
 		22787A6D1D5BC34F004BE000 /* Utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utility.hpp; sourceTree = "<group>"; };
+		2298F91E1DA446D6008B41AB /* VF_Point.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Point.fga; sourceTree = "<group>"; };
+		2298F91F1DA447E9008B41AB /* VF_Smoke.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Smoke.fga; sourceTree = "<group>"; };
+		2298F9201DA447E9008B41AB /* VF_Turbulence.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Turbulence.fga; sourceTree = "<group>"; };
+		2298F9211DA449AD008B41AB /* VF_FluidVol.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_FluidVol.fga; sourceTree = "<group>"; };
 		22A1150B1D43BC8600B20CD1 /* opencl-opengl-examples */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "opencl-opengl-examples"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A1150E1D43BC8600B20CD1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		22A1151B1D43C5A900B20CD1 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
@@ -224,9 +227,12 @@
 		22B753581DA1AC8F00F8763B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				22668EBF1DA1C90A00B911C8 /* VF_Test.fga */,
+				2298F9211DA449AD008B41AB /* VF_FluidVol.fga */,
+				2298F91E1DA446D6008B41AB /* VF_Point.fga */,
 				22B753591DA1AC9F00F8763B /* VF_Vortex.fga */,
 				22668EC01DA1D74600B911C8 /* VF_Wind.fga */,
+				2298F91F1DA447E9008B41AB /* VF_Smoke.fga */,
+				2298F9201DA447E9008B41AB /* VF_Turbulence.fga */,
 			);
 			name = Assets;
 			sourceTree = "<group>";

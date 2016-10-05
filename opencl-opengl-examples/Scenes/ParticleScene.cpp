@@ -97,25 +97,6 @@ void ParticleScene::initialize_opencl()
     // Create OpenCL kernel.
         
     m_cl_krnl_particle_simulation = clCreateKernel(cl_prgm, "particle_simulation", &cl_error);
-    
-    // Create OpenGL texture and add to OpenCL.
-    
-//    GLuint texture;
-//    
-//    glGenTextures(1, &texture);
-//    glBindTexture(GL_TEXTURE_2D, texture);
-//    
-//    // Black/white checkerboard
-//    float pixels[] = {
-//        0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-//        1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
-//    };
-//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
-//    
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 void ParticleScene::run_particle_simulation(float delta_time)
@@ -127,11 +108,13 @@ void ParticleScene::run_particle_simulation(float delta_time)
 
     CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 0, sizeof(m_cl_particle_buffer), &m_cl_particle_buffer) );
     
-    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(m_cl_vector_field_texture), &m_cl_vector_field_texture) );
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 1, sizeof(m_cl_rng_seeds), &m_cl_rng_seeds) );
+
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 2, sizeof(m_cl_vector_field_texture), &m_cl_vector_field_texture) );
+
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 3, sizeof(m_cl_vector_field_bounding_box), &m_cl_vector_field_bounding_box) );
     
-    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 2, sizeof(m_cl_vector_field_bounding_box), &m_cl_vector_field_bounding_box) );
-    
-    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 3, sizeof(float), &delta_time) );
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 4, sizeof(float), &delta_time) );
 
     CL_CHECK( clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0) );
 
@@ -166,7 +149,7 @@ void ParticleScene::initialize_vector_field()
         0.0, 1.0, 0.0, 1.0
     };
     
-    vector_field_texture->initialize("./VF_Vortex.fga");
+    vector_field_texture->initialize("./VF_Turbulence.fga");
     
     // Create OpenCL texture object.
     cl_int cl_error;
@@ -430,41 +413,55 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
 
 void ParticleScene::set_particle_count(unsigned int particle_count)
 {
-    std::vector<GLfloat> vertices;
-
+    std::vector<unsigned int> particle_attributes = {4, 4, 2};
     
+    unsigned int total_attributes = std::accumulate(particle_attributes.begin(), particle_attributes.end(), 0);
+
+    std::vector<GLfloat> vertices(particle_count * total_attributes);
+
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> position_distribution(-1, 1);
     std::uniform_real_distribution<float> velocity_distribution(0, 0);
-    std::uniform_real_distribution<float> life_distribution(0, 10);
+    std::uniform_real_distribution<float> life_distribution(0, 100);
     
     for(unsigned int i = 0;i < particle_count;i++) {
         
         // Position.
-        vertices.push_back(position_distribution(gen));
-        vertices.push_back(position_distribution(gen));
-        vertices.push_back(position_distribution(gen));
-        vertices.push_back(1.0f);
+        vertices[i * total_attributes] =       position_distribution(gen);
+        vertices[i * total_attributes + 1] =   position_distribution(gen);
+        vertices[i * total_attributes + 2] =   position_distribution(gen);
+        vertices[i * total_attributes + 3] =   1.0f;
         
         // Velocity.
-        vertices.push_back(velocity_distribution(gen));
-        vertices.push_back(velocity_distribution(gen));
-        vertices.push_back(-velocity_distribution(gen));
-        vertices.push_back(1.0f);
+        vertices[i * total_attributes + 4] =   velocity_distribution(gen);
+        vertices[i * total_attributes + 5] =   velocity_distribution(gen);
+        vertices[i * total_attributes + 6] =   velocity_distribution(gen);
+        vertices[i * total_attributes + 7] =   1.0f;
         
         // Life
-        vertices.push_back(0.0f);
-        vertices.push_back(5.0f);
+        vertices[i * total_attributes + 8] =   0.0f;
+        vertices[i * total_attributes + 9] =   life_distribution(gen);
     }
     
-    std::vector<unsigned int > attributes = {4, 4, 2};
-    
-    particleMesh->initialize(vertices, attributes);
+    particleMesh->initialize(vertices, particle_attributes);
     
     // Regain GL buffer in CL as it has been changed.
     cl_int cl_error;
+        
     m_cl_particle_buffer = clCreateFromGLBuffer(m_cl_gl_context, CL_MEM_READ_WRITE, particleMesh->getVertexBufferObject(), &cl_error);
+    
+    // Generate seeds.
+    
+    std::vector<unsigned int> rng_seeds(particle_count * 2);
+    
+    std::uniform_int_distribution<unsigned int> rng_seed_distribution(0, CL_UINT_MAX);
+    
+    for(unsigned int i = 0;i < particle_count * 2;i++)
+        rng_seeds[i] = rng_seed_distribution(gen);
+
+    m_cl_rng_seeds = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, 2 * sizeof(unsigned int) * particle_count, rng_seeds.data(), &cl_error);
+    CL_CHECK(cl_error);
 }
 
 void ParticleScene::draw()

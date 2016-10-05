@@ -30,12 +30,14 @@ private:
     
     cl_context m_cl_gl_context;
     cl_command_queue m_cl_cmd_queue;
+    
     cl_kernel m_cl_krnl_particle_simulation;
-    cl_kernel m_cl_krnl_new_particles;
+    
     cl_mem m_cl_particle_buffer;
     cl_mem m_cl_vector_field_texture;
     cl_mem m_cl_vector_field_bounding_box;
-    
+    cl_mem m_cl_rng_seeds;
+
     void initialize_vector_field();
     void initialize_opencl();
     void initialize_gui(nanogui::Screen *gui_screen);
