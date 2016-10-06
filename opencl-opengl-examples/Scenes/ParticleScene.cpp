@@ -304,34 +304,23 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
     gui_window->setPosition(Eigen::Vector2i(15, 110));
     gui_window->setLayout(new nanogui::GroupLayout());
     
-    new nanogui::Label(gui_window, "Particle count", "sans-bold");
-
-    nanogui::Widget *panel = new nanogui::Widget(gui_window);
-    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                            nanogui::Alignment::Middle, 0, 20));
-    
-    nanogui::Slider *slider = new nanogui::Slider(panel);
-    slider->setValue((float)m_current_particle_count / (float)m_maximum_particle_count);
-    slider->setFixedWidth(80);
-
-    nanogui::TextBox *textBox = new nanogui::TextBox(panel);
-    textBox->setValue(std::to_string(m_current_particle_count));
-    slider->setCallback([&, textBox](float value) {
-        textBox->setValue(std::to_string((unsigned int) (m_minimum_particle_count +  value * (m_maximum_particle_count - m_minimum_particle_count))));
-    });
-    slider->setFinalCallback([&](float value) {
-        
-        unsigned int new_particle_count = (unsigned int) (m_minimum_particle_count +  value * (m_maximum_particle_count - m_minimum_particle_count));
-        
-        printf("Final slider value: %u\n", new_particle_count);
-        
-        m_current_particle_count = new_particle_count;
-        
-        this->set_particle_count(m_current_particle_count);
-    });
-    textBox->setFixedSize(Eigen::Vector2i(70,25));
-    textBox->setFontSize(20);
-    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    new_variable_slider(
+                        gui_window,
+                        "Particle count",
+                        (float)m_current_particle_count / (float)m_maximum_particle_count,
+                        m_minimum_particle_count,
+                        m_maximum_particle_count,
+                        [](float value){},
+                        [&](float value) {
+                            
+                            unsigned int new_particle_count = (unsigned int) (m_minimum_particle_count +  value * (m_maximum_particle_count - m_minimum_particle_count));
+                            
+                            printf("Final slider value: %u\n", new_particle_count);
+                            
+                            m_current_particle_count = new_particle_count;
+                            
+                            this->set_particle_count(m_current_particle_count);
+                        });
     
     
     // Vector field GUI.
@@ -340,119 +329,67 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
     
     //-------------------------------------------
     
-    new nanogui::Label(gui_window, "Vector field points x", "sans-bold");
-
-    panel = new nanogui::Widget(gui_window);
-    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                            nanogui::Alignment::Middle, 0, 20));
-    
-    slider = new nanogui::Slider(panel);
-    
     std::shared_ptr<VectorFieldMaterial> material = std::static_pointer_cast<VectorFieldMaterial>(m_vector_field_mesh->get_material());
-    
-    slider->setValue((float)material->get_field_sample_points_x() / maximum_sample_points);
-    slider->setFixedWidth(80);
-    
-    textBox = new nanogui::TextBox(panel);
-    textBox->setValue(std::to_string(m_current_particle_count));
-    
-    slider->setCallback([=](float value) {
-        
-        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
-        
-        material->set_field_sample_points_x(new_sample_points_count);
-        
-        textBox->setValue(std::to_string(new_sample_points_count));
-    });
-    
-    textBox->setFixedSize(Eigen::Vector2i(70,25));
-    textBox->setFontSize(20);
-    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+
+    new_variable_slider(
+                        gui_window,
+                        "Vector field points x",
+                        (float)material->get_field_sample_points_x() / maximum_sample_points,
+                        1,
+                        20,
+                        [=](float value) {
+                            
+                            unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+                            
+                            material->set_field_sample_points_x(new_sample_points_count);
+                        },
+                        [](float value){});
     
     //-------------------------------------------
     
-    new nanogui::Label(gui_window, "Vector field points y", "sans-bold");
-
-    panel = new nanogui::Widget(gui_window);
-    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                            nanogui::Alignment::Middle, 0, 20));
-    
-    slider = new nanogui::Slider(panel);
-    
-    slider->setValue((float)material->get_field_sample_points_y() / maximum_sample_points);
-    slider->setFixedWidth(80);
-    
-    textBox = new nanogui::TextBox(panel);
-    textBox->setValue(std::to_string(m_current_particle_count));
-    
-    slider->setCallback([=](float value) {
-        
-        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
-        
-        material->set_field_sample_points_y(new_sample_points_count);
-        
-        textBox->setValue(std::to_string(new_sample_points_count));
-    });
-    
-    textBox->setFixedSize(Eigen::Vector2i(70,25));
-    textBox->setFontSize(20);
-    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    new_variable_slider(
+                        gui_window,
+                        "Vector field points y",
+                        (float)material->get_field_sample_points_y() / maximum_sample_points,
+                        1,
+                        20,
+                        [=](float value) {
+                            
+                            unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+                            
+                            material->set_field_sample_points_y(new_sample_points_count);
+                        },
+                        [](float value){});
     
     //-------------------------------------------
-
-    new nanogui::Label(gui_window, "Vector field points z", "sans-bold");
-
-    panel = new nanogui::Widget(gui_window);
-    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                            nanogui::Alignment::Middle, 0, 20));
     
-    slider = new nanogui::Slider(panel);
-    
-    slider->setValue((float)m_vector_field_mesh->get_number_of_instances() / maximum_sample_points);
-    slider->setFixedWidth(80);
-    
-    textBox = new nanogui::TextBox(panel);
-    textBox->setValue(std::to_string(m_current_particle_count));
-    
-    slider->setCallback([=](float value) {
-        
-        unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
-        
-        m_vector_field_mesh->setNumberOfInstances(new_sample_points_count);
-        
-        textBox->setValue(std::to_string(new_sample_points_count));
-    });
-    
-    textBox->setFixedSize(Eigen::Vector2i(70,25));
-    textBox->setFontSize(20);
-    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    new_variable_slider(
+                        gui_window,
+                        "Vector field points z",
+                        (float)m_vector_field_mesh->get_number_of_instances() / maximum_sample_points,
+                        1,
+                        20,
+                        [=](float value) {
+                            
+                            unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
+                            
+                            m_vector_field_mesh->setNumberOfInstances(new_sample_points_count);
+                        },
+                        [](float value){});
     
     //-------------------------------------------
-
-    new nanogui::Label(gui_window, "Particle tightness", "sans-bold");
-
-    panel = new nanogui::Widget(gui_window);
-    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
-                                            nanogui::Alignment::Middle, 0, 20));
     
-    slider = new nanogui::Slider(panel);
-    
-    slider->setValue((float)m_particle_tightness / 1.0f);
-    slider->setFixedWidth(80);
-    
-    textBox = new nanogui::TextBox(panel);
-    textBox->setValue(std::to_string(m_particle_tightness));
-    
-    slider->setCallback([=](float value) {
-        
-        m_particle_tightness = value;
-        
-        textBox->setValue(std::to_string(m_particle_tightness));
-    });
-    
-    textBox->setFixedSize(Eigen::Vector2i(70,25));
-    textBox->setFontSize(20);
-    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    new_variable_slider(
+                        gui_window,
+                        "Particle tightness",
+                        (float)m_particle_tightness / 1.0f,
+                        0.0f,
+                        1.0f,
+                        [=](float value) {
+                            
+                            m_particle_tightness = value;
+                        },
+                        [](float value){});
 }
 
 void ParticleScene::set_particle_count(unsigned int particle_count)

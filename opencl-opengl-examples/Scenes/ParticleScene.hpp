@@ -43,6 +43,38 @@ private:
     void initialize_opencl();
     void initialize_gui(nanogui::Screen *gui_screen);
     
+    template<typename T>
+    static void new_variable_slider(nanogui::Window *gui_window, std::string title, float initial_value, T min_slider_value, T max_slider_value, std::function<void(float)> callback, std::function<void(float)> final_callback)
+    {
+        new nanogui::Label(gui_window, title, "sans-bold");
+        
+        nanogui::Widget *panel = new nanogui::Widget(gui_window);
+        panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
+                                                nanogui::Alignment::Middle, 0, 20));
+        
+        nanogui::Slider *slider = new nanogui::Slider(panel);
+        slider->setValue(initial_value);
+        slider->setFixedWidth(80);
+        
+        nanogui::TextBox *textBox = new nanogui::TextBox(panel);
+        
+        slider->setCallback([=](float value) {
+            
+            callback(value);
+            
+            std::string value_string = std::to_string((T) (min_slider_value +  value * (max_slider_value - min_slider_value)));
+            value_string.resize(6);
+            
+            textBox->setValue(value_string);
+        });
+        slider->setFinalCallback(final_callback);
+        textBox->setFixedSize(Eigen::Vector2i(70,25));
+        textBox->setFontSize(20);
+        textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+        
+        slider->callback()(initial_value);
+    }
+    
     void run_particle_simulation(float delta_time);
     
     void set_particle_count(unsigned int particle_count);

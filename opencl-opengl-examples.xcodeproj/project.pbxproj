@@ -84,6 +84,7 @@
 		2201E2A61D860BC100D1B364 /* Material.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Material.hpp; sourceTree = "<group>"; };
 		2201E2AA1D874D2100D1B364 /* ParticleMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleMaterial.cpp; sourceTree = "<group>"; };
 		2201E2AB1D874D2100D1B364 /* ParticleMaterial.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParticleMaterial.hpp; sourceTree = "<group>"; };
+		2204A6AB1DA6E8E500E354A7 /* VF_Turbulence.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Turbulence.fga; sourceTree = "<group>"; };
 		22066CAE1D4BED49004004B6 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		22066CAF1D4BED49004004B6 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		22066CB11D4BEDB2004004B6 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
@@ -104,7 +105,6 @@
 		22787A6D1D5BC34F004BE000 /* Utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utility.hpp; sourceTree = "<group>"; };
 		2298F91E1DA446D6008B41AB /* VF_Point.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Point.fga; sourceTree = "<group>"; };
 		2298F91F1DA447E9008B41AB /* VF_Smoke.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Smoke.fga; sourceTree = "<group>"; };
-		2298F9201DA447E9008B41AB /* VF_Turbulence.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Turbulence.fga; sourceTree = "<group>"; };
 		2298F9211DA449AD008B41AB /* VF_FluidVol.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_FluidVol.fga; sourceTree = "<group>"; };
 		22A1150B1D43BC8600B20CD1 /* opencl-opengl-examples */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "opencl-opengl-examples"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A1150E1D43BC8600B20CD1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 				22B753591DA1AC9F00F8763B /* VF_Vortex.fga */,
 				22668EC01DA1D74600B911C8 /* VF_Wind.fga */,
 				2298F91F1DA447E9008B41AB /* VF_Smoke.fga */,
-				2298F9201DA447E9008B41AB /* VF_Turbulence.fga */,
+				2204A6AB1DA6E8E500E354A7 /* VF_Turbulence.fga */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
