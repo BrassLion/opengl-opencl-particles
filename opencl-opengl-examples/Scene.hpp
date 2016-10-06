@@ -26,6 +26,7 @@ private:
     // Mouse variables.
     float lastX = 400, lastY = 300;
     bool firstMouse = true;
+    bool is_mouse_down = false;
     
 protected:
         
@@ -65,6 +66,7 @@ public:
     
     void key_callback(int key, int action);
     void mouse_callback(double xpos, double ypos);
+    void mouse_button_callback(int button, int action, int modifiers);
     void scroll_callback(double xoffset, double yoffset);
 };
 

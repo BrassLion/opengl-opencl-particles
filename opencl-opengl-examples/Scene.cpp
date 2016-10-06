@@ -107,8 +107,25 @@ void Scene::draw()
     renderer->draw(rootNode);
 }
 
+void Scene::mouse_button_callback(int button, int action, int modifiers)
+{
+    if(button == GLFW_MOUSE_BUTTON_1) {
+        
+        if(action == GLFW_PRESS) {
+            is_mouse_down = true;
+            firstMouse = true;
+        }
+        
+        else
+            is_mouse_down = false;
+    }
+}
+
 void Scene::mouse_callback(double xpos, double ypos)
 {
+    if(!is_mouse_down)
+        return;
+    
     if(firstMouse)
     {
         lastX = xpos;

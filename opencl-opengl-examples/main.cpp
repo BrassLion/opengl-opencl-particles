@@ -183,6 +183,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void button_callback(GLFWwindow* window, int button, int action, int modifiers)
 {
     gui_screen->mouseButtonCallbackEvent(button, action, modifiers);
+    
+    currentScene->mouse_button_callback(button, action, modifiers);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
