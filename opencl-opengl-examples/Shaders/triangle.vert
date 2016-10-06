@@ -17,5 +17,4 @@ void main()
     fragment_uv = uv; 
  
     gl_Position = mvpMatrix * vec4(position, 1.0);
-    gl_PointSize = 10.0f;
 }

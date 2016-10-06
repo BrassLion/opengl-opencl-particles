@@ -63,13 +63,13 @@ private:
             callback(value);
             
             std::string value_string = std::to_string((T) (min_slider_value +  value * (max_slider_value - min_slider_value)));
-            value_string.resize(6);
+            value_string.resize(8);
             
             textBox->setValue(value_string);
         });
         slider->setFinalCallback(final_callback);
         textBox->setFixedSize(Eigen::Vector2i(70,25));
-        textBox->setFontSize(20);
+        textBox->setFontSize(14);
         textBox->setAlignment(nanogui::TextBox::Alignment::Right);
         
         slider->callback()(initial_value);
@@ -85,7 +85,7 @@ public:
     {
         m_minimum_particle_count = 1;
         m_maximum_particle_count = 1000000;
-        m_current_particle_count = 1;
+        m_current_particle_count = 500000;
         m_particle_tightness = 0.0f;
     }
     

@@ -20,5 +20,5 @@ void main()
     fragment_particle_life = life;
     
     gl_Position = mvpMatrix * position;
-    gl_PointSize = 5.0;
+    gl_PointSize = 2.0;
 }
