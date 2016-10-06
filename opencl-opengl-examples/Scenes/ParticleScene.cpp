@@ -101,6 +101,16 @@ void ParticleScene::initialize_opencl()
 
 void ParticleScene::run_particle_simulation(float delta_time)
 {
+    // Upload bounding box to OpenCL buffer.
+    glm::vec4 corner1 = m_vector_field_mesh->getModelMatrix() * glm::vec4(-1.0, -1.0, 1.0, 1.0);
+    glm::vec4 corner2 = m_vector_field_mesh->getModelMatrix() * glm::vec4(1.0,  1.0,  -1.0, 1.0);
+    std::vector<GLfloat> bounding_box_vertices = {
+        corner1.x, corner1.y, corner1.z, corner1.w,
+        corner2.x, corner2.y, corner2.z, corner2.w
+    };
+    
+    CL_CHECK( clEnqueueWriteBuffer(m_cl_cmd_queue, m_cl_vector_field_bounding_box, CL_TRUE, 0, sizeof(GLfloat) * 8, bounding_box_vertices.data(), NULL, NULL, NULL) );
+    
     size_t global_work_size[] = {m_current_particle_count, 1};
     cl_mem *gl_objects[] {&m_cl_particle_buffer, &m_cl_vector_field_texture};
 
@@ -220,15 +230,7 @@ void ParticleScene::initialize_vector_field()
     m_vector_field_mesh->setNumberOfInstances(10);
     glPatchParameteri(GL_PATCH_VERTICES, 8);
     
-    // Upload bounding box to OpenCL buffer.
-    glm::vec4 corner1 = m_vector_field_mesh->getModelMatrix() * glm::vec4(-1.0, -1.0, 1.0, 1.0);
-    glm::vec4 corner2 = m_vector_field_mesh->getModelMatrix() * glm::vec4(1.0,  1.0,  -1.0, 1.0);
-    std::vector<GLfloat> bounding_box_vertices = {
-        corner1.x, corner1.y, corner1.z, corner1.w,
-        corner2.x, corner2.y, corner2.z, corner2.w
-    };
-    
-    m_cl_vector_field_bounding_box = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(GLfloat) * bounding_box_vertices.size(), bounding_box_vertices.data(), &cl_error);
+    m_cl_vector_field_bounding_box = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_ONLY, sizeof(GLfloat) * 8, NULL, &cl_error);
     CL_CHECK(cl_error);
     
     rootNode->addChild(m_vector_field_mesh);
@@ -453,6 +455,8 @@ void ParticleScene::draw()
     Scene::draw();
     
     ParticleScene::run_particle_simulation(0.0166666f);
-        
+    
+//    m_vector_field_mesh->setOrientation(m_vector_field_mesh->getOrientation() * glm::angleAxis(glm::radians(1.0f), glm::vec3(0.0f,1.0f,0.0f)));
+    
     glFinish();
 }
