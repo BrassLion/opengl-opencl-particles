@@ -290,19 +290,28 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
 {
     // Add GUI window.
     nanogui::Window *gui_window = new nanogui::Window(gui_screen, "Particles");
-    gui_window->setPosition(Eigen::Vector2i(150, 15));
+    
+    // Setup theme.
+    nanogui::Theme *theme = gui_window->theme();
+    theme->mWindowFillUnfocused = nanogui::Color(0, 0, 0, 0);
+    theme->mDropShadow = nanogui::Color(0, 0, 0, 0);
+    theme->mWindowHeaderGradientTop = nanogui::Color(0, 0, 0, 0);
+    theme->mWindowHeaderGradientBot = nanogui::Color(0, 0, 0, 0);
+    theme->mWindowHeaderSepTop = nanogui::Color(0, 0, 0, 0);
+    
+    gui_window->setPosition(Eigen::Vector2i(15, 110));
     gui_window->setLayout(new nanogui::GroupLayout());
     
+    new nanogui::Label(gui_window, "Particle count", "sans-bold");
+
     nanogui::Widget *panel = new nanogui::Widget(gui_window);
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
                                             nanogui::Alignment::Middle, 0, 20));
     
-    new nanogui::Label(panel, "Particle count", "sans-bold");
-    
     nanogui::Slider *slider = new nanogui::Slider(panel);
     slider->setValue((float)m_current_particle_count / (float)m_maximum_particle_count);
     slider->setFixedWidth(80);
-    
+
     nanogui::TextBox *textBox = new nanogui::TextBox(panel);
     textBox->setValue(std::to_string(m_current_particle_count));
     slider->setCallback([&, textBox](float value) {
@@ -327,11 +336,13 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
     
     float maximum_sample_points = 20.0f;
     
+    //-------------------------------------------
+    
+    new nanogui::Label(gui_window, "Vector field points x", "sans-bold");
+
     panel = new nanogui::Widget(gui_window);
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
                                             nanogui::Alignment::Middle, 0, 20));
-    
-    new nanogui::Label(panel, "Vector field points x", "sans-bold");
     
     slider = new nanogui::Slider(panel);
     
@@ -356,11 +367,13 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
     textBox->setFontSize(20);
     textBox->setAlignment(nanogui::TextBox::Alignment::Right);
     
+    //-------------------------------------------
+    
+    new nanogui::Label(gui_window, "Vector field points y", "sans-bold");
+
     panel = new nanogui::Widget(gui_window);
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
                                             nanogui::Alignment::Middle, 0, 20));
-    
-    new nanogui::Label(panel, "Vector field points y", "sans-bold");
     
     slider = new nanogui::Slider(panel);
     
@@ -383,11 +396,13 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
     textBox->setFontSize(20);
     textBox->setAlignment(nanogui::TextBox::Alignment::Right);
     
+    //-------------------------------------------
+
+    new nanogui::Label(gui_window, "Vector field points z", "sans-bold");
+
     panel = new nanogui::Widget(gui_window);
     panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
                                             nanogui::Alignment::Middle, 0, 20));
-    
-    new nanogui::Label(panel, "Vector field points z", "sans-bold");
     
     slider = new nanogui::Slider(panel);
     
@@ -404,6 +419,33 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
         m_vector_field_mesh->setNumberOfInstances(new_sample_points_count);
         
         textBox->setValue(std::to_string(new_sample_points_count));
+    });
+    
+    textBox->setFixedSize(Eigen::Vector2i(70,25));
+    textBox->setFontSize(20);
+    textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+    
+    //-------------------------------------------
+
+    new nanogui::Label(gui_window, "Particle tightness", "sans-bold");
+
+    panel = new nanogui::Widget(gui_window);
+    panel->setLayout(new nanogui::BoxLayout(nanogui::Orientation::Horizontal,
+                                            nanogui::Alignment::Middle, 0, 20));
+    
+    slider = new nanogui::Slider(panel);
+    
+    slider->setValue((float)m_particle_tightness / 1.0f);
+    slider->setFixedWidth(80);
+    
+    textBox = new nanogui::TextBox(panel);
+    textBox->setValue(std::to_string(m_particle_tightness));
+    
+    slider->setCallback([=](float value) {
+        
+        m_particle_tightness = value;
+        
+        textBox->setValue(std::to_string(m_particle_tightness));
     });
     
     textBox->setFixedSize(Eigen::Vector2i(70,25));
