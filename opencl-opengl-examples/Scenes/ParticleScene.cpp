@@ -114,8 +114,10 @@ void ParticleScene::run_particle_simulation(float delta_time)
 
     CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 3, sizeof(m_cl_vector_field_bounding_box), &m_cl_vector_field_bounding_box) );
     
-    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 4, sizeof(float), &delta_time) );
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 4, sizeof(float), &m_particle_tightness) );
 
+    CL_CHECK( clSetKernelArg(m_cl_krnl_particle_simulation, 5, sizeof(float), &delta_time) );
+    
     CL_CHECK( clEnqueueNDRangeKernel(m_cl_cmd_queue, m_cl_krnl_particle_simulation, 2, NULL, global_work_size, NULL, 0, 0, 0) );
 
     CL_CHECK( clEnqueueReleaseGLObjects(m_cl_cmd_queue, 2, gl_objects[0], NULL, NULL, NULL) );

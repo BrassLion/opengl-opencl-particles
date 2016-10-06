@@ -35,7 +35,7 @@ inline float rand_float(__global uint2* rvec, float min, float max) {
     return min + rand * (max - min);
 }
 
-__kernel void particle_simulation(__global struct Particle* particles, __global uint2* rng_seeds, __read_only image3d_t vector_field, __constant struct BoundingBox* bounding_box, float time)
+__kernel void particle_simulation(__global struct Particle* particles, __global uint2* rng_seeds, __read_only image3d_t vector_field, __constant struct BoundingBox* bounding_box, float tightness, float time)
 {
     unsigned int x = get_global_id(0);
     unsigned int y = get_global_id(1);
@@ -77,15 +77,15 @@ __kernel void particle_simulation(__global struct Particle* particles, __global 
     
 //    printf("WORK %u: %u, %u, %f\n", i, rng_seeds[i].xy, rand_float(&rng_seeds[i]));
     
-//    if(!is_inside_vector_field)
-//        return;
+    if(!is_inside_vector_field)
+        return;
     
     float4 voxel = (float4)(1.0f / float(get_image_width(vector_field)) / 2.0f, 1.0f / float(get_image_height(vector_field)) / 2.0f, 1.0f / float(get_image_depth(vector_field)) / 2.0f, 0.0f);
     voxel = mix(voxel, (float4)(1.0f) - voxel, particle_pos_in_vector_field);
     
-    float4 acceleration = read_imagef(vector_field, vector_field_sampler, voxel) * 0.1;
+    float4 acceleration = read_imagef(vector_field, vector_field_sampler, voxel);
     
-    particle->vel.xyz = acceleration.xyz;
+    particle->vel.xyz = particle->vel.xyz * tightness + acceleration.xyz * time;
 //    particle->vel.xyz += acceleration.xyz * time;
 //    printf("\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n\n", vector_field_length, particle_pos_in_vector_field, voxel, acceleration);
 }

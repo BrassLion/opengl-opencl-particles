@@ -24,6 +24,7 @@ private:
     unsigned int m_minimum_particle_count;
     unsigned int m_maximum_particle_count;
     unsigned int m_current_particle_count;
+    float m_particle_tightness;
     
     std::shared_ptr<Mesh> particleMesh;
     std::shared_ptr<Mesh> m_vector_field_mesh;
@@ -53,6 +54,7 @@ public:
         m_minimum_particle_count = 1;
         m_maximum_particle_count = 1000000;
         m_current_particle_count = 1;
+        m_particle_tightness = 0.0f;
     }
     
     void initialize(nanogui::Screen *gui_screen);
