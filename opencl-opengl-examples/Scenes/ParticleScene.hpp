@@ -91,6 +91,8 @@ public:
     
     void initialize(nanogui::Screen *gui_screen);
     void draw();
+    
+    void mouse_callback(double xpos, double ypos);
 };
 
 #endif /* ParticleScene_hpp */

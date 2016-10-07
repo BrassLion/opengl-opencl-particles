@@ -447,6 +447,13 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
     CL_CHECK(cl_error);
 }
 
+void ParticleScene::mouse_callback(double xpos, double ypos)
+{
+    Scene::mouse_callback(xpos, ypos);
+    
+
+}
+
 void ParticleScene::draw()
 {
     glEnable(GL_BLEND);

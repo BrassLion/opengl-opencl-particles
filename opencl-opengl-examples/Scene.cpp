@@ -123,24 +123,25 @@ void Scene::mouse_button_callback(int button, int action, int modifiers)
 
 void Scene::mouse_callback(double xpos, double ypos)
 {
-    if(!is_mouse_down)
-        return;
+    // Rotate scene
+    if(is_mouse_down) {
     
-    if(firstMouse)
-    {
+        if(firstMouse)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            firstMouse = false;
+        }
+        
+        GLfloat xoffset = xpos - lastX;
+        GLfloat yoffset = lastY - ypos;  // Reversed since y-coordinates go from bottom to left
+        
         lastX = xpos;
         lastY = ypos;
-        firstMouse = false;
+        
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * xoffset, glm::vec3(0.0f, 1.0f, 0.0f)) );
+        cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * yoffset, glm::vec3(1.0f, 0.0f, 0.0f)) );
     }
-    
-    GLfloat xoffset = xpos - lastX;
-    GLfloat yoffset = lastY - ypos;  // Reversed since y-coordinates go from bottom to left
-    
-    lastX = xpos;
-    lastY = ypos;
-    
-    cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * xoffset, glm::vec3(0.0f, 1.0f, 0.0f)) );
-    cameraContainer->setOrientation( cameraContainer->getOrientation() * glm::angleAxis(0.05f * yoffset, glm::vec3(1.0f, 0.0f, 0.0f)) );
 }
 
 void Scene::scroll_callback(double xoffset, double yoffset)
