@@ -168,8 +168,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
     
-    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) 
-        for(nanogui::Widget *widget : gui_screen->children())
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+        for (nanogui::Widget *widget : gui_screen->children())
             widget->setVisible(!widget->visible());
     
     else

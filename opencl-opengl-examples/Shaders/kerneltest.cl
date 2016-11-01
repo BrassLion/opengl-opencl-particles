@@ -55,7 +55,7 @@ __kernel void particle_simulation(__global struct Particle* particles, __global 
     if(particle->life.x == particle->life.y) {
         
         particle->pos.xyz = (float3)(rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f));
-        particle->vel.xyz = (float3)(0.0f);
+        particle->vel.xyz = (float3)(rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f));
         particle->life.x = 0.0f;
         return;
     }
