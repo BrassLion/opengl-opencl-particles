@@ -17,7 +17,7 @@
 		22A1150F1D43BC8600B20CD1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22A1150E1D43BC8600B20CD1 /* main.cpp */; };
 		22B4224C1D8B681E00FDC2F9 /* testsMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */; };
 		22B4224D1D8B681E00FDC2F9 /* testsUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */; };
-		22B5CACC1DC9513E00F2500D /* libopencl-opengl-framework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B5CACB1DC9511200F2500D /* libopencl-opengl-framework.a */; };
+		22B5CAD71DC9621700F2500D /* libopencl-opengl-framework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B5CAD61DC9608200F2500D /* libopencl-opengl-framework.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -33,18 +33,11 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		22B5CACA1DC9511200F2500D /* PBXContainerItemProxy */ = {
+		22B5CAD51DC9608200F2500D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 22B5CAC61DC9511200F2500D /* opencl-opengl-framework.xcodeproj */;
+			containerPortal = 22B5CAD11DC9608200F2500D /* opencl-opengl-framework.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 22B5CA8C1DC94F6B00F2500D;
-			remoteInfo = "opencl-opengl-framework";
-		};
-		22B5CACD1DC9517D00F2500D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 22B5CAC61DC9511200F2500D /* opencl-opengl-framework.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 22B5CA8B1DC94F6B00F2500D;
 			remoteInfo = "opencl-opengl-framework";
 		};
 /* End PBXContainerItemProxy section */
@@ -91,7 +84,7 @@
 		22B422491D8B681E00FDC2F9 /* catch.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = catch.hh; sourceTree = "<group>"; };
 		22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsMain.cpp; sourceTree = "<group>"; };
 		22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testsUtility.cpp; sourceTree = "<group>"; };
-		22B5CAC61DC9511200F2500D /* opencl-opengl-framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "opencl-opengl-framework.xcodeproj"; path = "../opencl-opengl-framework/opencl-opengl-framework.xcodeproj"; sourceTree = "<group>"; };
+		22B5CAD11DC9608200F2500D /* opencl-opengl-framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "opencl-opengl-framework.xcodeproj"; path = "dependencies/framework/opencl-opengl-framework.xcodeproj"; sourceTree = "<group>"; };
 		22B753591DA1AC9F00F8763B /* VF_Vortex.fga */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VF_Vortex.fga; sourceTree = "<group>"; };
 		22FAFF711D8DAC00003A7465 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22B5CACC1DC9513E00F2500D /* libopencl-opengl-framework.a in Frameworks */,
+				22B5CAD71DC9621700F2500D /* libopencl-opengl-framework.a in Frameworks */,
 				22787A6B1D5B7C66004BE000 /* OpenCL.framework in Frameworks */,
 				227393051D49433B00A3932B /* OpenGL.framework in Frameworks */,
 			);
@@ -132,7 +125,7 @@
 			children = (
 				22787A6A1D5B7C66004BE000 /* OpenCL.framework */,
 				227393041D49433B00A3932B /* OpenGL.framework */,
-				22B5CAC61DC9511200F2500D /* opencl-opengl-framework.xcodeproj */,
+				22B5CAD11DC9608200F2500D /* opencl-opengl-framework.xcodeproj */,
 				22A1150D1D43BC8600B20CD1 /* opencl-opengl-examples */,
 				22B422481D8B681E00FDC2F9 /* opencl-opengl-examples-tests */,
 				22A1150C1D43BC8600B20CD1 /* Products */,
@@ -174,10 +167,10 @@
 			path = "opencl-opengl-examples-tests";
 			sourceTree = SOURCE_ROOT;
 		};
-		22B5CAC71DC9511200F2500D /* Products */ = {
+		22B5CAD21DC9608200F2500D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				22B5CACB1DC9511200F2500D /* libopencl-opengl-framework.a */,
+				22B5CAD61DC9608200F2500D /* libopencl-opengl-framework.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,7 +203,6 @@
 				22A115201D43D64100B20CD1 /* PBXBuildRule */,
 			);
 			dependencies = (
-				22B5CACE1DC9517D00F2500D /* PBXTargetDependency */,
 			);
 			name = "opencl-opengl-examples";
 			productName = OpenGLTest;
@@ -262,8 +254,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 22B5CAC71DC9511200F2500D /* Products */;
-					ProjectRef = 22B5CAC61DC9511200F2500D /* opencl-opengl-framework.xcodeproj */;
+					ProductGroup = 22B5CAD21DC9608200F2500D /* Products */;
+					ProjectRef = 22B5CAD11DC9608200F2500D /* opencl-opengl-framework.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -275,11 +267,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		22B5CACB1DC9511200F2500D /* libopencl-opengl-framework.a */ = {
+		22B5CAD61DC9608200F2500D /* libopencl-opengl-framework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libopencl-opengl-framework.a";
-			remoteRef = 22B5CACA1DC9511200F2500D /* PBXContainerItemProxy */;
+			remoteRef = 22B5CAD51DC9608200F2500D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -308,14 +300,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		22B5CACE1DC9517D00F2500D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "opencl-opengl-framework";
-			targetProxy = 22B5CACD1DC9517D00F2500D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		22A115031D43BBAE00B20CD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -323,6 +307,7 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					/usr/local/include/eigen3,
+					$BUILT_PRODUCTS_DIR/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
@@ -340,6 +325,7 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					/usr/local/include/eigen3,
+					$BUILT_PRODUCTS_DIR/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (

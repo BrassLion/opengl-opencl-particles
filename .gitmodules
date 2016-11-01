@@ -1,0 +1,3 @@
+[submodule "dependencies/framework"]
+	path = dependencies/framework
+	url = https://gitlab.com/BrassLion/opencl-opengl-framework.git
