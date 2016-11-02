@@ -38,12 +38,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 const GLuint WIDTH = 800, HEIGHT = 600;
 
 int frame = 0;
-double lastTime = 0;
+double last_time = 0;
 
 // GUI.
 nanogui::Screen* gui_screen;
 
-std::unique_ptr<Scene> currentScene;
+std::unique_ptr<Scene> current_scene;
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -105,18 +105,18 @@ int main()
 
     nanogui::Button *b = new nanogui::Button(popup, "Basic scene");
     b->setCallback([&]{
-        currentScene = std::unique_ptr<Scene>(new Scene(width, height));
-        currentScene->initialize(gui_screen);
+        current_scene = std::unique_ptr<Scene>(new Scene(width, height));
+        current_scene->initialize(gui_screen);
     });
     
     b = new nanogui::Button(popup, "OpenCL scene");
     b->setCallback([&]{
-        currentScene = std::unique_ptr<Scene>(new ParticleScene(width, height));
-        currentScene->initialize(gui_screen);
+        current_scene = std::unique_ptr<Scene>(new ParticleScene(width, height));
+        current_scene->initialize(gui_screen);
     });
     
-    currentScene = std::unique_ptr<ParticleScene>(new ParticleScene(width, height));
-    currentScene->initialize(gui_screen);
+    current_scene = std::unique_ptr<ParticleScene>(new ParticleScene(width, height));
+    current_scene->initialize(gui_screen);
     
     gui_screen->performLayout();
     
@@ -127,7 +127,7 @@ int main()
         glfwPollEvents();
         
         // Draw our first triangle
-        currentScene->draw();
+        current_scene->draw();
         
         // Draw GUI.
         gui_screen->drawContents();
@@ -136,8 +136,8 @@ int main()
         // Swap the screen buffers
         glfwSwapBuffers(window);
         
-        double currentTime = glfwGetTime();
-        double delta = currentTime - lastTime;
+        double current_time = glfwGetTime();
+        double delta = current_time - last_time;
         
         frame++;
         if ( delta >= 1.0 ){ // If last cout was more than 1 sec ago
@@ -151,7 +151,7 @@ int main()
             glfwSetWindowTitle(window, ss.str().c_str());
             
             frame = 0;
-            lastTime = currentTime;
+            last_time = current_time;
         }
     }
     
@@ -173,7 +173,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             widget->setVisible(!widget->visible());
     
     else
-        currentScene->key_callback(key, action);
+        current_scene->key_callback(key, action);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -181,19 +181,19 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     bool is_interating_with_gui = gui_screen->cursorPosCallbackEvent(xpos, ypos);
     
     if (!is_interating_with_gui)
-        currentScene->mouse_callback(xpos, ypos);
+        current_scene->mouse_callback(xpos, ypos);
 }
 
 void button_callback(GLFWwindow* window, int button, int action, int modifiers)
 {
     gui_screen->mouseButtonCallbackEvent(button, action, modifiers);
     
-    currentScene->mouse_button_callback(button, action, modifiers);
+    current_scene->mouse_button_callback(button, action, modifiers);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     gui_screen->scrollCallbackEvent(xoffset, yoffset);
     
-    currentScene->scroll_callback(xoffset, yoffset);
+    current_scene->scroll_callback(xoffset, yoffset);
 }
