@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0730"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-               BuildableName = "opencl-opengl-examples-tests"
-               BlueprintName = "opencl-opengl-examples-tests"
-               ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
+               BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
+               BuildableName = "opencl-opengl-examples"
+               BlueprintName = "opencl-opengl-particles"
+               ReferencedContainer = "container:opencl-opengl-particles.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples-tests"
-            BlueprintName = "opencl-opengl-examples-tests"
-            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
+            BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-particles"
+            ReferencedContainer = "container:opencl-opengl-particles.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "$(PROJECT_DIR)/opencl-opengl-examples"
+      customWorkingDirectory = "$(PROJECT_DIR)/opencl-opengl-particles"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -56,26 +56,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples-tests"
-            BlueprintName = "opencl-opengl-examples-tests"
-            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
+            BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-particles"
+            ReferencedContainer = "container:opencl-opengl-particles.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-r console"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-d yes"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-s"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -89,10 +75,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22B422341D8B5A4300FDC2F9"
-            BuildableName = "opencl-opengl-examples-tests"
-            BlueprintName = "opencl-opengl-examples-tests"
-            ReferencedContainer = "container:opencl-opengl-examples.xcodeproj">
+            BlueprintIdentifier = "22A1150A1D43BC8600B20CD1"
+            BuildableName = "opencl-opengl-examples"
+            BlueprintName = "opencl-opengl-particles"
+            ReferencedContainer = "container:opencl-opengl-particles.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
