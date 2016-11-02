@@ -35,7 +35,7 @@ void VectorFieldMaterial::apply(std::shared_ptr<Object> object, std::shared_ptr<
     
     m_vector_field_texture->bind_texture();
         
-    m_shader->setUniform("field_sample_points_x", m_sample_points_x);
-    m_shader->setUniform("field_sample_points_y", m_sample_points_y);
-    m_shader->setUniform("field_sample_points_z", m_mesh.lock()->get_number_of_instances() - 1);
+    m_shader->set_uniform("field_sample_points_x", m_sample_points_x);
+    m_shader->set_uniform("field_sample_points_y", m_sample_points_y);
+    m_shader->set_uniform("field_sample_points_z", m_mesh.lock()->get_number_of_instances() - 1);
 }

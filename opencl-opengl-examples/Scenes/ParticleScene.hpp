@@ -26,7 +26,7 @@ private:
     unsigned int m_current_particle_count;
     float m_particle_tightness;
     
-    std::shared_ptr<Mesh> particleMesh;
+    std::shared_ptr<Mesh> m_particle_mesh;
     std::shared_ptr<Mesh> m_vector_field_mesh;
     
     cl_context m_cl_gl_context;
@@ -56,7 +56,7 @@ private:
         slider->setValue(initial_value);
         slider->setFixedWidth(80);
         
-        nanogui::TextBox *textBox = new nanogui::TextBox(panel);
+        nanogui::TextBox *text_box = new nanogui::TextBox(panel);
         
         slider->setCallback([=](float value) {
             
@@ -65,12 +65,12 @@ private:
             std::string value_string = std::to_string((T) (min_slider_value +  value * (max_slider_value - min_slider_value)));
             value_string.resize(8);
             
-            textBox->setValue(value_string);
+            text_box->setValue(value_string);
         });
         slider->setFinalCallback(final_callback);
-        textBox->setFixedSize(Eigen::Vector2i(70,25));
-        textBox->setFontSize(14);
-        textBox->setAlignment(nanogui::TextBox::Alignment::Right);
+        text_box->setFixedSize(Eigen::Vector2i(70,25));
+        text_box->setFontSize(14);
+        text_box->setAlignment(nanogui::TextBox::Alignment::Right);
         
         slider->callback()(initial_value);
     }

@@ -18,6 +18,7 @@
 		22B4224C1D8B681E00FDC2F9 /* testsMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B4224A1D8B681E00FDC2F9 /* testsMain.cpp */; };
 		22B4224D1D8B681E00FDC2F9 /* testsUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B4224B1D8B681E00FDC2F9 /* testsUtility.cpp */; };
 		22B5CAD71DC9621700F2500D /* libopencl-opengl-framework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B5CAD61DC9608200F2500D /* libopencl-opengl-framework.a */; };
+		22B5CAD91DC96B8600F2500D /* libopencl-opengl-framework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B5CAD61DC9608200F2500D /* libopencl-opengl-framework.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -104,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B5CAD91DC96B8600F2500D /* libopencl-opengl-framework.a in Frameworks */,
 				22658F2B1D9166B200CC7C1C /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

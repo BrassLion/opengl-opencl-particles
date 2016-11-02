@@ -76,7 +76,7 @@ void ParticleScene::initialize_opencl()
     
     cl_program cl_prgm;
     
-    std::string program_source = utility::loadFile("./Shaders/kerneltest.cl");
+    std::string program_source = utility::load_file("./Shaders/kerneltest.cl");
     const char* program_source_char = program_source.c_str();
     size_t program_length = strlen(program_source_char);
     
@@ -102,8 +102,8 @@ void ParticleScene::initialize_opencl()
 void ParticleScene::run_particle_simulation(float delta_time)
 {
     // Upload bounding box to OpenCL buffer.
-    glm::vec4 corner1 = m_vector_field_mesh->getModelMatrix() * glm::vec4(-1.0, -1.0, 1.0, 1.0);
-    glm::vec4 corner2 = m_vector_field_mesh->getModelMatrix() * glm::vec4(1.0,  1.0,  -1.0, 1.0);
+    glm::vec4 corner1 = m_vector_field_mesh->get_model_matrix() * glm::vec4(-1.0, -1.0, 1.0, 1.0);
+    glm::vec4 corner2 = m_vector_field_mesh->get_model_matrix() * glm::vec4(1.0,  1.0,  -1.0, 1.0);
     std::vector<GLfloat> bounding_box_vertices = {
         corner1.x, corner1.y, corner1.z, corner1.w,
         corner2.x, corner2.y, corner2.z, corner2.w
@@ -139,11 +139,11 @@ void ParticleScene::initialize_vector_field()
 {
     std::shared_ptr<Shader> vector_field_shader(new Shader());
     
-    vector_field_shader->setShader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
-    vector_field_shader->setShader("./Shaders/vector_field.geom", GL_GEOMETRY_SHADER);
-    vector_field_shader->setShader("./Shaders/vector_field.tesc", GL_TESS_CONTROL_SHADER);
-    vector_field_shader->setShader("./Shaders/vector_field.tese", GL_TESS_EVALUATION_SHADER);
-    vector_field_shader->setShader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
+    vector_field_shader->set_shader("./Shaders/vector_field.vert", GL_VERTEX_SHADER);
+    vector_field_shader->set_shader("./Shaders/vector_field.geom", GL_GEOMETRY_SHADER);
+    vector_field_shader->set_shader("./Shaders/vector_field.tesc", GL_TESS_CONTROL_SHADER);
+    vector_field_shader->set_shader("./Shaders/vector_field.tese", GL_TESS_EVALUATION_SHADER);
+    vector_field_shader->set_shader("./Shaders/vector_field.frag", GL_FRAGMENT_SHADER);
     vector_field_shader->initialize();
     
     std::shared_ptr<Texture> vector_field_texture( new Texture(2,2,2) );
@@ -223,22 +223,22 @@ void ParticleScene::initialize_vector_field()
     std::vector<unsigned int> attributes = {4, 3};
     
     m_vector_field_mesh->initialize(vertices, attributes);
-    m_vector_field_mesh->setMaterial(vector_field_material);
-    m_vector_field_mesh->setPosition( glm::vec3(0.0f,0.0f,0.0f) );
-    m_vector_field_mesh->setScale( glm::vec3(2.0f,2.0f,2.0f) );
-    m_vector_field_mesh->setRenderingMode(GL_PATCHES);
-    m_vector_field_mesh->setNumberOfInstances(10);
+    m_vector_field_mesh->set_material(vector_field_material);
+    m_vector_field_mesh->set_position( glm::vec3(0.0f,0.0f,0.0f) );
+    m_vector_field_mesh->set_scale( glm::vec3(2.0f,2.0f,2.0f) );
+    m_vector_field_mesh->set_rendering_mode(GL_PATCHES);
+    m_vector_field_mesh->set_number_of_instances(10);
     glPatchParameteri(GL_PATCH_VERTICES, 8);
     
     m_cl_vector_field_bounding_box = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_ONLY, sizeof(GLfloat) * 8, NULL, &cl_error);
     CL_CHECK(cl_error);
     
-    rootNode->addChild(m_vector_field_mesh);
+    m_root_node->add_child(m_vector_field_mesh);
     
-    shaderReloader->addFilesToWatch([=]{
+    m_shader_reloader->add_files_to_watch([=]{
         
-        renderer->queueFunctionBeforeRender([vector_field_shader] {
-            vector_field_shader->deleteShader();
+        m_renderer->queue_function_before_render([vector_field_shader] {
+            vector_field_shader->delete_shader();
             vector_field_shader->initialize();
         });
     },
@@ -255,32 +255,35 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     this->initialize_opencl();
     this->initialize_vector_field();
     
-    std::shared_ptr<Shader> particleShader( new Shader() );
+    std::shared_ptr<Shader> particle_shader( new Shader() );
     
-    particleShader->setShader("./Shaders/particle.vert", GL_VERTEX_SHADER);
-    particleShader->setShader("./Shaders/particle.frag", GL_FRAGMENT_SHADER);
+    particle_shader->set_shader("./Shaders/particle.vert", GL_VERTEX_SHADER);
+    particle_shader->set_shader("./Shaders/particle.frag", GL_FRAGMENT_SHADER);
     
-    particleShader->initialize();
+    particle_shader->initialize();
     
-    std::shared_ptr<ParticleMaterial> particleMaterial( new ParticleMaterial(particleShader) );
+    std::shared_ptr<ParticleMaterial> particle_material( new ParticleMaterial(particle_shader) );
     
-    particleMesh = std::make_shared<Mesh>();
+    m_particle_mesh = std::make_shared<Mesh>();
     
-    particleMesh->setRenderingMode(GL_POINTS);
-    particleMesh->setMaterial(particleMaterial);
+    m_particle_mesh->set_rendering_mode(GL_POINTS);
+    m_particle_mesh->set_material(particle_material);
     
-    rootNode->addChild(particleMesh);
+    m_root_node->add_child(m_particle_mesh);
     
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     
     this->set_particle_count(m_current_particle_count);
     
     //Shader reloading.    
-    shaderReloader->addFilesToWatch([=]{
+    m_shader_reloader->add_files_to_watch
+    
+    
+    ([=]{
         
-        renderer->queueFunctionBeforeRender([particleShader] {
-            particleShader->deleteShader();
-            particleShader->initialize();
+        m_renderer->queue_function_before_render([particle_shader] {
+            particle_shader->delete_shader();
+            particle_shader->initialize();
         });
     },
                                     "./Shaders/particle.frag",
@@ -375,7 +378,7 @@ void ParticleScene::initialize_gui(nanogui::Screen *gui_screen)
                             
                             unsigned int new_sample_points_count = (unsigned int) (value * maximum_sample_points);
                             
-                            m_vector_field_mesh->setNumberOfInstances(new_sample_points_count);
+                            m_vector_field_mesh->set_number_of_instances(new_sample_points_count);
                         },
                         [](float value){});
     
@@ -427,12 +430,12 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
         vertices[i * total_attributes + 9] =   life_distribution(gen);
     }
     
-    particleMesh->initialize(vertices, particle_attributes);
+    m_particle_mesh->initialize(vertices, particle_attributes);
     
     // Regain GL buffer in CL as it has been changed.
     cl_int cl_error;
         
-    m_cl_particle_buffer = clCreateFromGLBuffer(m_cl_gl_context, CL_MEM_READ_WRITE, particleMesh->getVertexBufferObject(), &cl_error);
+    m_cl_particle_buffer = clCreateFromGLBuffer(m_cl_gl_context, CL_MEM_READ_WRITE, m_particle_mesh->get_vertex_buffer_object(), &cl_error);
     
     // Generate seeds.
     
