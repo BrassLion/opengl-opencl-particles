@@ -289,6 +289,12 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
                                     "./Shaders/particle.frag",
                                     "./Shaders/particle.vert"
                                     );
+
+    std::shared_ptr<utility::DebugAxis> axis = std::make_shared<utility::DebugAxis>();
+    
+    axis->initialize();
+    
+    m_root_node->add_child(axis);
     
     this->initialize_gui(gui_screen);
 }
