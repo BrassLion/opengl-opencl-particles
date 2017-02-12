@@ -469,6 +469,10 @@ void ParticleScene::key_callback(int key, int action)
     if(key == GLFW_KEY_E && action == GLFW_PRESS) {
         set_particle_count(m_current_particle_count);
     }
+    
+    else if(key == GLFW_KEY_P && action == GLFW_PRESS) {
+        m_is_paused = !m_is_paused;
+    }
 }
 
 void ParticleScene::draw()
@@ -478,7 +482,9 @@ void ParticleScene::draw()
     
     Scene::draw();
     
-    ParticleScene::run_particle_simulation(0.0166666f);
+    if (!m_is_paused) {
+        ParticleScene::run_particle_simulation(0.0166666f);
+    }
     
 //    m_vector_field_mesh->setOrientation(m_vector_field_mesh->getOrientation() * glm::angleAxis(glm::radians(1.0f), glm::vec3(0.0f,1.0f,0.0f)));
     

@@ -26,6 +26,8 @@ private:
     unsigned int m_current_particle_count;
     float m_particle_tightness;
     
+    bool m_is_paused = false;
+    
     std::shared_ptr<Mesh> m_particle_mesh;
     std::shared_ptr<Mesh> m_vector_field_mesh;
     
