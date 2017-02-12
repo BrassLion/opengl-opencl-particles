@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 
 #include <OpenGL/OpenGL.h>
+#include <GLFW/glfw3.h>
 
 #include <random>
 
@@ -459,8 +460,15 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
 void ParticleScene::mouse_callback(double xpos, double ypos)
 {
     Scene::mouse_callback(xpos, ypos);
-    
+}
 
+void ParticleScene::key_callback(int key, int action)
+{
+    Scene::key_callback(key, action);
+    
+    if(key == GLFW_KEY_E && action == GLFW_PRESS) {
+        set_particle_count(m_current_particle_count);
+    }
 }
 
 void ParticleScene::draw()

@@ -93,6 +93,7 @@ public:
     void draw();
     
     void mouse_callback(double xpos, double ypos);
+    void key_callback(int key, int action);
 };
 
 #endif /* ParticleScene_hpp */
