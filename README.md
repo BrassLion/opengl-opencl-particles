@@ -6,6 +6,8 @@ Particle attributes are calculated on the GPU using OpenCL, with velocity influe
 
 ## Getting Started
 
+This project has currently only been built and tested on macOS.
+
 ### Prerequisites
 Make sure the following dependancies are installed:
   + [OpenCL-OpenGL Framework](https://gitlab.com/BrassLion/opencl-opengl-framework)
