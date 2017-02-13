@@ -51,22 +51,16 @@ __kernel void particle_simulation(__global struct Particle* particles, __global 
 //    particles[i].pos += 0.01f;
 //    particles[i].vel.xyz += acceleration * time;
 //    uv[0] = (float2)(1.2f, 3.4f);
-//
-    if(particle->life.x == particle->life.y) {
-        
-        particle->pos.xyz = (float3)(rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f));
-        particle->vel.xyz = (float3)(rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f));
-        particle->life.x = 0.0f;
-        return;
-    }
+    
+//    if(particle->life.x == particle->life.y) {
+//        
+//        particle->pos.xyz = (float3)(rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f), rand_float(&rng_seeds[i], -1.0f, 1.0f));
+//        particle->vel.xyz = (float3)(0.0f, 0.0f, 0.0f);
+//        particle->life.x = 0.0f;
+//        return;
+//    }
     
     particle->pos.xyz += particle->vel.xyz * time;
-    particle->life.x += time;
-    
-    if(particle->life.x > particle->life.y) {
-        
-        particle->life.x = particle->life.y;
-    }
     
     float4 particle_pos_in_vector_field = particle->pos - bounding_box->corner1;
     float4 vector_field_length = bounding_box->corner2 - bounding_box->corner1;
@@ -75,10 +69,16 @@ __kernel void particle_simulation(__global struct Particle* particles, __global 
     
     int is_inside_vector_field = is_between(0.0f, 1.0f, particle_pos_in_vector_field.x) * is_between(0.0f, 1.0f, particle_pos_in_vector_field.y) * is_between(0.0f, 1.0f, particle_pos_in_vector_field.z);
     
-//    printf("WORK %u: %u, %u, %f\n", i, rng_seeds[i].xy, rand_float(&rng_seeds[i]));
+    particle->life.x += time * (1 + 100 * !is_inside_vector_field);
     
-    if(!is_inside_vector_field)
+    if(particle->life.x > particle->life.y) {
+        
+        particle->life.x = particle->life.y;
+    }
+    
+    if(!is_inside_vector_field) {
         return;
+    }
     
     float4 voxel = (float4)(1.0f / float(get_image_width(vector_field)) / 2.0f, 1.0f / float(get_image_height(vector_field)) / 2.0f, 1.0f / float(get_image_depth(vector_field)) / 2.0f, 0.0f);
     voxel = mix(voxel, (float4)(1.0f) - voxel, particle_pos_in_vector_field);

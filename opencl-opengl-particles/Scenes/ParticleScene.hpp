@@ -27,6 +27,8 @@ private:
     float m_particle_tightness;
     
     bool m_is_paused = false;
+    bool m_is_rotating = false;
+    double m_last_time;
     
     std::shared_ptr<Mesh> m_particle_mesh;
     std::shared_ptr<Mesh> m_vector_field_mesh;

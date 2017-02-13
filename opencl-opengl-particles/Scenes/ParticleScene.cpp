@@ -278,12 +278,12 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     
     //Shader reloading.    
     m_shader_reloader->add_files_to_watch
-    
-    
     ([=]{
         
         m_renderer->queue_function_before_render([particle_shader] {
             particle_shader->delete_shader();
+            particle_shader->set_shader("./Shaders/particle.vert", GL_VERTEX_SHADER);
+            particle_shader->set_shader("./Shaders/particle.frag", GL_FRAGMENT_SHADER);
             particle_shader->initialize();
         });
     },
@@ -295,7 +295,7 @@ void ParticleScene::initialize(nanogui::Screen *gui_screen)
     
     axis->initialize();
     
-    m_root_node->add_child(axis);
+//    m_root_node->add_child(axis); 
     
     this->initialize_gui(gui_screen);
 }
@@ -452,7 +452,7 @@ void ParticleScene::set_particle_count(unsigned int particle_count)
     
     for(unsigned int i = 0;i < particle_count * 2;i++)
         rng_seeds[i] = rng_seed_distribution(gen);
-
+    
     m_cl_rng_seeds = clCreateBuffer(m_cl_gl_context, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, 2 * sizeof(unsigned int) * particle_count, rng_seeds.data(), &cl_error);
     CL_CHECK(cl_error);
 }
@@ -473,17 +473,28 @@ void ParticleScene::key_callback(int key, int action)
     else if(key == GLFW_KEY_P && action == GLFW_PRESS) {
         m_is_paused = !m_is_paused;
     }
+
+    else if(key == GLFW_KEY_O && action == GLFW_PRESS) {
+        m_is_rotating = !m_is_rotating;
+    }
 }
 
 void ParticleScene::draw()
 {
-    glEnable(GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
     Scene::draw();
     
     if (!m_is_paused) {
-        ParticleScene::run_particle_simulation(0.0166666f);
+        
+        double current_time = glfwGetTime();
+        double delta = current_time - m_last_time;
+        
+        ParticleScene::run_particle_simulation(delta / 3);
+        
+        m_last_time = current_time;
+    }
+    
+    if (m_is_rotating) {
+        m_camera_container->set_orientation( m_camera_container->get_orientation() * glm::angleAxis(0.005f, glm::vec3(0.0f, -1.0f, 0.0f)) );
     }
     
 //    m_vector_field_mesh->setOrientation(m_vector_field_mesh->getOrientation() * glm::angleAxis(glm::radians(1.0f), glm::vec3(0.0f,1.0f,0.0f)));
